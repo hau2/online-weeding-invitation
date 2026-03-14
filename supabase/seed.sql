@@ -1,0 +1,4 @@
+-- Seed: test admin user (password: Admin@123 — bcrypt hash)
+-- Only run in development — never in production
+-- INSERT INTO public.users (email, password_hash, role)
+-- VALUES ('admin@thiepcoionline.vn', '$2b$10$...', 'admin');
