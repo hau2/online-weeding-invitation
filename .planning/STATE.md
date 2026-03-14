@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 03-03-PLAN.md
-last_updated: "2026-03-14T22:38:33.784Z"
-last_activity: "2026-03-14 — Plan 03-03 complete: Editor page with accordion form, live preview, template selector, and auto-save hook"
+status: completed
+stopped_at: Completed 03-04-PLAN.md
+last_updated: "2026-03-14T22:44:03.625Z"
+last_activity: "2026-03-14 — Plan 03-04 complete: Publish/unpublish flow with confirmation dialogs, confetti celebration, and full-page preview"
 progress:
   total_phases: 9
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 13
   completed_plans: 13
   percent: 100
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 
 ## Current Position
 
-Phase: 3 of 9 (Invitation Editor Core)
-Plan: 4 of 4 in current phase (03-01 + 03-02 + 03-03 complete)
-Status: Executing
-Last activity: 2026-03-14 — Plan 03-03 complete: Editor page with accordion form, live preview, template selector, and auto-save hook
+Phase: 3 of 9 (Invitation Editor Core) -- COMPLETE
+Plan: 4 of 4 in current phase (03-01 + 03-02 + 03-03 + 03-04 complete)
+Status: Phase Complete
+Last activity: 2026-03-14 — Plan 03-04 complete: Publish/unpublish flow with confirmation dialogs, confetti celebration, and full-page preview
 
 Progress: [██████████] 100%
 
@@ -45,10 +45,10 @@ Progress: [██████████] 100%
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | ~96 min | ~19 min |
 | 02-app-shell | 4/4 | 26 min | 7 min |
-| 03-invitation-editor-core | 3/4 | ~10 min | ~3 min |
+| 03-invitation-editor-core | 4/4 | ~13 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 7 min (02-02), 5 min (02-03), 3 min (03-02), 4 min (03-01), 3 min (03-03)
+- Last 5 plans: 5 min (02-03), 3 min (03-02), 4 min (03-01), 3 min (03-03), 3 min (03-04)
 - Trend: accelerating
 
 *Updated after each plan completion*
@@ -63,6 +63,7 @@ Progress: [██████████] 100%
 | Phase 03-invitation-editor-core P02 | 3min | 2 tasks | 9 files |
 | Phase 03-invitation-editor-core P01 | 4min | 2 tasks | 5 files |
 | Phase 03-invitation-editor-core P03 | 3min | 3 tasks | 12 files |
+| Phase 03 P04 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -115,6 +116,8 @@ Recent decisions affecting current work:
 - [Phase 03-invitation-editor-core P03]: SaveStatus auto-resets to idle after 2s so indicator fades naturally
 - [Phase 03-invitation-editor-core P03]: Preview renders from local useState, never re-fetches -- zero network delay for real-time feel
 - [Phase 03-invitation-editor-core P03]: Phone mockup hidden on mobile, replaced with simple bordered preview
+- [Phase 03]: canvas-confetti dynamically imported via import() to avoid SSR issues and keep initial bundle small
+- [Phase 03]: onPreview callback prop connects PublishButton dropdown to FullPreviewDialog via EditorShell state
 
 ### Pending Todos
 
@@ -128,6 +131,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T22:38:33.782Z
-Stopped at: Completed 03-03-PLAN.md
-Resume file: .planning/phases/03-invitation-editor-core/03-03-SUMMARY.md
+Last session: 2026-03-14T22:44:03.623Z
+Stopped at: Completed 03-04-PLAN.md
+Resume file: None
