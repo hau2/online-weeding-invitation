@@ -22,8 +22,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Editor
 
-- [ ] **EDIT-01**: User can enter bride/groom names, wedding date/time, venue address, invitation message, and thank-you text
-- [ ] **EDIT-02**: User sees real-time preview while editing
+- [x] **EDIT-01**: User can enter bride/groom names, wedding date/time, venue address, invitation message, and thank-you text
+- [x] **EDIT-02**: User sees real-time preview while editing
 - [x] **EDIT-03**: Editor auto-saves as draft
 - [ ] **EDIT-04**: User can upload multiple photos with drag-drop reordering
 - [ ] **EDIT-05**: System auto-optimizes uploaded photos for mobile
@@ -128,8 +128,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-03 | Phase 2 | Complete |
 | SYST-04 | Phase 2 | Complete |
 | ADMN-01 | Phase 2 | Complete |
-| EDIT-01 | Phase 3 | Pending |
-| EDIT-02 | Phase 3 | Pending |
+| EDIT-01 | Phase 3 | Complete |
+| EDIT-02 | Phase 3 | Complete |
 | EDIT-03 | Phase 3 | Complete |
 | EDIT-08 | Phase 3 | Complete |
 | EDIT-09 | Phase 3 | Pending |
