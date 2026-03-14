@@ -30,13 +30,9 @@ export function RegisterForm() {
 
   async function onSubmit(values: FormValues) {
     const result = await registerAction(values.email, values.password)
-    if (result.error) {
+    if (result?.error) {
       toast.error(result.error)
-      return
     }
-    toast.success('Tạo tài khoản thành công!')
-    router.push('/dashboard')
-    router.refresh()
   }
 
   return (

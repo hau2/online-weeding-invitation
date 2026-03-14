@@ -27,12 +27,9 @@ export function LoginForm() {
 
   async function onSubmit(values: FormValues) {
     const result = await loginAction(values.email, values.password)
-    if (result.error) {
+    if (result?.error) {
       toast.error(result.error)
-      return
     }
-    router.push('/dashboard')
-    router.refresh()
   }
 
   return (

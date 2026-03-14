@@ -5,8 +5,8 @@ import {
   BadRequestException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { MailerService } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
+import { Resend } from 'resend'
 import * as bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { SupabaseAdminService } from '../supabase/supabase.service'
@@ -14,12 +14,15 @@ import type { AuthResponse, MessageResponse } from '@repo/types'
 
 @Injectable()
 export class AuthService {
+  private readonly resend: Resend
+
   constructor(
     private readonly supabaseAdmin: SupabaseAdminService,
     private readonly jwtService: JwtService,
-    private readonly mailerService: MailerService,
     private readonly config: ConfigService,
-  ) {}
+  ) {
+    this.resend = new Resend(this.config.get<string>('RESEND_API_KEY'))
+  }
 
   async register(email: string, password: string): Promise<AuthResponse> {
     // Check if email already exists (admin client — bypasses RLS)
@@ -47,6 +50,7 @@ export class AuthService {
       .single()
 
     if (error || !user) {
+      console.error('[AuthService] Register insert failed:', error)
       throw new ConflictException('Không thể tạo tài khoản. Vui lòng thử lại.')
     }
 
@@ -104,7 +108,9 @@ export class AuthService {
       const resetLink = `${webUrl}/xac-nhan-mat-khau?token=${rawToken}`
 
       try {
-        await this.mailerService.sendMail({
+        const emailFrom = this.config.get<string>('EMAIL_FROM', 'no-reply@thiepcoionline.vn')
+        await this.resend.emails.send({
+          from: emailFrom,
           to: user.email,
           subject: 'Đặt lại mật khẩu — Thiệp Cưới Online',
           html: `

@@ -26,7 +26,7 @@ export async function loginAction(email: string, password: string) {
   const cookieStore = await cookies()
   cookieStore.set(COOKIE_NAME, data.access_token, COOKIE_OPTIONS)
 
-  return { data }
+  redirect('/dashboard')
 }
 
 export async function registerAction(email: string, password: string) {
@@ -42,7 +42,7 @@ export async function registerAction(email: string, password: string) {
   const cookieStore = await cookies()
   cookieStore.set(COOKIE_NAME, data.access_token, COOKIE_OPTIONS)
 
-  return { data }
+  redirect('/dashboard')
 }
 
 export async function logoutAction() {
