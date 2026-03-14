@@ -1,7 +1,25 @@
-export default function DashboardPage() {
-  return (
-    <div className="text-rose-400">
-      Bảng điều khiển — Plan 02-02 sẽ xây dựng tại đây.
-    </div>
-  )
+import { cookies } from 'next/headers'
+import type { Invitation } from '@repo/types'
+import { DashboardClient } from '@/components/app/DashboardClient'
+
+async function getInvitations(): Promise<Invitation[]> {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('auth-token')?.value
+  if (!token) return []
+
+  try {
+    const res = await fetch('http://localhost:3001/invitations', {
+      headers: { Cookie: `auth-token=${token}` },
+      cache: 'no-store',  // always fresh list
+    })
+    if (!res.ok) return []
+    return res.json()
+  } catch {
+    return []
+  }
+}
+
+export default async function DashboardPage() {
+  const invitations = await getInvitations()
+  return <DashboardClient invitations={invitations} />
 }
