@@ -48,16 +48,16 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Authenticated user lands on a dashboard showing their invitation list with status labels (Nháp / Đã xuất bản / Hết hạn)
   2. User can tap "Tạo mới" to create a new invitation and be taken to the editor
-  3. Each invitation row has working buttons to enter the editor, view the QR code, and open the public page
+  3. Each invitation card has working buttons to enter the editor and view the public page — NO QR code button (share via link only)
   4. Unauthenticated user accessing any `/app/*` route is redirected to the login page
   5. Accessing `/admin` without admin role returns 403 — guest and user sessions cannot reach admin pages
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: Next.js App Router route groups — (site), (auth), (app), (admin) with middleware auth guard
-- [ ] 02-02: Dashboard page — invitation list, status badges, create button, action buttons (edit / QR / view)
-- [ ] 02-03: Admin layout skeleton at /admin with role guard, separate navigation, no shared UI with user shell
-- [ ] 02-04: NestJS invitations module — create/list/get endpoints with ownership enforcement (user sees only own invitations)
+- [ ] 02-01-PLAN.md — Next.js route groups (site/auth/app/admin), middleware auth guard, AppSidebar, AdminSidebar, TopBar, Vitest web config
+- [ ] 02-02-PLAN.md — Dashboard page with invitation card grid, StatusBadge, EmptyState, CreateWizard (2-step), framer-motion stagger animations
+- [ ] 02-03-PLAN.md — Admin dashboard skeleton: stat cards + recharts chart placeholders, neutral gray theme (checkpoint for visual verify)
+- [ ] 02-04-PLAN.md — NestJS invitations module: GET /invitations + POST /invitations with JwtGuard, ownership enforcement, DTO validation
 
 ### Phase 3: Invitation Editor Core
 **Goal**: A couple can fill in all invitation text fields, select a template, see a live preview that matches the final public page, and publish or unpublish their invitation
