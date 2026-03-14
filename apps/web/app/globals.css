@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  /* Font variables */
+  --font-body: var(--font-be-vietnam-pro);
+  --font-heading: var(--font-heading);
+  --font-script: var(--font-script);
+
+  /* Soft pink/rose palette — wedding-themed */
+  --color-rose-50: oklch(97.5% 0.015 355);
+  --color-rose-100: oklch(94.5% 0.028 355);
+  --color-rose-200: oklch(89% 0.05 355);
+  --color-rose-300: oklch(83% 0.08 355);
+  --color-rose-400: oklch(75% 0.12 355);
+  --color-rose-500: oklch(65% 0.16 355);
+  --color-rose-600: oklch(55% 0.18 355);
+  --color-rose-700: oklch(45% 0.16 355);
+
+  /* Rose gold accent */
+  --color-gold-300: oklch(84% 0.06 45);
+  --color-gold-400: oklch(78% 0.08 45);
+  --color-gold-500: oklch(68% 0.10 45);
+
+  /* Warm whites */
+  --color-cream-50: oklch(98% 0.008 85);
+  --color-cream-100: oklch(95% 0.015 85);
+}
+
+body {
+  font-family: var(--font-body), sans-serif;
+  background-color: var(--color-cream-50);
+  color: oklch(20% 0.02 355);
+}
