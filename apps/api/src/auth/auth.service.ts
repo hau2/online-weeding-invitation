@@ -133,8 +133,9 @@ export class AuthService {
       .order('created_at', { ascending: false })
       .limit(20)
 
+    type TokenRecord = { id: string; token_hash: string; expires_at: string; used_at: string | null; user_id: string }
     // Find matching token by bcrypt comparison
-    let matchedToken: (typeof tokens)[0] | null = null
+    let matchedToken: TokenRecord | null = null
     for (const t of tokens ?? []) {
       const matches = await bcrypt.compare(rawToken, t.token_hash)
       if (matches) {

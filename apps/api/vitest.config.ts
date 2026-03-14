@@ -1,5 +1,6 @@
 import swc from 'unplugin-swc'
 import { defineConfig } from 'vitest/config'
+import path from 'path'
 
 export default defineConfig({
   test: {
@@ -22,10 +23,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@repo/types': new URL('../../packages/types/src/index.ts', import.meta.url).pathname,
+      '@repo/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
     },
-  },
-  ssr: {
-    noExternal: [],
   },
 })
