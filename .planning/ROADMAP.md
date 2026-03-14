@@ -10,7 +10,7 @@ This roadmap builds a self-service SaaS platform for Vietnamese couples to creat
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Foundation** - Monorepo, Supabase schema with RLS, NestJS auth module, and shared TypeScript types
+- [x] **Phase 1: Foundation** - Monorepo, Supabase schema with RLS, NestJS auth module, and shared TypeScript types (completed 2026-03-14)
 - [ ] **Phase 2: App Shell** - Next.js route groups, auth middleware, dashboard UI, and admin layout skeleton
 - [ ] **Phase 3: Invitation Editor Core** - Invitation CRUD, real-time preview, 3 templates, auto-save, and publish control
 - [ ] **Phase 4: Media Upload Pipeline** - Photo gallery with drag-drop reordering, music selection/upload, bank QR upload, and server-side compression
@@ -206,7 +206,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 4/5 | In Progress|  |
+| 1. Foundation | 5/5 | Complete   | 2026-03-14 |
 | 2. App Shell | 0/4 | Not started | - |
 | 3. Invitation Editor Core | 0/6 | Not started | - |
 | 4. Media Upload Pipeline | 0/6 | Not started | - |

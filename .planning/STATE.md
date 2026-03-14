@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-foundation-03-PLAN.md
-last_updated: "2026-03-14T13:47:17.328Z"
-last_activity: "2026-03-14 — Plan 01-05 complete: Vietnamese design system — Be Vietnam Pro, Tailwind v4 CSS-first, rose/OKLCH palette"
+stopped_at: Completed 01-foundation-04-PLAN.md
+last_updated: "2026-03-14T22:18:52.000Z"
+last_activity: "2026-03-14 — Plan 01-04 complete: Next.js auth pages, Edge middleware, httpOnly cookie session, Vietnamese UI"
 progress:
   total_phases: 9
   completed_phases: 0
   total_plans: 9
-  completed_plans: 4
-  percent: 30
+  completed_plans: 5
+  percent: 36
 ---
 
 # Project State
@@ -26,33 +26,34 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 1 of 9 (Foundation)
-Plan: 5 of 5 in current phase (01-05 complete)
+Plan: 5 of 5 in current phase (01-04 complete — all 5 plans done)
 Status: Executing
-Last activity: 2026-03-14 — Plan 01-05 complete: Vietnamese design system — Be Vietnam Pro, Tailwind v4 CSS-first, rose/OKLCH palette
+Last activity: 2026-03-14 — Plan 01-04 complete: Next.js auth pages, Edge middleware, httpOnly cookie session, Vietnamese UI
 
-Progress: [███░░░░░░░] 30%
+Progress: [████░░░░░░] 36%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 3 min
-- Total execution time: 0.10 hours
+- Total plans completed: 5
+- Average duration: 20 min
+- Total execution time: ~1.7 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 3/5 | 6 min | 2 min |
+| 01-foundation | 5/5 | ~96 min | ~19 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min (01-02), 2 min (01-05)
+- Last 5 plans: 4 min (01-02), 2 min (01-05), 8 min (01-03), ~90 min (01-04)
 - Trend: —
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 5 | 2 tasks | 30 files |
 | Phase 01-foundation P05 | 2 | 1 task | 7 files |
 | Phase 01-foundation P03 | 8min | 2 tasks | 16 files |
+| Phase 01-foundation P04 | 90min | 3 tasks | 25 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,10 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: unplugin-swc added to Vitest for emitDecoratorMetadata — NestJS DI requires decorator metadata reflection; esbuild does not emit it
 - [Phase 01-foundation]: import type for express in supabase.service.ts — Vite cannot bundle transitive CJS deps; type-only import avoids resolution without behavior change
 - [Phase 01-foundation]: JWT payload shape established: sub=userId, role=authenticated, app_role=user|admin, aud=authenticated — Supabase RLS compatible
+- [Phase 01-foundation P04]: Server actions call redirect() directly after setting cookie — router.push() silently fails after headers are committed
+- [Phase 01-foundation P04]: Resend SDK replaces @nestjs-modules/mailer — single API key, no SMTP config, unblocks local testing
+- [Phase 01-foundation P04]: ConfigModule envFilePath set to ../../.env — NestJS cwd is apps/api, not monorepo root
+- [Phase 01-foundation P04]: jose used for Edge JWT — jsonwebtoken cannot run in Next.js Edge runtime
 
 ### Pending Todos
 
@@ -91,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T13:47:17.326Z
-Stopped at: Completed 01-foundation-03-PLAN.md
+Last session: 2026-03-14T22:18:52.000Z
+Stopped at: Completed 01-foundation-04-PLAN.md
 Resume file: None
