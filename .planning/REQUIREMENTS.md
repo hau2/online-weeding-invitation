@@ -75,7 +75,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### System
 
-- [ ] **SYST-01**: Vietnamese-only UI throughout the platform
+- [x] **SYST-01**: Vietnamese-only UI throughout the platform
 - [ ] **SYST-02**: Slug permanently locked after first publish (cannot be changed)
 - [x] **SYST-03**: User can only edit their own invitations
 - [ ] **SYST-04**: Public pages are read-only for guests
@@ -121,7 +121,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-02 | Phase 1 | Pending |
 | AUTH-03 | Phase 1 | Pending |
 | AUTH-04 | Phase 1 | Pending |
-| SYST-01 | Phase 1 | Pending |
+| SYST-01 | Phase 1 | Complete |
 | SYST-03 | Phase 1 | Complete |
 | DASH-01 | Phase 2 | Pending |
 | DASH-02 | Phase 2 | Pending |
