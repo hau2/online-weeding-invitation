@@ -29,7 +29,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **EDIT-05**: System auto-optimizes uploaded photos for mobile
 - [ ] **EDIT-06**: User can choose background music from system library or upload own file
 - [ ] **EDIT-07**: User can upload their bank QR image for gift money display
-- [ ] **EDIT-08**: User can select from 3 templates (Traditional/Modern/Minimalist) with instant preview
+- [x] **EDIT-08**: User can select from 3 templates (Traditional/Modern/Minimalist) with instant preview
 - [ ] **EDIT-09**: User can preview the complete invitation before publishing
 - [ ] **EDIT-10**: User can publish/unpublish invitation
 
@@ -131,7 +131,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-01 | Phase 3 | Pending |
 | EDIT-02 | Phase 3 | Pending |
 | EDIT-03 | Phase 3 | Pending |
-| EDIT-08 | Phase 3 | Pending |
+| EDIT-08 | Phase 3 | Complete |
 | EDIT-09 | Phase 3 | Pending |
 | EDIT-10 | Phase 3 | Pending |
 | SYST-02 | Phase 3 | Pending |
