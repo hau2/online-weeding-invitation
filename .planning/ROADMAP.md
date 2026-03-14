@@ -32,14 +32,14 @@ This roadmap builds a self-service SaaS platform for Vietnamese couples to creat
   3. User can log out from any page and their session is immediately invalidated
   4. User can request a password reset link and successfully set a new password via that link
   5. An authenticated user cannot access or modify another user's data (returns 403 or equivalent)
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 01-01: pnpm monorepo scaffold with Turborepo, apps/web (Next.js 16), apps/api (NestJS 11), packages/types
-- [ ] 01-02: Supabase project setup — PostgreSQL schema (users, invitations, plans), RLS enabled on all tables, storage buckets
-- [ ] 01-03: NestJS auth module — Supabase JWT guard, two-client pattern (user JWT + service role), register/login/logout/reset endpoints
-- [ ] 01-04: Next.js auth pages (đăng ký / đăng nhập / đặt lại mật khẩu) wired to NestJS auth endpoints
-- [ ] 01-05: Vietnamese UI baseline — Be Vietnam Pro font, Vietnamese copy throughout, Tailwind v4 config
+- [ ] 01-01-PLAN.md — pnpm monorepo scaffold with Turborepo, apps/web (Next.js 16), apps/api (NestJS 11), packages/types
+- [ ] 01-02-PLAN.md — Supabase schema (users, invitations, password_reset_tokens), RLS policies, NestJS two-client Supabase module, Vitest setup
+- [ ] 01-03-PLAN.md — NestJS auth module: register/login/logout/reset endpoints, JwtGuard, AdminGuard, unit tests
+- [ ] 01-04-PLAN.md — Next.js auth pages wired to NestJS endpoints, httpOnly cookie session, middleware route guard
+- [ ] 01-05-PLAN.md — Vietnamese UI baseline: Be Vietnam Pro font, Tailwind v4 CSS-first config, soft pink/rose palette
 
 ### Phase 2: App Shell
 **Goal**: The application has a navigable shell with protected route groups, a functioning dashboard where users see their invitations, and an admin layout that enforces role separation
