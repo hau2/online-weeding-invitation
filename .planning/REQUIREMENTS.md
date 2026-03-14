@@ -62,7 +62,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Admin
 
-- [ ] **ADMN-01**: Admin panel at `/admin` with separate layout (not shared with user UI)
+- [x] **ADMN-01**: Admin panel at `/admin` with separate layout (not shared with user UI)
 - [ ] **ADMN-02**: Admin dashboard with read-only stats (total users, invitations, revenue, charts)
 - [ ] **ADMN-03**: Admin can view/search users, lock/unlock accounts, reset quota, assign/change plans
 - [ ] **ADMN-04**: Admin can view invitations list, view public link, disable/enable for violations (never edit content)
@@ -78,7 +78,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SYST-01**: Vietnamese-only UI throughout the platform
 - [ ] **SYST-02**: Slug permanently locked after first publish (cannot be changed)
 - [x] **SYST-03**: User can only edit their own invitations
-- [ ] **SYST-04**: Public pages are read-only for guests
+- [x] **SYST-04**: Public pages are read-only for guests
 
 ## v2 Requirements
 
@@ -126,8 +126,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-01 | Phase 2 | Complete |
 | DASH-02 | Phase 2 | Complete |
 | DASH-03 | Phase 2 | Pending |
-| SYST-04 | Phase 2 | Pending |
-| ADMN-01 | Phase 2 | Pending |
+| SYST-04 | Phase 2 | Complete |
+| ADMN-01 | Phase 2 | Complete |
 | EDIT-01 | Phase 3 | Pending |
 | EDIT-02 | Phase 3 | Pending |
 | EDIT-03 | Phase 3 | Pending |

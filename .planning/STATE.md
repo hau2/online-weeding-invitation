@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-app-shell-04-PLAN.md
-last_updated: "2026-03-14T15:41:23Z"
-last_activity: "2026-03-14 — Plan 02-04 complete: NestJS invitations module with GET/POST, cookie-based JwtGuard, ownership enforcement, 8 unit tests"
+stopped_at: Completed 02-app-shell-01-PLAN.md
+last_updated: "2026-03-14T15:46:12Z"
+last_activity: "2026-03-14 — Plan 02-01 complete: Route groups, middleware auth guard, app shell layout with shadcn/ui Sidebar"
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 9
-  completed_plans: 6
-  percent: 40
+  completed_plans: 7
+  percent: 44
 ---
 
 # Project State
@@ -26,29 +26,29 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 2 of 9 (App Shell)
-Plan: 1 of 4 in current phase (02-04 complete)
+Plan: 2 of 4 in current phase (02-01 complete)
 Status: Executing
-Last activity: 2026-03-14 — Plan 02-04 complete: NestJS invitations module with GET/POST, cookie-based JwtGuard, ownership enforcement, 8 unit tests
+Last activity: 2026-03-14 — Plan 02-01 complete: Route groups, middleware auth guard, app shell layout with shadcn/ui Sidebar
 
-Progress: [████░░░░░░] 40%
+Progress: [████░░░░░░] 44%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 18 min
-- Total execution time: ~1.8 hours
+- Total plans completed: 7
+- Average duration: 17 min
+- Total execution time: ~2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | ~96 min | ~19 min |
-| 02-app-shell | 1/4 | 5 min | 5 min |
+| 02-app-shell | 2/4 | 14 min | 7 min |
 
 **Recent Trend:**
-- Last 5 plans: 2 min (01-05), 8 min (01-03), ~90 min (01-04), 5 min (02-04)
-- Trend: —
+- Last 5 plans: 8 min (01-03), ~90 min (01-04), 5 min (02-04), 9 min (02-01)
+- Trend: stable
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 5 | 2 tasks | 30 files |
@@ -56,6 +56,7 @@ Progress: [████░░░░░░] 40%
 | Phase 01-foundation P03 | 8min | 2 tasks | 16 files |
 | Phase 01-foundation P04 | 90min | 3 tasks | 25 files |
 | Phase 02-app-shell P04 | 5min | 2 tasks | 10 files |
+| Phase 02-app-shell P01 | 9min | 3 tasks | 22 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,9 @@ Recent decisions affecting current work:
 - [Phase 02-app-shell P04]: InvitationRow interface with explicit cast for Supabase untyped client -- avoids GenericStringError TS build failures
 - [Phase 02-app-shell P04]: SUPABASE_JWT_SECRET env var reused (not JWT_SECRET) for consistency with existing auth module
 - [Phase 02-app-shell P04]: mapRow helper function extracts snake_case-to-camelCase mapping to avoid duplication between list and create
+- [Phase 02-app-shell P01]: shadcn/ui base-nova style uses @base-ui/react render prop instead of Radix asChild -- all SidebarMenuButton uses render={<Link />}
+- [Phase 02-app-shell P01]: @vitejs/plugin-react pinned to v4 for Vite 5 compatibility (vitest@2 bundles vite@5)
+- [Phase 02-app-shell P01]: Admin forbidden redirects to /dashboard?error=forbidden (not 403 JSON) for better UX
 
 ### Pending Todos
 
@@ -102,6 +106,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T15:41:23Z
-Stopped at: Completed 02-app-shell-04-PLAN.md
+Last session: 2026-03-14T15:46:12Z
+Stopped at: Completed 02-app-shell-01-PLAN.md
 Resume file: None
