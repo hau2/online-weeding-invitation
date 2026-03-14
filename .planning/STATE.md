@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-03-14T22:28:20Z"
-last_activity: "2026-03-14 — Plan 03-02 complete: 3 wedding invitation templates + TemplateRenderer + shadcn/ui form components"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-14T22:29:42Z"
+last_activity: "2026-03-14 — Plan 03-01 complete: CRUD+publish endpoints with slug generation and 20 unit tests"
 progress:
   total_phases: 9
   completed_phases: 2
   total_plans: 13
-  completed_plans: 11
-  percent: 85
+  completed_plans: 12
+  percent: 92
 ---
 
 # Project State
@@ -26,18 +26,18 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 3 of 9 (Invitation Editor Core)
-Plan: 2 of 4 in current phase (03-02 complete)
+Plan: 3 of 4 in current phase (03-01 + 03-02 complete)
 Status: Executing
-Last activity: 2026-03-14 — Plan 03-02 complete: 3 wedding invitation templates + TemplateRenderer + shadcn/ui form components
+Last activity: 2026-03-14 — Plan 03-01 complete: CRUD+publish endpoints with slug generation and 20 unit tests
 
-Progress: [████████░░] 85%
+Progress: [█████████░] 92%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 14 min
-- Total execution time: ~2.5 hours
+- Total plans completed: 12
+- Average duration: 13 min
+- Total execution time: ~2.6 hours
 
 **By Phase:**
 
@@ -45,10 +45,10 @@ Progress: [████████░░] 85%
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | ~96 min | ~19 min |
 | 02-app-shell | 4/4 | 26 min | 7 min |
-| 03-invitation-editor-core | 2/4 | ~6 min | ~3 min |
+| 03-invitation-editor-core | 3/4 | ~10 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 5 min (02-04), 9 min (02-01), 7 min (02-02), 5 min (02-03), 3 min (03-02)
+- Last 5 plans: 9 min (02-01), 7 min (02-02), 5 min (02-03), 3 min (03-02), 4 min (03-01)
 - Trend: accelerating
 
 *Updated after each plan completion*
@@ -61,6 +61,7 @@ Progress: [████████░░] 85%
 | Phase 02-app-shell P02 | 7min | 2 tasks | 11 files |
 | Phase 02-app-shell P03 | 5min | 2 tasks | 5 files |
 | Phase 03-invitation-editor-core P02 | 3min | 2 tasks | 9 files |
+| Phase 03-invitation-editor-core P01 | 4min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,10 @@ Recent decisions affecting current work:
 - [Phase 02-app-shell P02]: framer-motion Variants type annotation required for ease property -- plain object widens string literal to non-assignable type
 - [Phase 02-app-shell P03]: recharts installed for admin charts -- lightweight, composable, works with RSC via 'use client' boundary
 - [Phase 02-app-shell P03]: All stat values show em-dash placeholder -- real data wired in Phase 8
+- [Phase 03-invitation-editor-core P01]: SupabaseAdminService used for slug writes to bypass RLS -- user client cannot write to slug column
+- [Phase 03-invitation-editor-core P01]: crypto.randomBytes for slug suffix instead of nanoid -- nanoid v4+ ESM-only, incompatible with NestJS CJS
+- [Phase 03-invitation-editor-core P01]: Dynamic FIELD_MAP for camelCase-to-snake_case -- only sends present fields to avoid nullifying undefined ones
+- [Phase 03-invitation-editor-core P01]: ParseUUIDPipe on all :id params for input validation at controller level
 - [Phase 03-invitation-editor-core P02]: Templates use hex colors for gold/burgundy -- wedding-specific colors not in Tailwind palette
 - [Phase 03-invitation-editor-core P02]: Vietnamese placeholder text for empty fields (Chu re, Co dau, Chua chon ngay) for immediate visual context
 - [Phase 03-invitation-editor-core P02]: Intl.DateTimeFormat vi-VN for locale-appropriate date rendering in templates
@@ -118,6 +123,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T22:28:20Z
-Stopped at: Completed 03-02-PLAN.md
-Resume file: .planning/phases/03-invitation-editor-core/03-02-SUMMARY.md
+Last session: 2026-03-14T22:29:42Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: .planning/phases/03-invitation-editor-core/03-01-SUMMARY.md
