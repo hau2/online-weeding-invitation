@@ -117,13 +117,63 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (Updated during roadmap creation) | | |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| SYST-01 | Phase 1 | Pending |
+| SYST-03 | Phase 1 | Pending |
+| DASH-01 | Phase 2 | Pending |
+| DASH-02 | Phase 2 | Pending |
+| DASH-03 | Phase 2 | Pending |
+| SYST-04 | Phase 2 | Pending |
+| ADMN-01 | Phase 2 | Pending |
+| EDIT-01 | Phase 3 | Pending |
+| EDIT-02 | Phase 3 | Pending |
+| EDIT-03 | Phase 3 | Pending |
+| EDIT-08 | Phase 3 | Pending |
+| EDIT-09 | Phase 3 | Pending |
+| EDIT-10 | Phase 3 | Pending |
+| SYST-02 | Phase 3 | Pending |
+| EDIT-04 | Phase 4 | Pending |
+| EDIT-05 | Phase 4 | Pending |
+| EDIT-06 | Phase 4 | Pending |
+| EDIT-07 | Phase 4 | Pending |
+| PUBL-01 | Phase 5 | Pending |
+| PUBL-02 | Phase 5 | Pending |
+| PUBL-03 | Phase 5 | Pending |
+| PUBL-04 | Phase 5 | Pending |
+| PUBL-05 | Phase 5 | Pending |
+| PUBL-06 | Phase 5 | Pending |
+| PUBL-07 | Phase 5 | Pending |
+| PUBL-08 | Phase 5 | Pending |
+| PUBL-09 | Phase 5 | Pending |
+| PUBL-10 | Phase 9 | Pending |
+| PUBL-11 | Phase 5 | Pending |
+| PUBL-12 | Phase 5 | Pending |
+| SAVE-01 | Phase 6 | Pending |
+| SAVE-02 | Phase 6 | Pending |
+| PLAN-01 | Phase 7 | Pending |
+| PLAN-02 | Phase 7 | Pending |
+| PLAN-03 | Phase 7 | Pending |
+| PLAN-04 | Phase 7 | Pending |
+| ADMN-02 | Phase 8 | Pending |
+| ADMN-03 | Phase 8 | Pending |
+| ADMN-04 | Phase 8 | Pending |
+| ADMN-05 | Phase 8 | Pending |
+| ADMN-06 | Phase 8 | Pending |
+| ADMN-07 | Phase 8 | Pending |
+| ADMN-08 | Phase 8 | Pending |
+| ADMN-09 | Phase 8 | Pending |
+| ADMN-10 | Phase 8 | Pending |
 
 **Coverage:**
-- v1 requirements: 40 total
-- Mapped to phases: 0
-- Unmapped: 40 ⚠️
+- v1 requirements: 49 total
+- Mapped to phases: 49
+- Unmapped: 0
+
+Note: PUBL-10 (mobile-first, <1MB page weight) is assigned to Phase 9 (Polish and Performance) because the <1MB target requires the full production asset pipeline — lazy loading, code splitting, WebP serving, and bundle analysis — which can only be measured accurately against the complete application. The feature is delivered incrementally across all phases but the acceptance criterion is verified in Phase 9.
 
 ---
 *Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 after initial definition*
+*Last updated: 2026-03-14 — traceability populated after roadmap creation*
