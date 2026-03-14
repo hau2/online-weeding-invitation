@@ -2,7 +2,7 @@ import { Injectable, Scope, Inject } from '@nestjs/common'
 import { REQUEST } from '@nestjs/core'
 import { ConfigService } from '@nestjs/config'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
-import { Request } from 'express'
+import type { Request } from 'express'
 
 /**
  * Singleton admin client — uses service role key, bypasses RLS.
