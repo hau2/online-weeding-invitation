@@ -10,6 +10,8 @@ import type { SaveStatus } from './useAutoSave'
 import { EditorForm } from './EditorForm'
 import { EditorPreview } from './EditorPreview'
 import { TemplateSelector } from './TemplateSelector'
+import { PublishButton } from './PublishButton'
+import { FullPreviewDialog } from './FullPreviewDialog'
 
 function SaveIndicator({ status }: { status: SaveStatus }) {
   switch (status) {
@@ -26,6 +28,7 @@ function SaveIndicator({ status }: { status: SaveStatus }) {
 
 export function EditorShell({ invitation: initial }: { invitation: Invitation }) {
   const [invitation, setInvitation] = useState<Invitation>(initial)
+  const [showFullPreview, setShowFullPreview] = useState(false)
   const { save, status } = useAutoSave(initial.id)
   const { setOpen } = useSidebar()
 
@@ -41,6 +44,14 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
     },
     [save],
   )
+
+  const handlePublished = useCallback((updated: Invitation) => {
+    setInvitation(updated)
+  }, [])
+
+  const handleUnpublished = useCallback((updated: Invitation) => {
+    setInvitation(updated)
+  }, [])
 
   const title =
     invitation.groomName && invitation.brideName
@@ -60,8 +71,19 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
         <h1 className="text-sm font-medium text-rose-800 truncate">{title}</h1>
         <SaveIndicator status={status} />
         <div className="flex-1" />
-        {/* Placeholder for publish button (Plan 04) */}
+        <PublishButton
+          invitation={invitation}
+          onPublished={handlePublished}
+          onUnpublished={handleUnpublished}
+          onPreview={() => setShowFullPreview(true)}
+        />
       </div>
+
+      <FullPreviewDialog
+        invitation={invitation}
+        open={showFullPreview}
+        onOpenChange={setShowFullPreview}
+      />
 
       {/* Responsive layout: side-by-side on desktop, stacked on mobile */}
       <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
