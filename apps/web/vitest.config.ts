@@ -11,6 +11,7 @@ export default defineConfig({
     include: ['__tests__/**/*.{test,spec}.{ts,tsx}'],
     alias: {
       '@': path.resolve(__dirname, '.'),
+      '@repo/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
     },
   },
 })
