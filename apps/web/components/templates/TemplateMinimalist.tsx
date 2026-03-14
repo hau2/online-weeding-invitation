@@ -1,0 +1,106 @@
+'use client'
+
+import { cn } from '@/lib/utils'
+import type { TemplateProps } from './types'
+
+function formatDate(dateStr: string | null): string {
+  if (!dateStr) return 'Chua chon ngay'
+  try {
+    const date = new Date(dateStr)
+    return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'full' }).format(date)
+  } catch {
+    return dateStr
+  }
+}
+
+function formatTime(timeStr: string | null): string {
+  if (!timeStr) return 'Chua chon gio'
+  return timeStr
+}
+
+export function TemplateMinimalist({ invitation, className }: TemplateProps) {
+  const groomName = invitation.groomName || 'Chu re'
+  const brideName = invitation.brideName || 'Co dau'
+  const venueName = invitation.venueName || ''
+  const venueAddress = invitation.venueAddress || ''
+  const message =
+    invitation.invitationMessage ||
+    'Tran trong kinh moi quy khach den du buoi tiec chung vui cung gia dinh chung toi.'
+  const thankYou =
+    invitation.thankYouText ||
+    'Su hien dien cua quy khach la niem vinh hanh cua chung toi.'
+
+  return (
+    <div
+      className={cn(
+        'relative mx-auto w-full max-w-[420px] overflow-hidden rounded-lg',
+        className
+      )}
+    >
+      {/* Cream background, pure typography */}
+      <div className="bg-cream-50 px-10 py-16 text-center">
+        {/* Generous top spacing with minimal label */}
+        <p className="mb-12 text-[10px] uppercase tracking-[0.4em] text-gray-400">
+          Thiep moi
+        </p>
+
+        {/* Couple names -- large, bold serif */}
+        <div className="mb-14">
+          <h2 className="font-heading text-4xl font-bold tracking-tight text-gray-800">
+            {groomName}
+          </h2>
+          <p className="my-5 text-sm font-light text-gray-400">&amp;</p>
+          <h2 className="font-heading text-4xl font-bold tracking-tight text-gray-800">
+            {brideName}
+          </h2>
+        </div>
+
+        {/* Hairline divider */}
+        <div className="mx-auto mb-14 h-px w-10 bg-gray-300" />
+
+        {/* Date and time */}
+        <div className="mb-12">
+          <p className="text-base font-light text-gray-600">
+            {formatDate(invitation.weddingDate)}
+          </p>
+          <p className="mt-2 text-sm font-light text-gray-400">
+            {formatTime(invitation.weddingTime)}
+          </p>
+        </div>
+
+        {/* Venue */}
+        {(venueName || venueAddress) && (
+          <div className="mb-12">
+            {venueName && (
+              <p className="text-base font-medium text-gray-700">
+                {venueName}
+              </p>
+            )}
+            {venueAddress && (
+              <p className="mt-1 text-sm font-light leading-relaxed text-gray-400">
+                {venueAddress}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Hairline divider */}
+        <div className="mx-auto mb-14 h-px w-10 bg-gray-300" />
+
+        {/* Invitation message */}
+        <div className="mb-12">
+          <p className="mx-auto max-w-[280px] text-sm font-light leading-loose text-gray-500">
+            {message}
+          </p>
+        </div>
+
+        {/* Thank you text */}
+        <div className="mb-4">
+          <p className="font-heading text-sm italic text-gray-400">
+            {thankYou}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
