@@ -69,15 +69,13 @@ Plans:
   3. User can switch between Traditional, Modern, and Minimalist templates and immediately see the preview change
   4. User can preview the complete invitation as a guest would see it before publishing
   5. User can publish the invitation (generating the slug) and unpublish it — the slug never changes after first publish
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: Shared InvitationTemplate components (Traditional, Modern, Minimalist) — used in both editor preview and public page
-- [ ] 03-02: Invitation editor form — all text fields with 800ms debounced auto-save to NestJS
-- [ ] 03-03: Real-time preview pane — renders from local state with zero network round-trips
-- [ ] 03-04: Template selector — 3 options with instant preview switch, stored in invitation record
-- [ ] 03-05: Publish/unpublish flow — NestJS endpoint locks slug on first publish, UI confirmation dialog warns slug is permanent
-- [ ] 03-06: Full-page preview mode — renders public page experience from within editor (read-only)
+- [ ] 03-01-PLAN.md — NestJS API: GET /:id, PATCH /:id (auto-save target), POST publish/unpublish with slug generation and lock
+- [ ] 03-02-PLAN.md — 3 template components (Traditional/Modern/Minimalist) + TemplateRenderer + shadcn accordion/textarea install
+- [ ] 03-03-PLAN.md — Editor page: side-by-side form + live preview, accordion sections, 800ms debounced auto-save, template selector
+- [ ] 03-04-PLAN.md — Publish/unpublish UI with confirmation dialogs, confetti celebration, and full-page preview dialog
 
 ### Phase 4: Media Upload Pipeline
 **Goal**: A couple can upload and reorder wedding photos, select or upload background music, and upload their bank QR image — all assets are server-validated, compressed, and stored securely
@@ -208,7 +206,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete   | 2026-03-14 |
 | 2. App Shell | 4/4 | Complete   | 2026-03-14 |
-| 3. Invitation Editor Core | 0/6 | Not started | - |
+| 3. Invitation Editor Core | 0/4 | Not started | - |
 | 4. Media Upload Pipeline | 0/6 | Not started | - |
 | 5. Public Invitation Page | 0/9 | Not started | - |
 | 6. Save-the-Date | 0/3 | Not started | - |
