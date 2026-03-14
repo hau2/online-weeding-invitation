@@ -67,7 +67,7 @@ Each task was committed atomically:
 1. **Task 1: StatCard component and admin dashboard page** - `bd721d8` (feat)
 2. **Task 2: Checkpoint: Visual verification of admin and app shells** - N/A (human verification, no code changes)
 
-**Plan metadata:** (pending final commit)
+**Plan metadata:** `48823a2` (docs: complete plan)
 
 ## Files Created/Modified
 - `apps/web/components/admin/StatCard.tsx` - Reusable stat card with icon, value, description, optional trend
