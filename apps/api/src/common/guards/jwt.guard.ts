@@ -10,7 +10,7 @@ import type { Request } from 'express'
 
 /**
  * Cookie-based JWT guard using jose.
- * Reads the httpOnly 'session' cookie set by the Next.js frontend,
+ * Reads the httpOnly 'auth-token' cookie set by the Next.js frontend,
  * verifies the token, and attaches the payload to req.user.
  *
  * This is separate from the Passport-based JwtGuard in auth/guards/
@@ -23,8 +23,8 @@ export class JwtGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request>()
 
-    // Read the httpOnly session cookie
-    const token = req.cookies?.['session']
+    // Read the httpOnly auth-token cookie
+    const token = req.cookies?.['auth-token']
     if (!token) {
       throw new UnauthorizedException('Phien dang nhap khong hop le')
     }
