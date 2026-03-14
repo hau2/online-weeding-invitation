@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-foundation-04-PLAN.md
-last_updated: "2026-03-14T15:27:28.084Z"
-last_activity: "2026-03-14 — Plan 01-04 complete: Next.js auth pages, Edge middleware, httpOnly cookie session, Vietnamese UI"
+stopped_at: Completed 02-app-shell-04-PLAN.md
+last_updated: "2026-03-14T15:41:23Z"
+last_activity: "2026-03-14 — Plan 02-04 complete: NestJS invitations module with GET/POST, cookie-based JwtGuard, ownership enforcement, 8 unit tests"
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
-  percent: 36
+  completed_plans: 6
+  percent: 40
 ---
 
 # Project State
@@ -21,32 +21,33 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Couples can create and share a stunning online wedding invitation with a single QR code, and guests can view it and send gift money — all without any intermediary.
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 2 — App Shell
 
 ## Current Position
 
-Phase: 1 of 9 (Foundation)
-Plan: 5 of 5 in current phase (01-04 complete — all 5 plans done)
+Phase: 2 of 9 (App Shell)
+Plan: 1 of 4 in current phase (02-04 complete)
 Status: Executing
-Last activity: 2026-03-14 — Plan 01-04 complete: Next.js auth pages, Edge middleware, httpOnly cookie session, Vietnamese UI
+Last activity: 2026-03-14 — Plan 02-04 complete: NestJS invitations module with GET/POST, cookie-based JwtGuard, ownership enforcement, 8 unit tests
 
-Progress: [████░░░░░░] 36%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 20 min
-- Total execution time: ~1.7 hours
+- Total plans completed: 6
+- Average duration: 18 min
+- Total execution time: ~1.8 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | ~96 min | ~19 min |
+| 02-app-shell | 1/4 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min (01-02), 2 min (01-05), 8 min (01-03), ~90 min (01-04)
+- Last 5 plans: 2 min (01-05), 8 min (01-03), ~90 min (01-04), 5 min (02-04)
 - Trend: —
 
 *Updated after each plan completion*
@@ -54,6 +55,7 @@ Progress: [████░░░░░░] 36%
 | Phase 01-foundation P05 | 2 | 1 task | 7 files |
 | Phase 01-foundation P03 | 8min | 2 tasks | 16 files |
 | Phase 01-foundation P04 | 90min | 3 tasks | 25 files |
+| Phase 02-app-shell P04 | 5min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -83,6 +85,10 @@ Recent decisions affecting current work:
 - [Phase 01-foundation P04]: Resend SDK replaces @nestjs-modules/mailer — single API key, no SMTP config, unblocks local testing
 - [Phase 01-foundation P04]: ConfigModule envFilePath set to ../../.env — NestJS cwd is apps/api, not monorepo root
 - [Phase 01-foundation P04]: jose used for Edge JWT — jsonwebtoken cannot run in Next.js Edge runtime
+- [Phase 02-app-shell P04]: Cookie-based JwtGuard (jose) in common/guards/ separate from Passport-based guard in auth/guards/ -- each serves different auth flow
+- [Phase 02-app-shell P04]: InvitationRow interface with explicit cast for Supabase untyped client -- avoids GenericStringError TS build failures
+- [Phase 02-app-shell P04]: SUPABASE_JWT_SECRET env var reused (not JWT_SECRET) for consistency with existing auth module
+- [Phase 02-app-shell P04]: mapRow helper function extracts snake_case-to-camelCase mapping to avoid duplication between list and create
 
 ### Pending Todos
 
@@ -96,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T22:18:52.000Z
-Stopped at: Completed 01-foundation-04-PLAN.md
+Last session: 2026-03-14T15:41:23Z
+Stopped at: Completed 02-app-shell-04-PLAN.md
 Resume file: None
