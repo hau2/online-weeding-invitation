@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-app-shell-01-PLAN.md
-last_updated: "2026-03-14T15:46:12Z"
-last_activity: "2026-03-14 — Plan 02-01 complete: Route groups, middleware auth guard, app shell layout with shadcn/ui Sidebar"
+stopped_at: Completed 02-app-shell-02-PLAN.md
+last_updated: "2026-03-14T15:58:04Z"
+last_activity: "2026-03-14 — Plan 02-02 complete: Dashboard page with invitation card grid, status badges, empty state, and CreateWizard"
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 9
-  completed_plans: 7
-  percent: 44
+  completed_plans: 8
+  percent: 50
 ---
 
 # Project State
@@ -26,16 +26,16 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 2 of 9 (App Shell)
-Plan: 2 of 4 in current phase (02-01 complete)
+Plan: 3 of 4 in current phase (02-02 complete)
 Status: Executing
-Last activity: 2026-03-14 — Plan 02-01 complete: Route groups, middleware auth guard, app shell layout with shadcn/ui Sidebar
+Last activity: 2026-03-14 — Plan 02-02 complete: Dashboard page with invitation card grid, status badges, empty state, and CreateWizard
 
-Progress: [████░░░░░░] 44%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 17 min
 - Total execution time: ~2 hours
 
@@ -44,10 +44,10 @@ Progress: [████░░░░░░] 44%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | ~96 min | ~19 min |
-| 02-app-shell | 2/4 | 14 min | 7 min |
+| 02-app-shell | 3/4 | 21 min | 7 min |
 
 **Recent Trend:**
-- Last 5 plans: 8 min (01-03), ~90 min (01-04), 5 min (02-04), 9 min (02-01)
+- Last 5 plans: 8 min (01-03), ~90 min (01-04), 5 min (02-04), 9 min (02-01), 7 min (02-02)
 - Trend: stable
 
 *Updated after each plan completion*
@@ -57,6 +57,7 @@ Progress: [████░░░░░░] 44%
 | Phase 01-foundation P04 | 90min | 3 tasks | 25 files |
 | Phase 02-app-shell P04 | 5min | 2 tasks | 10 files |
 | Phase 02-app-shell P01 | 9min | 3 tasks | 22 files |
+| Phase 02-app-shell P02 | 7min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,9 @@ Recent decisions affecting current work:
 - [Phase 02-app-shell P01]: shadcn/ui base-nova style uses @base-ui/react render prop instead of Radix asChild -- all SidebarMenuButton uses render={<Link />}
 - [Phase 02-app-shell P01]: @vitejs/plugin-react pinned to v4 for Vite 5 compatibility (vitest@2 bundles vite@5)
 - [Phase 02-app-shell P01]: Admin forbidden redirects to /dashboard?error=forbidden (not 403 JSON) for better UX
+- [Phase 02-app-shell P02]: Cookie name adapted to auth-token (Phase 1 pattern) for dashboard server-side fetch instead of plan's session cookie
+- [Phase 02-app-shell P02]: base-ui render prop with nativeButton={false} for Button rendered as Link -- avoids console warning about non-native button
+- [Phase 02-app-shell P02]: framer-motion Variants type annotation required for ease property -- plain object widens string literal to non-assignable type
 
 ### Pending Todos
 
@@ -106,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T15:46:12Z
-Stopped at: Completed 02-app-shell-01-PLAN.md
+Last session: 2026-03-14T15:58:04Z
+Stopped at: Completed 02-app-shell-02-PLAN.md
 Resume file: None

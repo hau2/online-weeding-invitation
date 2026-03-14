@@ -18,7 +18,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **DASH-01**: User can view list of their invitations with status (Draft/Published/Expired)
 - [x] **DASH-02**: User can create a new invitation
-- [ ] **DASH-03**: User can access edit, view QR, and view public page from dashboard
+- [x] **DASH-03**: User can access edit, view QR, and view public page from dashboard
 
 ### Editor
 
@@ -125,7 +125,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SYST-03 | Phase 1 | Complete |
 | DASH-01 | Phase 2 | Complete |
 | DASH-02 | Phase 2 | Complete |
-| DASH-03 | Phase 2 | Pending |
+| DASH-03 | Phase 2 | Complete |
 | SYST-04 | Phase 2 | Complete |
 | ADMN-01 | Phase 2 | Complete |
 | EDIT-01 | Phase 3 | Pending |
