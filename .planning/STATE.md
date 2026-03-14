@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-05-PLAN.md
-last_updated: "2026-03-14T13:40:01Z"
+stopped_at: Completed 01-foundation-03-PLAN.md
+last_updated: "2026-03-14T13:47:17.328Z"
 last_activity: "2026-03-14 — Plan 01-05 complete: Vietnamese design system — Be Vietnam Pro, Tailwind v4 CSS-first, rose/OKLCH palette"
 progress:
   total_phases: 9
   completed_phases: 0
-  total_plans: 5
-  completed_plans: 3
+  total_plans: 9
+  completed_plans: 4
   percent: 30
 ---
 
@@ -52,6 +52,7 @@ Progress: [███░░░░░░░] 30%
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 5 | 2 tasks | 30 files |
 | Phase 01-foundation P05 | 2 | 1 task | 7 files |
+| Phase 01-foundation P03 | 8min | 2 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation P05]: Be Vietnam Pro uses weight 300-700 (not just 400+700) to support light UI text and medium button labels
 - [Phase 01-foundation P05]: OKLCH colorspace chosen for palette — perceptually uniform lightness steps look visually equal
 - [Phase 01-foundation P05]: Sonner wrapped in components/ui/sonner.tsx (not imported directly) — enables future CSS-var theme customization
+- [Phase 01-foundation]: unplugin-swc added to Vitest for emitDecoratorMetadata — NestJS DI requires decorator metadata reflection; esbuild does not emit it
+- [Phase 01-foundation]: import type for express in supabase.service.ts — Vite cannot bundle transitive CJS deps; type-only import avoids resolution without behavior change
+- [Phase 01-foundation]: JWT payload shape established: sub=userId, role=authenticated, app_role=user|admin, aud=authenticated — Supabase RLS compatible
 
 ### Pending Todos
 
@@ -87,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T13:40:01Z
-Stopped at: Completed 01-05-PLAN.md
+Last session: 2026-03-14T13:47:17.326Z
+Stopped at: Completed 01-foundation-03-PLAN.md
 Resume file: None
