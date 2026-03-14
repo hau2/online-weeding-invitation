@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-14T13:23:18.411Z"
+stopped_at: Completed 01-foundation-02-PLAN.md
+last_updated: "2026-03-14T13:35:51.789Z"
 last_activity: 2026-03-14 — Roadmap created, 40 requirements mapped to 9 phases
 progress:
   total_phases: 9
   completed_phases: 0
   total_plans: 5
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 20
 ---
 
 # Project State
@@ -26,27 +26,27 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 1 of 9 (Foundation)
-Plan: 0 of 5 in current phase
-Status: Ready to plan
-Last activity: 2026-03-14 — Roadmap created, 40 requirements mapped to 9 phases
+Plan: 2 of 5 in current phase (01-02 complete)
+Status: Executing
+Last activity: 2026-03-14 — Plan 01-02 complete: Supabase schema + NestJS two-client module + Vitest infrastructure
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: — min
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 4 min
+- Total execution time: 0.07 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-foundation | 1/5 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: none yet
+- Last 5 plans: 4 min (01-02)
 - Trend: —
 
 *Updated after each plan completion*
@@ -63,6 +63,9 @@ Recent decisions affecting current work:
 - [Init]: Slug locked at DB constraint level on first publish — not just application logic; show confirmation dialog before first publish
 - [Init]: All uploads go through NestJS — browser never uploads directly to Supabase Storage; magic-byte MIME validation required
 - [Init]: Phase 5 (Public Invitation Page) flagged for deeper research — iOS WKWebView audio behavior and Zalo OG crawler are not officially documented
+- [Phase 01-foundation]: SupabaseUserService is REQUEST-scoped to prevent JWT leakage between concurrent requests in NestJS DI
+- [Phase 01-foundation]: password_reset_tokens has RLS enabled but zero user-facing policies — service role is sole accessor
+- [Phase 01-foundation]: Slug uniqueness enforced at DB level with partial unique index WHERE slug IS NOT NULL
 
 ### Pending Todos
 
@@ -76,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T13:23:18.394Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-app-shell/02-CONTEXT.md
+Last session: 2026-03-14T13:35:51.787Z
+Stopped at: Completed 01-foundation-02-PLAN.md
+Resume file: None
