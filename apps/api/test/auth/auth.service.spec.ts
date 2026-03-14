@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { Test, TestingModule } from '@nestjs/testing'
 import { JwtService } from '@nestjs/jwt'
-import { MailerService } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
 import { ConflictException, UnauthorizedException, BadRequestException } from '@nestjs/common'
 import { AuthService } from '../../src/auth/auth.service'
@@ -43,10 +42,6 @@ describe('AuthService', () => {
         {
           provide: JwtService,
           useValue: { sign: vi.fn().mockReturnValue('mock-jwt-token') },
-        },
-        {
-          provide: MailerService,
-          useValue: { sendMail: vi.fn().mockResolvedValue(undefined) },
         },
         {
           provide: ConfigService,

@@ -19,9 +19,6 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    console.log('[middleware] JWT_SECRET defined:', !!process.env.SUPABASE_JWT_SECRET)
-    console.log('[middleware] JWT_SECRET length:', process.env.SUPABASE_JWT_SECRET?.length)
-    console.log('[middleware] token length:', token.length)
     const { payload } = await jwtVerify(token, JWT_SECRET, {
       algorithms: ['HS256'],
     })
@@ -32,8 +29,7 @@ export async function middleware(req: NextRequest) {
     }
 
     return NextResponse.next()
-  } catch (err) {
-    console.error('[middleware] JWT verify failed:', err)
+  } catch {
     // Token expired or invalid — redirect to login
     const url = req.nextUrl.clone()
     url.pathname = '/dang-nhap'
