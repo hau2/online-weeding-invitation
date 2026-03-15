@@ -199,7 +199,7 @@ export function PhotoGallery({
 
       const { error } = await apiFetch<Invitation>(
         `/invitations/${invitationId}/photo-order`,
-        { method: 'PATCH', body: { photoUrls: newOrder } },
+        { method: 'PATCH', body: { photoUrls: newOrder }, credentials: 'include' },
       )
 
       if (error) {
@@ -216,7 +216,7 @@ export function PhotoGallery({
 
       const { data, error } = await apiFetch<Invitation>(
         `/invitations/${invitationId}/photos/${index}`,
-        { method: 'DELETE' },
+        { method: 'DELETE', credentials: 'include' },
       )
 
       setDeletingIndex(null)
