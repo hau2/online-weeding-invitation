@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import type { Invitation } from '@repo/types'
 import { ThankYouPage } from './ThankYouPage'
 import { InvitationShell } from './InvitationShell'
+import { SaveTheDatePage } from './SaveTheDatePage'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
 
@@ -13,6 +14,7 @@ export const revalidate = 3600
 type PublicInvitation = Invitation & {
   expired: boolean
   musicUrl?: string
+  isSaveTheDate?: boolean
 }
 
 async function getInvitation(slug: string): Promise<PublicInvitation | null> {
@@ -72,6 +74,10 @@ export default async function PublicInvitationPage({
   const { slug } = await params
   const invitation = await getInvitation(slug)
   if (!invitation) notFound()
+
+  if (invitation.isSaveTheDate) {
+    return <SaveTheDatePage invitation={invitation} />
+  }
 
   if (invitation.expired) {
     return <ThankYouPage invitation={invitation} />
