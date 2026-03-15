@@ -79,7 +79,7 @@ Plans:
 - [ ] 03-05-PLAN.md — Gap closure: add standalone preview button visible for draft invitations (EDIT-09 fix)
 
 ### Phase 4: Media Upload Pipeline
-**Goal**: A couple can upload and reorder wedding photos, select or upload background music, and upload their bank QR image — all assets are server-validated, compressed, and stored securely
+**Goal**: A couple can upload and reorder wedding photos, select background music from the system library, and upload their bank QR image — all assets are server-validated, compressed to WebP, and stored securely in Supabase Storage
 **Depends on**: Phase 3
 **Requirements**: EDIT-04, EDIT-05, EDIT-06, EDIT-07
 **Success Criteria** (what must be TRUE):
@@ -88,15 +88,12 @@ Plans:
   3. User can select a background music track from the system library or upload their own MP3 file
   4. User can upload their bank QR image (PNG or JPG) and it appears in the invitation for guests to scan
   5. All uploads are rejected if the file exceeds the plan's storage quota — user sees a clear error in Vietnamese
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: NestJS media module — multer upload endpoints for photos, music, bank QR; magic-byte MIME validation; plan quota enforcement
-- [ ] 04-02: Sharp compression pipeline — resize to 1200px max, WebP at quality 75, URL versioning with ?v={timestamp}
-- [ ] 04-03: Supabase Storage bucket policies — invitation-photos, invitation-music, bank-qr-images, system-music (separate RLS per bucket)
-- [ ] 04-04: Photo gallery UI — react-dropzone upload, @dnd-kit/sortable drag-drop reorder, delete, optimistic updates
-- [ ] 04-05: Music selector UI — system library list + custom upload tab, howler.js preview playback
-- [ ] 04-06: Bank QR upload UI — single image upload with crop-to-square hint and preview
+- [ ] 04-01-PLAN.md — DB migration (media columns + system_music_tracks + storage buckets), shared types extension, NestJS upload/delete endpoints with sharp + magic-bytes, apiUpload utility
+- [ ] 04-02-PLAN.md — PhotoGallery (dnd-kit grid reorder + upload + delete), MusicPicker (howler.js 30s preview), BankQrUpload, EditorForm 6-section integration
+- [ ] 04-03-PLAN.md — Template extension: add photo gallery and bank QR rendering to all 3 templates (Traditional, Modern, Minimalist)
 
 ### Phase 5: Public Invitation Page
 **Goal**: Guests can open the invitation URL, experience the envelope opening animation, see all invitation details, hear music they control, view the bank QR, and share the link with proper Zalo/Facebook preview
@@ -207,8 +204,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete   | 2026-03-14 |
 | 2. App Shell | 4/4 | Complete   | 2026-03-14 |
-| 3. Invitation Editor Core | 0/4 | Not started | - |
-| 4. Media Upload Pipeline | 0/6 | Not started | - |
+| 3. Invitation Editor Core | 5/5 | Complete | 2026-03-14 |
+| 4. Media Upload Pipeline | 0/3 | Not started | - |
 | 5. Public Invitation Page | 0/9 | Not started | - |
 | 6. Save-the-Date | 0/3 | Not started | - |
 | 7. Monetization | 0/5 | Not started | - |
