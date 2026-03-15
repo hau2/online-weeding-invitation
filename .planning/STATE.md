@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-00-PLAN.md
-last_updated: "2026-03-15T02:11:49.439Z"
-last_activity: "2026-03-15 — Plan 04-00 complete: Nyquist Wave 0 test scaffolds for media upload pipeline"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-15T02:16:14Z"
+last_activity: "2026-03-15 — Plan 04-01 complete: NestJS upload endpoints with sharp WebP compression and apiUpload utility"
 progress:
   total_phases: 9
   completed_phases: 3
   total_plans: 18
-  completed_plans: 15
-  percent: 83
+  completed_plans: 16
+  percent: 89
 ---
 
 # Project State
@@ -26,18 +26,18 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 4 of 9 (Media Upload Pipeline)
-Plan: 1 of 4 in current phase (04-00 complete)
+Plan: 2 of 4 in current phase (04-00 + 04-01 complete)
 Status: In Progress
-Last activity: 2026-03-15 — Plan 04-00 complete: Nyquist Wave 0 test scaffolds for media upload pipeline
+Last activity: 2026-03-15 — Plan 04-01 complete: NestJS upload endpoints with sharp WebP compression and apiUpload utility
 
-Progress: [████████░░] 83%
+Progress: [█████████░] 89%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: 11 min
-- Total execution time: ~2.8 hours
+- Total execution time: ~2.9 hours
 
 **By Phase:**
 
@@ -46,10 +46,10 @@ Progress: [████████░░] 83%
 | 01-foundation | 5/5 | ~96 min | ~19 min |
 | 02-app-shell | 4/4 | 26 min | 7 min |
 | 03-invitation-editor-core | 5/5 | ~15 min | ~3 min |
-| 04-media-upload-pipeline | 1/4 | 2 min | 2 min |
+| 04-media-upload-pipeline | 2/4 | 10 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min (03-01), 3 min (03-03), 3 min (03-04), 2 min (03-05), 2 min (04-00)
+- Last 5 plans: 3 min (03-03), 3 min (03-04), 2 min (03-05), 2 min (04-00), 8 min (04-01)
 - Trend: accelerating
 
 *Updated after each plan completion*
@@ -67,6 +67,7 @@ Progress: [████████░░] 83%
 | Phase 03 P04 | 3min | 2 tasks | 3 files |
 | Phase 03 P05 | 2min | 1 task | 2 files |
 | Phase 04 P00 | 2min | 2 tasks | 6 files |
+| Phase 04 P01 | 8min | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -124,6 +125,11 @@ Recent decisions affecting current work:
 - [Phase 03 P05]: Preview button lives in EditorShell topbar, not in PublishButton dropdown -- always visible regardless of publish status
 - [Phase 04 P00]: Extended existing templates.test.tsx rather than creating a separate file for photo/QR template stubs
 - [Phase 04 P00]: Pre-existing 3 test failures in invitations.service.spec.ts confirmed out-of-scope (not caused by Wave 0 changes)
+- [Phase 04 P01]: photoUrls and bankQrUrl excluded from FIELD_MAP to prevent arbitrary URL injection via generic PATCH
+- [Phase 04 P01]: Dedicated PATCH :id/photo-order endpoint for drag-reorder persistence (not through auto-save)
+- [Phase 04 P01]: GET music-tracks route placed before :id param route to avoid NestJS route conflict
+- [Phase 04 P01]: Bank QR upload uses upsert:true to replace existing file at same path
+- [Phase 04 P01]: Photo order validation checks exact same URL set to prevent URL injection via reorder endpoint
 
 ### Pending Todos
 
@@ -137,6 +143,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T02:11:49.437Z
-Stopped at: Completed 04-00-PLAN.md
-Resume file: None
+Last session: 2026-03-15T02:16:14Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: .planning/phases/04-media-upload-pipeline/04-01-SUMMARY.md
