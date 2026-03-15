@@ -94,6 +94,57 @@ export function TemplateMinimalist({ invitation, className }: TemplateProps) {
           </p>
         </div>
 
+        {/* Photo gallery section */}
+        {invitation.photoUrls.length > 0 && (
+          <div className="mb-12">
+            {/* Hairline divider */}
+            <div className="mx-auto mb-8 h-px w-10 bg-gray-300" />
+            <p className="mb-5 text-[10px] font-light uppercase tracking-[0.3em] text-gray-400">
+              Khoanh khac
+            </p>
+            <div className="space-y-4">
+              {invitation.photoUrls.map((url, i) => (
+                <img
+                  key={url}
+                  src={url}
+                  alt={`Anh cuoi ${i + 1}`}
+                  className="w-full rounded object-cover"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Bank QR "Mung cuoi" section */}
+        {invitation.bankQrUrl && (
+          <div className="mb-12">
+            {/* Hairline divider */}
+            <div className="mx-auto mb-8 h-px w-10 bg-gray-300" />
+            <p className="mb-5 text-[10px] font-light uppercase tracking-[0.3em] text-gray-400">
+              Mung cuoi
+            </p>
+            <div className="mx-auto max-w-[260px] rounded border border-gray-200 p-4">
+              <img
+                src={invitation.bankQrUrl}
+                alt="Bank QR code"
+                className="mx-auto max-w-[200px] rounded"
+                loading="lazy"
+              />
+              {invitation.bankName && (
+                <p className="mt-2 text-sm font-light text-gray-600">
+                  {invitation.bankName}
+                </p>
+              )}
+              {invitation.bankAccountHolder && (
+                <p className="text-sm font-light text-gray-400">
+                  {invitation.bankAccountHolder}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Thank you text */}
         <div className="mb-4">
           <p className="font-heading text-sm italic text-gray-400">
