@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import type { Invitation } from '@repo/types'
 import { TemplateRenderer } from '@/components/templates/TemplateRenderer'
 import { EnvelopeAnimation } from './EnvelopeAnimation'
@@ -22,17 +21,18 @@ function sanitizeGuestName(raw: string): string {
 }
 
 export function InvitationShell({ invitation }: InvitationShellProps) {
-  const searchParams = useSearchParams()
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [musicStarted, setMusicStarted] = useState(false)
   const [guestName, setGuestName] = useState<string | undefined>(undefined)
 
   useEffect(() => {
-    const toParam = searchParams.get('to')
+    // Parse ?to= client-side only (never sent to server)
+    const params = new URLSearchParams(window.location.search)
+    const toParam = params.get('to')
     if (toParam) {
       setGuestName(sanitizeGuestName(toParam))
     }
-  }, [searchParams])
+  }, [])
 
   if (!envelopeOpened) {
     return (
