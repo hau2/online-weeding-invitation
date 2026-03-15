@@ -37,7 +37,8 @@ export function PublishButton({
   const [showUnpublishDialog, setShowUnpublishDialog] = useState(false)
   const [publishing, setPublishing] = useState(false)
   const [unpublishing, setUnpublishing] = useState(false)
-  const [publishedUrl, setPublishedUrl] = useState('')
+  const [groomUrl, setGroomUrl] = useState('')
+  const [brideUrl, setBrideUrl] = useState('')
 
   const isPublished = invitation.status === 'published'
   const isFirstPublish = !invitation.slug
@@ -69,8 +70,9 @@ export function PublishButton({
     }
 
     if (data) {
-      const url = `${window.location.origin}/w/${data.slug}`
-      setPublishedUrl(url)
+      const origin = window.location.origin
+      setGroomUrl(`${origin}/w/${data.slug}?side=groom`)
+      setBrideUrl(`${origin}/w/${data.slug}?side=bride`)
       onPublished(data)
 
       if (wasFirstPublish) {
@@ -121,14 +123,14 @@ export function PublishButton({
     }
   }, [invitation.id, onUnpublished])
 
-  const handleCopyUrl = useCallback(async () => {
+  const handleCopyUrl = useCallback(async (url: string) => {
     try {
-      await navigator.clipboard.writeText(publishedUrl)
+      await navigator.clipboard.writeText(url)
       toast.success('Da sao chep lien ket')
     } catch {
       toast.error('Khong the sao chep lien ket')
     }
-  }, [publishedUrl])
+  }, [])
 
   return (
     <>
@@ -235,17 +237,33 @@ export function PublishButton({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
-            <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
-              {publishedUrl}
-            </span>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={handleCopyUrl}
-            >
-              <Copy className="size-4" />
-            </Button>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
+              <span className="text-xs text-rose-500 font-medium shrink-0">Nha trai</span>
+              <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
+                {groomUrl}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => handleCopyUrl(groomUrl)}
+              >
+                <Copy className="size-4" />
+              </Button>
+            </div>
+            <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
+              <span className="text-xs text-rose-500 font-medium shrink-0">Nha gai</span>
+              <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
+                {brideUrl}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => handleCopyUrl(brideUrl)}
+              >
+                <Copy className="size-4" />
+              </Button>
+            </div>
           </div>
 
           <DialogFooter>
@@ -254,7 +272,7 @@ export function PublishButton({
             </Button>
             <Button
               className="bg-rose-500 text-white hover:bg-rose-600"
-              onClick={handleCopyUrl}
+              onClick={() => handleCopyUrl(groomUrl)}
             >
               <Share2 className="size-3.5" />
               Chia se ngay

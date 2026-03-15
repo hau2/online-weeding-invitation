@@ -1,7 +1,8 @@
 'use client'
 import { type Invitation } from '@repo/types'
 import { StatusBadge } from './StatusBadge'
-import { Edit2, ExternalLink, Eye } from 'lucide-react'
+import { toast } from 'sonner'
+import { Edit2, Copy, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
@@ -47,6 +48,16 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
 
   const canViewPublic = invitation.status === 'published' && invitation.slug
 
+  const copyUrl = async (side: 'groom' | 'bride') => {
+    const url = `${window.location.origin}/w/${invitation.slug}?side=${side}`
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success(side === 'groom' ? 'Da sao chep link nha trai' : 'Da sao chep link nha gai')
+    } catch {
+      toast.error('Khong the sao chep')
+    }
+  }
+
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-rose-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
       {/* Thumbnail */}
@@ -64,35 +75,52 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
         </div>
 
         <p className="text-xs text-gray-500">{formattedDate}</p>
-        <p className="text-xs text-gray-400">{"T\u1ea1o l\u00fac: "}{formattedCreated}</p>
+        <p className="text-xs text-gray-400">{"\u0054\u1ea1o l\u00fac: "}{formattedCreated}</p>
 
         <div className="flex items-center gap-1 text-xs text-gray-400">
           <Eye className="size-3" />
           <span>{"0 l\u01b0\u1ee3t xem"}</span>
         </div>
 
-        {/* Action buttons -- compact icon row at bottom (LOCKED: edit + view page only, NO QR) */}
+        {/* Action buttons -- edit + dual copy-link buttons */}
         <div className="flex items-center gap-2 mt-auto pt-3 border-t border-rose-50">
           <Button render={<Link href={`/thep-cuoi/${invitation.id}`} />} nativeButton={false} variant="ghost" size="sm" className="text-rose-600 hover:bg-rose-50 gap-1.5 text-xs flex-1">
             <Edit2 className="size-3.5" />
-            {"Ch\u1ec9nh s\u1eeda"}
+            {"\u0043h\u1ec9nh s\u1eeda"}
           </Button>
 
           {canViewPublic ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-rose-600 hover:bg-rose-50 gap-1.5 text-xs flex-1"
-              onClick={() => window.open(`/w/${invitation.slug}`, '_blank')}
-            >
-              <ExternalLink className="size-3.5" />
-              Xem trang
-            </Button>
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-rose-600 hover:bg-rose-50 gap-1 text-xs"
+                onClick={() => copyUrl('groom')}
+              >
+                <Copy className="size-3" />
+                Nha trai
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-rose-600 hover:bg-rose-50 gap-1 text-xs"
+                onClick={() => copyUrl('bride')}
+              >
+                <Copy className="size-3" />
+                Nha gai
+              </Button>
+            </>
           ) : (
-            <Button variant="ghost" size="sm" className="text-gray-300 gap-1.5 text-xs flex-1" disabled>
-              <ExternalLink className="size-3.5" />
-              Xem trang
-            </Button>
+            <>
+              <Button variant="ghost" size="sm" className="text-gray-300 gap-1 text-xs" disabled>
+                <Copy className="size-3" />
+                Nha trai
+              </Button>
+              <Button variant="ghost" size="sm" className="text-gray-300 gap-1 text-xs" disabled>
+                <Copy className="size-3" />
+                Nha gai
+              </Button>
+            </>
           )}
         </div>
       </div>
