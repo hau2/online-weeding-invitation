@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { toast } from 'sonner'
-import { MoreVertical, Eye, EyeOff, Copy, Share2, Globe } from 'lucide-react'
+import { MoreVertical, EyeOff, Copy, Share2, Globe } from 'lucide-react'
 import type { Invitation } from '@repo/types'
 import { apiFetch } from '@/lib/api'
 import { Button } from '@/components/ui/button'
@@ -18,7 +18,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
@@ -26,14 +25,12 @@ interface PublishButtonProps {
   invitation: Invitation
   onPublished: (updated: Invitation) => void
   onUnpublished: (updated: Invitation) => void
-  onPreview?: () => void
 }
 
 export function PublishButton({
   invitation,
   onPublished,
   onUnpublished,
-  onPreview,
 }: PublishButtonProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [showCelebrationDialog, setShowCelebrationDialog] = useState(false)
@@ -165,11 +162,6 @@ export function PublishButton({
               <MoreVertical className="size-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" side="bottom">
-              <DropdownMenuItem onClick={() => onPreview?.()}>
-                <Eye className="size-4" />
-                Xem truoc
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem
                 variant="destructive"
                 onClick={() => setShowUnpublishDialog(true)}

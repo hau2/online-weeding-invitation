@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Eye } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { useSidebar } from '@/components/ui/sidebar'
 import type { Invitation } from '@repo/types'
 import { useAutoSave } from './useAutoSave'
@@ -71,11 +72,19 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
         <h1 className="text-sm font-medium text-rose-800 truncate">{title}</h1>
         <SaveIndicator status={status} />
         <div className="flex-1" />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+          onClick={() => setShowFullPreview(true)}
+        >
+          <Eye className="size-3.5" />
+          Xem truoc
+        </Button>
         <PublishButton
           invitation={invitation}
           onPublished={handlePublished}
           onUnpublished={handleUnpublished}
-          onPreview={() => setShowFullPreview(true)}
         />
       </div>
 
