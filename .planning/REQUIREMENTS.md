@@ -25,10 +25,10 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **EDIT-01**: User can enter bride/groom names, wedding date/time, venue address, invitation message, and thank-you text
 - [x] **EDIT-02**: User sees real-time preview while editing
 - [x] **EDIT-03**: Editor auto-saves as draft
-- [ ] **EDIT-04**: User can upload multiple photos with drag-drop reordering
-- [ ] **EDIT-05**: System auto-optimizes uploaded photos for mobile
-- [ ] **EDIT-06**: User can choose background music from system library or upload own file
-- [ ] **EDIT-07**: User can upload their bank QR image for gift money display
+- [x] **EDIT-04**: User can upload multiple photos with drag-drop reordering
+- [x] **EDIT-05**: System auto-optimizes uploaded photos for mobile
+- [x] **EDIT-06**: User can choose background music from system library or upload own file
+- [x] **EDIT-07**: User can upload their bank QR image for gift money display
 - [x] **EDIT-08**: User can select from 3 templates (Traditional/Modern/Minimalist) with instant preview
 - [x] **EDIT-09**: User can preview the complete invitation before publishing
 - [x] **EDIT-10**: User can publish/unpublish invitation
@@ -135,10 +135,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-09 | Phase 3 | Complete |
 | EDIT-10 | Phase 3 | Complete |
 | SYST-02 | Phase 3 | Complete |
-| EDIT-04 | Phase 4 | Pending |
-| EDIT-05 | Phase 4 | Pending |
-| EDIT-06 | Phase 4 | Pending |
-| EDIT-07 | Phase 4 | Pending |
+| EDIT-04 | Phase 4 | Complete |
+| EDIT-05 | Phase 4 | Complete |
+| EDIT-06 | Phase 4 | Complete |
+| EDIT-07 | Phase 4 | Complete |
 | PUBL-01 | Phase 5 | Pending |
 | PUBL-02 | Phase 5 | Pending |
 | PUBL-03 | Phase 5 | Pending |

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-15T01:25:33.961Z"
-last_activity: "2026-03-15 — Plan 03-05 complete: Always-visible preview button in editor topbar closes EDIT-09 gap"
+status: executing
+stopped_at: Completed 04-00-PLAN.md
+last_updated: "2026-03-15T02:11:49.439Z"
+last_activity: "2026-03-15 — Plan 04-00 complete: Nyquist Wave 0 test scaffolds for media upload pipeline"
 progress:
   total_phases: 9
   completed_phases: 3
-  total_plans: 14
-  completed_plans: 14
-  percent: 100
+  total_plans: 18
+  completed_plans: 15
+  percent: 83
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Couples can create and share a stunning online wedding invitation with a single QR code, and guests can view it and send gift money — all without any intermediary.
-**Current focus:** Phase 3 — Invitation Editor Core
+**Current focus:** Phase 4 — Media Upload Pipeline
 
 ## Current Position
 
-Phase: 3 of 9 (Invitation Editor Core) -- COMPLETE
-Plan: 5 of 5 in current phase (03-01 + 03-02 + 03-03 + 03-04 + 03-05 complete)
-Status: Phase Complete
-Last activity: 2026-03-15 — Plan 03-05 complete: Always-visible preview button in editor topbar closes EDIT-09 gap
+Phase: 4 of 9 (Media Upload Pipeline)
+Plan: 1 of 4 in current phase (04-00 complete)
+Status: In Progress
+Last activity: 2026-03-15 — Plan 04-00 complete: Nyquist Wave 0 test scaffolds for media upload pipeline
 
-Progress: [██████████] 100%
+Progress: [████████░░] 83%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
-- Average duration: 12 min
-- Total execution time: ~2.7 hours
+- Total plans completed: 15
+- Average duration: 11 min
+- Total execution time: ~2.8 hours
 
 **By Phase:**
 
@@ -46,9 +46,10 @@ Progress: [██████████] 100%
 | 01-foundation | 5/5 | ~96 min | ~19 min |
 | 02-app-shell | 4/4 | 26 min | 7 min |
 | 03-invitation-editor-core | 5/5 | ~15 min | ~3 min |
+| 04-media-upload-pipeline | 1/4 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 3 min (03-02), 4 min (03-01), 3 min (03-03), 3 min (03-04), 2 min (03-05)
+- Last 5 plans: 4 min (03-01), 3 min (03-03), 3 min (03-04), 2 min (03-05), 2 min (04-00)
 - Trend: accelerating
 
 *Updated after each plan completion*
@@ -65,6 +66,7 @@ Progress: [██████████] 100%
 | Phase 03-invitation-editor-core P03 | 3min | 3 tasks | 12 files |
 | Phase 03 P04 | 3min | 2 tasks | 3 files |
 | Phase 03 P05 | 2min | 1 task | 2 files |
+| Phase 04 P00 | 2min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -120,6 +122,8 @@ Recent decisions affecting current work:
 - [Phase 03]: canvas-confetti dynamically imported via import() to avoid SSR issues and keep initial bundle small
 - [Phase 03]: onPreview callback prop removed -- standalone Eye button in EditorShell topbar replaces PublishButton dropdown trigger for FullPreviewDialog
 - [Phase 03 P05]: Preview button lives in EditorShell topbar, not in PublishButton dropdown -- always visible regardless of publish status
+- [Phase 04 P00]: Extended existing templates.test.tsx rather than creating a separate file for photo/QR template stubs
+- [Phase 04 P00]: Pre-existing 3 test failures in invitations.service.spec.ts confirmed out-of-scope (not caused by Wave 0 changes)
 
 ### Pending Todos
 
@@ -133,6 +137,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T01:25:33.953Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-media-upload-pipeline/04-CONTEXT.md
+Last session: 2026-03-15T02:11:49.437Z
+Stopped at: Completed 04-00-PLAN.md
+Resume file: None
