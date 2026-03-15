@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 05.1-04-PLAN.md (Phase 05.1 complete)
-last_updated: "2026-03-15T17:45:34.239Z"
-last_activity: "2026-03-16 — Plan 05.1-04 complete: Side-aware public page with ?side= filtering and dual copy-link dashboard buttons"
+stopped_at: Completed 05-06-PLAN.md (Phase 05 complete - all 7 plans done)
+last_updated: "2026-03-16T18:09:34Z"
+last_activity: "2026-03-16 — Plan 05-06 complete: InvitationShell wired as orchestrator for complete guest journey"
 progress:
   total_phases: 10
   completed_phases: 5
   total_plans: 29
-  completed_plans: 28
-  percent: 97
+  completed_plans: 29
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Couples can create and share a stunning online wedding invitation with a single QR code, and guests can view it and send gift money — all without any intermediary.
-**Current focus:** Phase 5.1 — Dual-Family Ceremony Info
+**Current focus:** Phase 5 complete, Phase 5.1 complete -- ready for Phase 6
 
 ## Current Position
 
-Phase: 5.1 of 9 (Dual-Family Ceremony Info)
-Plan: 4 of 4 in current phase (05.1-04 complete -- phase complete)
-Status: Phase 05.1 Complete
-Last activity: 2026-03-16 — Plan 05.1-04 complete: Side-aware public page with ?side= filtering and dual copy-link dashboard buttons
+Phase: 5 of 9 (Public Invitation Page) -- COMPLETE
+Plan: 7 of 7 in phase 5 (05-06 complete -- phase complete)
+Status: Phase 05 + 05.1 Complete
+Last activity: 2026-03-16 — Plan 05-06 complete: InvitationShell wired as orchestrator for complete guest journey
 
-Progress: [██████████] 97%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -80,6 +80,7 @@ Progress: [██████████] 97%
 | Phase 05.1 P03 | 2min | 1 tasks | 3 files |
 | Phase 05.1 P02 | 2 | 1 tasks | 1 files |
 | Phase 05.1 P04 | 4 | 2 tasks | 7 files |
+| Phase 05 P06 | 5min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -175,6 +176,9 @@ Recent decisions affecting current work:
 - [Phase 05.1]: Default side is groom when no ?side= param provided
 - [Phase 05.1]: OG metadata uses groom ceremony date/venue (server-side, no side param)
 - [Phase 05.1]: Copy-link buttons replace single Xem trang view button on dashboard cards
+- [Phase 05 P06]: Dynamic imports via next/dynamic with ssr:false for all interactive components to reduce initial bundle
+- [Phase 05 P06]: Suspense boundary wrapping InvitationShell for Next.js useSearchParams requirement
+- [Phase 05 P06]: Footer watermark placeholder text for Phase 7 monetization
 
 ### Roadmap Evolution
 
@@ -192,6 +196,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T17:45:34.237Z
-Stopped at: Completed 05.1-04-PLAN.md (Phase 05.1 complete)
+Last session: 2026-03-16T18:09:34Z
+Stopped at: Completed 05-06-PLAN.md (Phase 05 complete - all 7 plans done)
 Resume file: None
