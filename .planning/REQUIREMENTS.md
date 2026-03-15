@@ -35,18 +35,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Public Page
 
-- [ ] **PUBL-01**: Published invitation accessible at `/w/{slug}` without login
-- [ ] **PUBL-02**: Fixed QR code generated for the invitation URL (never changes after publish)
-- [ ] **PUBL-03**: Rich envelope opening animation with particles, petals, and smooth transitions on first visit
-- [ ] **PUBL-04**: Guest taps envelope to reveal full invitation (gesture unlocks audio)
-- [ ] **PUBL-05**: Personalized greeting via URL parameter `?to=Name`
-- [ ] **PUBL-06**: Displays all invitation details: names, photos, message, date/time, venue, bank QR, music, thank-you
-- [ ] **PUBL-07**: Wedding date countdown timer
-- [ ] **PUBL-08**: Background music with explicit play/pause toggle (no autoplay)
+- [x] **PUBL-01**: Published invitation accessible at `/w/{slug}` without login
+- [x] **PUBL-02**: Fixed QR code generated for the invitation URL (never changes after publish)
+- [x] **PUBL-03**: Rich envelope opening animation with particles, petals, and smooth transitions on first visit
+- [x] **PUBL-04**: Guest taps envelope to reveal full invitation (gesture unlocks audio)
+- [x] **PUBL-05**: Personalized greeting via URL parameter `?to=Name`
+- [x] **PUBL-06**: Displays all invitation details: names, photos, message, date/time, venue, bank QR, music, thank-you
+- [x] **PUBL-07**: Wedding date countdown timer
+- [x] **PUBL-08**: Background music with explicit play/pause toggle (no autoplay)
 - [ ] **PUBL-09**: Zalo/Facebook OG meta tags for proper link preview
 - [ ] **PUBL-10**: Mobile-first, loads fast on 3G/4G (<1MB page weight)
-- [ ] **PUBL-11**: Auto-expires after wedding date + configurable grace period
-- [ ] **PUBL-12**: Switches to thank-you page after wedding date instead of just expiring
+- [x] **PUBL-11**: Auto-expires after wedding date + configurable grace period
+- [x] **PUBL-12**: Switches to thank-you page after wedding date instead of just expiring
 
 ### Save-the-Date
 
@@ -139,18 +139,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-05 | Phase 4 | Complete |
 | EDIT-06 | Phase 4 | Complete |
 | EDIT-07 | Phase 4 | Complete |
-| PUBL-01 | Phase 5 | Pending |
-| PUBL-02 | Phase 5 | Pending |
-| PUBL-03 | Phase 5 | Pending |
-| PUBL-04 | Phase 5 | Pending |
-| PUBL-05 | Phase 5 | Pending |
-| PUBL-06 | Phase 5 | Pending |
-| PUBL-07 | Phase 5 | Pending |
-| PUBL-08 | Phase 5 | Pending |
+| PUBL-01 | Phase 5 | Complete |
+| PUBL-02 | Phase 5 | Complete |
+| PUBL-03 | Phase 5 | Complete |
+| PUBL-04 | Phase 5 | Complete |
+| PUBL-05 | Phase 5 | Complete |
+| PUBL-06 | Phase 5 | Complete |
+| PUBL-07 | Phase 5 | Complete |
+| PUBL-08 | Phase 5 | Complete |
 | PUBL-09 | Phase 5 | Pending |
 | PUBL-10 | Phase 9 | Pending |
-| PUBL-11 | Phase 5 | Pending |
-| PUBL-12 | Phase 5 | Pending |
+| PUBL-11 | Phase 5 | Complete |
+| PUBL-12 | Phase 5 | Complete |
 | SAVE-01 | Phase 6 | Pending |
 | SAVE-02 | Phase 6 | Pending |
 | PLAN-01 | Phase 7 | Pending |

@@ -205,7 +205,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 2. App Shell | 4/4 | Complete   | 2026-03-14 |
 | 3. Invitation Editor Core | 5/5 | Complete | 2026-03-14 |
 | 4. Media Upload Pipeline | 0/4 | Not started | - |
-| 5. Public Invitation Page | 0/7 | Not started | - |
+| 5. Public Invitation Page | 1/7 | In Progress|  |
 | 6. Save-the-Date | 0/3 | Not started | - |
 | 7. Monetization | 0/5 | Not started | - |
 | 8. Admin Panel | 0/8 | Not started | - |

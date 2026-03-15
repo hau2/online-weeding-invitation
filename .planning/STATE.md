@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-15T04:14:57.732Z"
-last_activity: "2026-03-15 — Plan 04-02 complete: Media editor components (PhotoGallery, MusicPicker, BankQrUpload) with EditorForm integration"
+stopped_at: Completed 05-00-PLAN.md
+last_updated: "2026-03-15T12:05:26.889Z"
+last_activity: "2026-03-15 — Plan 05-00 complete: Wave 0 test stubs (33 it.todo entries) and qrcode dependency installed"
 progress:
   total_phases: 9
   completed_phases: 4
-  total_plans: 18
-  completed_plans: 18
-  percent: 94
+  total_plans: 25
+  completed_plans: 19
+  percent: 76
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Couples can create and share a stunning online wedding invitation with a single QR code, and guests can view it and send gift money — all without any intermediary.
-**Current focus:** Phase 4 — Media Upload Pipeline
+**Current focus:** Phase 5 — Public Invitation Page
 
 ## Current Position
 
-Phase: 4 of 9 (Media Upload Pipeline)
-Plan: 4 of 4 in current phase (04-00 + 04-01 + 04-02 + 04-03 complete)
+Phase: 5 of 9 (Public Invitation Page)
+Plan: 1 of 5 in current phase (05-00 complete)
 Status: In Progress
-Last activity: 2026-03-15 — Plan 04-02 complete: Media editor components (PhotoGallery, MusicPicker, BankQrUpload) with EditorForm integration
+Last activity: 2026-03-15 — Plan 05-00 complete: Wave 0 test stubs (33 it.todo entries) and qrcode dependency installed
 
-Progress: [█████████░] 94%
+Progress: [████████░░] 76%
 
 ## Performance Metrics
 
@@ -70,6 +70,7 @@ Progress: [█████████░] 94%
 | Phase 04 P01 | 8min | 2 tasks | 14 files |
 | Phase 04 P03 | 2min | 2 tasks | 3 files |
 | Phase 04 P02 | 5min | 2 tasks | 8 files |
+| Phase 05 P00 | 3min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -138,6 +139,7 @@ Recent decisions affecting current work:
 - [Phase 04]: Native drag events for file drops, dnd-kit for thumbnail reorder -- separate concerns, no conflict
 - [Phase 04]: Photo URLs used directly as dnd-kit sortable IDs (each URL is unique)
 - [Phase 04]: Reorder optimistically updates UI then PATCHes to dedicated photo-order endpoint; reverts on error
+- [Phase 05 P00]: Followed existing vitest it.todo() pattern from Phase 3/4 stubs for consistency
 
 ### Pending Todos
 
@@ -151,6 +153,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T04:14:57.724Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-public-invitation-page/05-CONTEXT.md
+Last session: 2026-03-15T12:05:26.887Z
+Stopped at: Completed 05-00-PLAN.md
+Resume file: None
