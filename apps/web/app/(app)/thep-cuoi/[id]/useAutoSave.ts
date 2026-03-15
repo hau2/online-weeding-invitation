@@ -31,8 +31,12 @@ export function useAutoSave(invitationId: string, delay = 800) {
 
       // Set new debounce timer
       timerRef.current = setTimeout(async () => {
-        const payload = latestDataRef.current
+        // Exclude fields managed by dedicated upload endpoints (not PATCH)
+        const { photoUrls, bankQrUrl, ...payload } = latestDataRef.current
         latestDataRef.current = {}
+
+        // Nothing to save after filtering
+        if (Object.keys(payload).length === 0) return
 
         setStatus('saving')
 
