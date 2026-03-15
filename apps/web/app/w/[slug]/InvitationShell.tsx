@@ -62,13 +62,13 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
     setSide(sideParam === 'bride' ? 'bride' : 'groom')
   }, [])
 
-  // Filter invitation fields based on side -- hide the other side's family-specific info
+  // Filter invitation fields based on side -- hide the other side's ceremony + bank QR
+  // Parents' names from BOTH families are always visible (Vietnamese cultural norm)
   const filteredInvitation = useMemo(() => {
     if (side === 'groom') {
       return {
         ...invitation,
-        // Hide bride-side-only fields
-        brideFather: '', brideMother: '',
+        // Hide bride-side ceremony + bank QR (parents stay visible)
         brideCeremonyDate: null, brideCeremonyTime: null,
         brideVenueName: '', brideVenueAddress: '',
         brideBankQrUrl: null, brideBankName: '', brideBankAccountHolder: '',
@@ -76,8 +76,7 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
     } else {
       return {
         ...invitation,
-        // Hide groom-side-only fields
-        groomFather: '', groomMother: '',
+        // Hide groom-side ceremony + bank QR (parents stay visible)
         groomCeremonyDate: null, groomCeremonyTime: null,
         groomVenueName: '', groomVenueAddress: '',
         bankQrUrl: null, bankName: '', bankAccountHolder: '',
