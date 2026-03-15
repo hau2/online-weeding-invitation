@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 5.1 context gathered
-last_updated: "2026-03-15T16:58:56.390Z"
-last_activity: "2026-03-15 — Plan 05-05 complete: MusicPlayer with howler.js, CountdownTimer flip-clock, parseGuestName utility"
+stopped_at: Completed 05.1-01-PLAN.md
+last_updated: "2026-03-15T17:28:11.723Z"
+last_activity: "2026-03-16 — Plan 05.1-01 complete: Dual-family DB schema + NestJS API for per-family fields and love story"
 progress:
   total_phases: 10
   completed_phases: 4
-  total_plans: 25
-  completed_plans: 24
-  percent: 96
+  total_plans: 29
+  completed_plans: 25
+  percent: 86
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Couples can create and share a stunning online wedding invitation with a single QR code, and guests can view it and send gift money — all without any intermediary.
-**Current focus:** Phase 5 — Public Invitation Page
+**Current focus:** Phase 5.1 — Dual-Family Ceremony Info
 
 ## Current Position
 
-Phase: 5 of 9 (Public Invitation Page)
-Plan: 6 of 7 in current phase (05-00 through 05-05 complete)
+Phase: 5.1 of 9 (Dual-Family Ceremony Info)
+Plan: 2 of 4 in current phase (05.1-01 complete)
 Status: In Progress
-Last activity: 2026-03-15 — Plan 05-05 complete: MusicPlayer with howler.js, CountdownTimer flip-clock, parseGuestName utility
+Last activity: 2026-03-16 — Plan 05.1-01 complete: Dual-family DB schema + NestJS API for per-family fields and love story
 
-Progress: [██████████] 96%
+Progress: [█████████░] 86%
 
 ## Performance Metrics
 
@@ -76,6 +76,7 @@ Progress: [██████████] 96%
 | Phase 05 P03 | 3min | 2 tasks | 5 files |
 | Phase 05 P05 | 4min | 2 tasks | 7 files |
 | Phase 05 P04 | 4min | 2 tasks | 4 files |
+| Phase 05.1 P01 | 12min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -159,6 +160,10 @@ Recent decisions affecting current work:
 - [Phase 05]: window.location.search for ?to= parsing instead of useSearchParams -- avoids Next.js router dependency in tests and keeps guest name purely client-side
 - [Phase 05]: Deterministic seeded PRNG for petal randomization -- prevents React hydration mismatch from Math.random()
 - [Phase 05]: Unicode U+56CD (double happiness) for traditional wax seal, heart for modern/minimalist
+- [Phase 05.1]: Per-family column naming uses groom_*/bride_* prefix convention for dual-family ceremony fields
+- [Phase 05.1]: love_story stored as JSONB NOT NULL DEFAULT '[]' -- no separate table for max 5 milestones
+- [Phase 05.1]: Expiry uses later of groom/bride ceremony dates so neither side expires prematurely
+- [Phase 05.1]: LoveStoryMilestoneDto: nested validation with @ValidateNested + @Type, max 5 milestones, title 100 chars, desc 300 chars
 
 ### Roadmap Evolution
 
@@ -176,6 +181,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T16:58:56.382Z
-Stopped at: Phase 5.1 context gathered
-Resume file: .planning/phases/05.1-dual-family-ceremony-info-groom-and-bride-family-details-parents-names-dual-ceremony-venues-and-times/05.1-CONTEXT.md
+Last session: 2026-03-15T17:28:11.721Z
+Stopped at: Completed 05.1-01-PLAN.md
+Resume file: None
