@@ -183,6 +183,7 @@ Plans:
   2. Envelope animation achieves minimum 30fps at 6x CPU throttle on Chrome; on lower-performing devices the animation gracefully falls back to CSS-only transitions
   3. Invitations auto-expire on schedule — the public URL switches to the thank-you page within the configured grace period after the wedding date without manual admin action
   4. Elderly-friendly UX: all touch targets are at least 48px, text is legible at default zoom, the envelope has a visible "Bỏ qua" skip button, and music never starts without explicit user action
+  5. Public invitation page has a polished desktop layout — wider content area, decorative framing or side elements, responsive envelope animation that uses available screen space on desktop while maintaining the mobile-first card view on phones
 **Plans**: TBD
 
 Plans:
@@ -193,6 +194,7 @@ Plans:
 - [ ] 09-05: iOS Safari / Zalo WKWebView audio unlock testing — real-device validation of envelope-tap audio unlock in Zalo in-app browser
 - [ ] 09-06: Zalo OG tag validation — share test invitation in Zalo, confirm preview image and title render correctly
 - [ ] 09-07: Security hardening — cross-user access automated tests, SUPABASE_SERVICE_ROLE_KEY env audit, RLS policy review
+- [ ] 09-08: Desktop view polish — responsive public page layout for desktop (wider invitation, decorative frame/background, larger envelope animation, side-by-side photo gallery option)
 
 ## Progress
 
