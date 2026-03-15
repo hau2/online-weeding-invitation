@@ -147,12 +147,11 @@ Plans:
   1. User can enable "save the date" mode from the dashboard and publish it independently of the full invitation
   2. Guests visiting the URL during save-the-date mode see only the couple names, wedding date, and teaser message — no envelope animation, no full invitation details
   3. When the couple later publishes the full invitation at the same URL, the teaser is replaced and existing QR codes continue to work
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: NestJS invitation state machine — add "save_the_date" status alongside draft/published/expired
-- [ ] 06-02: Save-the-date teaser page — minimal public page variant, no animation, fast load
-- [ ] 06-03: Dashboard UI — save-the-date toggle and status indicator, transition flow to full invitation
+- [ ] 06-01-PLAN.md — Shared types + DB migration (teaserMessage field), NestJS state machine (publishSaveTheDate endpoint, updated findBySlug for save_the_date status)
+- [ ] 06-02-PLAN.md — SaveTheDatePage component, public page routing, editor Save-the-Date button, dashboard badge + InvitationCard update
 
 ### Phase 7: Monetization
 **Goal**: The platform enforces Free and Premium tiers, the watermark appears on Free invitations, admin can configure their payment QR, and upgrading to Premium is possible via manual workflow
@@ -229,7 +228,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 | 4. Media Upload Pipeline | 0/4 | Not started | - |
 | 5. Public Invitation Page | 7/7 | Complete | 2026-03-16 |
 | 5.1 Dual-Family Ceremony | 4/4 | Complete | 2026-03-16 |
-| 6. Save-the-Date | 0/3 | Not started | - |
+| 6. Save-the-Date | 0/2 | Not started | - |
 | 7. Monetization | 0/5 | Not started | - |
 | 8. Admin Panel | 0/8 | Not started | - |
 | 9. Polish and Performance | 0/7 | Not started | - |
