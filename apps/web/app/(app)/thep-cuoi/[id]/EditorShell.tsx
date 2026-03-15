@@ -30,6 +30,7 @@ function SaveIndicator({ status }: { status: SaveStatus }) {
 export function EditorShell({ invitation: initial }: { invitation: Invitation }) {
   const [invitation, setInvitation] = useState<Invitation>(initial)
   const [showFullPreview, setShowFullPreview] = useState(false)
+  const [previewSide, setPreviewSide] = useState<'groom' | 'bride'>('groom')
   const { save, status } = useAutoSave(initial.id)
   const { setOpen } = useSidebar()
 
@@ -76,10 +77,19 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
           variant="ghost"
           size="sm"
           className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
-          onClick={() => setShowFullPreview(true)}
+          onClick={() => { setPreviewSide('groom'); setShowFullPreview(true) }}
         >
           <Eye className="size-3.5" />
-          Xem truoc
+          Nha trai
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+          onClick={() => { setPreviewSide('bride'); setShowFullPreview(true) }}
+        >
+          <Eye className="size-3.5" />
+          Nha gai
         </Button>
         <PublishButton
           invitation={invitation}
@@ -90,6 +100,7 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
 
       <FullPreviewDialog
         invitation={invitation}
+        side={previewSide}
         open={showFullPreview}
         onOpenChange={setShowFullPreview}
       />
