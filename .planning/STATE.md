@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 6 context gathered
-last_updated: "2026-03-15T18:24:50.224Z"
-last_activity: "2026-03-16 — Plan 05-06 complete: InvitationShell wired as orchestrator for complete guest journey"
+status: in_progress
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-03-15T18:36:41Z"
+last_activity: "2026-03-15 — Plan 06-01 complete: save_the_date status + publishSaveTheDate backend endpoint"
 progress:
   total_phases: 10
   completed_phases: 6
-  total_plans: 29
-  completed_plans: 29
+  total_plans: 31
+  completed_plans: 30
   percent: 100
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Couples can create and share a stunning online wedding invitation with a single QR code, and guests can view it and send gift money — all without any intermediary.
-**Current focus:** Phase 5 complete, Phase 5.1 complete -- ready for Phase 6
+**Current focus:** Phase 6 (Save-the-Date) in progress
 
 ## Current Position
 
-Phase: 5 of 9 (Public Invitation Page) -- COMPLETE
-Plan: 7 of 7 in phase 5 (05-06 complete -- phase complete)
-Status: Phase 05 + 05.1 Complete
-Last activity: 2026-03-16 — Plan 05-06 complete: InvitationShell wired as orchestrator for complete guest journey
+Phase: 6 of 9 (Save the Date)
+Plan: 1 of 2 in phase 6 (06-01 complete)
+Status: Phase 06 In Progress
+Last activity: 2026-03-15 — Plan 06-01 complete: save_the_date status + publishSaveTheDate backend endpoint
 
-Progress: [██████████] 100%
+Progress: [██████████] 97%
 
 ## Performance Metrics
 
@@ -81,6 +81,7 @@ Progress: [██████████] 100%
 | Phase 05.1 P02 | 2 | 1 tasks | 1 files |
 | Phase 05.1 P04 | 4 | 2 tasks | 7 files |
 | Phase 05 P06 | 5min | 2 tasks | 4 files |
+| Phase 06 P01 | 3min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -179,6 +180,9 @@ Recent decisions affecting current work:
 - [Phase 05 P06]: Dynamic imports via next/dynamic with ssr:false for all interactive components to reduce initial bundle
 - [Phase 05 P06]: Suspense boundary wrapping InvitationShell for Next.js useSearchParams requirement
 - [Phase 05 P06]: Footer watermark placeholder text for Phase 7 monetization
+- [Phase 06 P01]: publishSaveTheDate only allows draft->save_the_date; published invitations cannot regress to teaser
+- [Phase 06 P01]: save_the_date teasers skip music URL resolution and expiry -- lightweight previews that don't expire
+- [Phase 06 P01]: isSaveTheDate boolean flag in findBySlug response for frontend routing between teaser and full views
 
 ### Roadmap Evolution
 
@@ -196,6 +200,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T18:24:50.217Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-save-the-date/06-CONTEXT.md
+Last session: 2026-03-15T18:36:41Z
+Stopped at: Completed 06-01-PLAN.md
+Resume file: .planning/phases/06-save-the-date/06-01-SUMMARY.md

@@ -50,8 +50,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Save-the-Date
 
-- [ ] **SAVE-01**: User can publish a teaser "save the date" page before full invitation is ready
-- [ ] **SAVE-02**: Save-the-date page shows couple names, date, and teaser message only
+- [x] **SAVE-01**: User can publish a teaser "save the date" page before full invitation is ready
+- [x] **SAVE-02**: Save-the-date page shows couple names, date, and teaser message only
 
 ### Monetization
 
@@ -151,8 +151,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PUBL-10 | Phase 9 | Complete |
 | PUBL-11 | Phase 5 | Complete |
 | PUBL-12 | Phase 5 | Complete |
-| SAVE-01 | Phase 6 | Pending |
-| SAVE-02 | Phase 6 | Pending |
+| SAVE-01 | Phase 6 | Complete |
+| SAVE-02 | Phase 6 | Complete |
 | PLAN-01 | Phase 7 | Pending |
 | PLAN-02 | Phase 7 | Pending |
 | PLAN-03 | Phase 7 | Pending |
