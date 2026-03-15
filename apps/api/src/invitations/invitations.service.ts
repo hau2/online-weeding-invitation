@@ -1,9 +1,13 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 import { randomBytes } from 'crypto'
+import sharp from 'sharp'
+import { filetypemime } from 'magic-bytes.js'
+import type { Invitation, SystemMusicTrack } from '@repo/types'
 import { SupabaseAdminService } from '../supabase/supabase.service'
 import { CreateInvitationDto } from './dto/create-invitation.dto'
 import { UpdateInvitationDto } from './dto/update-invitation.dto'
@@ -23,12 +27,35 @@ interface InvitationRow {
   venue_address: string
   invitation_message: string
   thank_you_text: string
+  photo_urls: string[]
+  music_track_id: string | null
+  bank_qr_url: string | null
+  bank_name: string
+  bank_account_holder: string
   created_at: string
   updated_at: string
   deleted_at: string | null
 }
 
-/** camelCase DTO key -> snake_case DB column mapping */
+/** DB row shape for system_music_tracks */
+interface MusicTrackRow {
+  id: string
+  title: string
+  artist: string
+  url: string
+  duration: number
+  is_active: boolean
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * camelCase DTO key -> snake_case DB column mapping.
+ * NOTE: photoUrls and bankQrUrl are intentionally excluded.
+ * These are managed by dedicated upload endpoints, not the generic PATCH.
+ * Adding photoUrls to FIELD_MAP would allow arbitrary URL injection.
+ */
 const FIELD_MAP: Record<string, string> = {
   groomName: 'groom_name',
   brideName: 'bride_name',
@@ -39,16 +66,19 @@ const FIELD_MAP: Record<string, string> = {
   invitationMessage: 'invitation_message',
   thankYouText: 'thank_you_text',
   templateId: 'template_id',
+  musicTrackId: 'music_track_id',
+  bankName: 'bank_name',
+  bankAccountHolder: 'bank_account_holder',
 }
 
 /** Map a snake_case DB row to camelCase for the frontend */
-function mapRow(row: InvitationRow) {
+function mapRow(row: InvitationRow): Invitation {
   return {
     id: row.id,
     userId: row.user_id,
     slug: row.slug,
-    status: row.status,
-    templateId: row.template_id,
+    status: row.status as Invitation['status'],
+    templateId: row.template_id as Invitation['templateId'],
     groomName: row.groom_name,
     brideName: row.bride_name,
     weddingDate: row.wedding_date,
@@ -57,9 +87,29 @@ function mapRow(row: InvitationRow) {
     venueAddress: row.venue_address,
     invitationMessage: row.invitation_message,
     thankYouText: row.thank_you_text,
+    photoUrls: row.photo_urls ?? [],
+    musicTrackId: row.music_track_id,
+    bankQrUrl: row.bank_qr_url,
+    bankName: row.bank_name,
+    bankAccountHolder: row.bank_account_holder,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deletedAt: row.deleted_at,
+  }
+}
+
+/** Map a snake_case music track row to camelCase */
+function mapMusicTrackRow(row: MusicTrackRow): SystemMusicTrack {
+  return {
+    id: row.id,
+    title: row.title,
+    artist: row.artist,
+    url: row.url,
+    duration: row.duration,
+    isActive: row.is_active,
+    sortOrder: row.sort_order,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
   }
 }
 
@@ -67,7 +117,16 @@ function mapRow(row: InvitationRow) {
 const SELECT_ALL =
   'id, user_id, slug, status, template_id, groom_name, bride_name, ' +
   'wedding_date, wedding_time, venue_name, venue_address, ' +
-  'invitation_message, thank_you_text, created_at, updated_at, deleted_at'
+  'invitation_message, thank_you_text, photo_urls, music_track_id, ' +
+  'bank_qr_url, bank_name, bank_account_holder, ' +
+  'created_at, updated_at, deleted_at'
+
+/** Allowed image MIME types for upload validation */
+const ALLOWED_IMAGE_MIMES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+])
 
 @Injectable()
 export class InvitationsService {
@@ -96,6 +155,43 @@ export class InvitationsService {
       .toLowerCase()
 
     return `${normalize(brideName)}-${normalize(groomName)}-${suffix}`
+  }
+
+  /**
+   * Validate magic bytes and compress image to WebP.
+   * Throws BadRequestException for invalid image types.
+   */
+  private async processImage(buffer: Buffer): Promise<Buffer> {
+    const detectedMimes = filetypemime(buffer)
+    const isValidImage = detectedMimes.some((mime: string) =>
+      ALLOWED_IMAGE_MIMES.has(mime),
+    )
+
+    if (!isValidImage) {
+      throw new BadRequestException(
+        'Dinh dang anh khong hop le. Chi chap nhan JPEG, PNG hoac WebP.',
+      )
+    }
+
+    return sharp(buffer)
+      .resize(1200, null, { withoutEnlargement: true })
+      .webp({ quality: 75 })
+      .toBuffer()
+  }
+
+  /**
+   * Extract the storage path from a Supabase public URL.
+   * URL format: https://{host}/storage/v1/object/public/{bucket}/{path}
+   */
+  private extractStoragePath(publicUrl: string, bucket: string): string {
+    const marker = `/storage/v1/object/public/${bucket}/`
+    const idx = publicUrl.indexOf(marker)
+    if (idx === -1) {
+      // Fallback: try to extract path after bucket name
+      const parts = publicUrl.split(`/${bucket}/`)
+      return parts.length > 1 ? parts[parts.length - 1] : ''
+    }
+    return publicUrl.slice(idx + marker.length)
   }
 
   async listByUser(userId: string) {
@@ -180,6 +276,210 @@ export class InvitationsService {
     if (error) throw new InternalServerErrorException(error.message)
 
     return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Upload photos to an invitation.
+   * Validates ownership, enforces 10-photo limit, compresses to WebP.
+   */
+  async uploadPhotos(
+    userId: string,
+    invitationId: string,
+    files: Express.Multer.File[],
+  ): Promise<Invitation> {
+    const invitation = await this.findOne(userId, invitationId)
+    const existingCount = invitation.photoUrls.length
+
+    if (existingCount + files.length > 10) {
+      throw new BadRequestException(
+        `Toi da 10 anh. Hien tai da co ${existingCount} anh.`,
+      )
+    }
+
+    const newUrls: string[] = []
+    const timestamp = Date.now()
+
+    for (let i = 0; i < files.length; i++) {
+      const compressed = await this.processImage(files[i].buffer)
+      const storagePath = `${invitationId}/${timestamp}-${i}.webp`
+
+      const { error: uploadError } = await this.supabaseAdmin.client.storage
+        .from('invitation-photos')
+        .upload(storagePath, compressed, {
+          contentType: 'image/webp',
+          upsert: false,
+        })
+
+      if (uploadError) {
+        throw new InternalServerErrorException(
+          `Khong the tai anh len: ${uploadError.message}`,
+        )
+      }
+
+      const { data: urlData } = this.supabaseAdmin.client.storage
+        .from('invitation-photos')
+        .getPublicUrl(storagePath)
+
+      newUrls.push(urlData.publicUrl)
+    }
+
+    const updatedPhotoUrls = [...invitation.photoUrls, ...newUrls]
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ photo_urls: updatedPhotoUrls })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Delete a photo at a given index from an invitation.
+   * Removes from storage and updates the photo_urls array.
+   */
+  async deletePhoto(
+    userId: string,
+    invitationId: string,
+    photoIndex: number,
+  ): Promise<Invitation> {
+    const invitation = await this.findOne(userId, invitationId)
+    const photoUrls = [...invitation.photoUrls]
+
+    if (photoIndex < 0 || photoIndex >= photoUrls.length) {
+      throw new BadRequestException('Vi tri anh khong hop le.')
+    }
+
+    const removedUrl = photoUrls[photoIndex]
+    const storagePath = this.extractStoragePath(removedUrl, 'invitation-photos')
+
+    if (storagePath) {
+      await this.supabaseAdmin.client.storage
+        .from('invitation-photos')
+        .remove([storagePath])
+    }
+
+    photoUrls.splice(photoIndex, 1)
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ photo_urls: photoUrls })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Upload a bank QR image for an invitation.
+   * Replaces existing QR if present (deletes old file from storage).
+   */
+  async uploadBankQr(
+    userId: string,
+    invitationId: string,
+    file: Express.Multer.File,
+  ): Promise<Invitation> {
+    const invitation = await this.findOne(userId, invitationId)
+
+    const compressed = await this.processImage(file.buffer)
+
+    // Delete old QR if exists
+    if (invitation.bankQrUrl) {
+      const oldPath = this.extractStoragePath(invitation.bankQrUrl, 'bank-qr')
+      if (oldPath) {
+        await this.supabaseAdmin.client.storage
+          .from('bank-qr')
+          .remove([oldPath])
+      }
+    }
+
+    const storagePath = `${invitationId}/bank-qr.webp`
+
+    const { error: uploadError } = await this.supabaseAdmin.client.storage
+      .from('bank-qr')
+      .upload(storagePath, compressed, {
+        contentType: 'image/webp',
+        upsert: true,
+      })
+
+    if (uploadError) {
+      throw new InternalServerErrorException(
+        `Khong the tai anh QR len: ${uploadError.message}`,
+      )
+    }
+
+    const { data: urlData } = this.supabaseAdmin.client.storage
+      .from('bank-qr')
+      .getPublicUrl(storagePath)
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ bank_qr_url: urlData.publicUrl })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Update photo order for an invitation.
+   * Validates that the incoming array contains exactly the same URLs as existing.
+   * This is a dedicated endpoint because photoUrls is excluded from FIELD_MAP
+   * to prevent arbitrary URL injection via the generic PATCH.
+   */
+  async updatePhotoOrder(
+    userId: string,
+    invitationId: string,
+    photoUrls: string[],
+  ): Promise<Invitation> {
+    const invitation = await this.findOne(userId, invitationId)
+
+    // Validate same set of URLs (different order allowed)
+    const currentSet = new Set(invitation.photoUrls)
+    const newSet = new Set(photoUrls)
+
+    if (
+      currentSet.size !== newSet.size ||
+      photoUrls.length !== invitation.photoUrls.length ||
+      !photoUrls.every((url) => currentSet.has(url))
+    ) {
+      throw new BadRequestException('Danh sach anh khong hop le.')
+    }
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ photo_urls: photoUrls })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * List all active system music tracks ordered by sort_order.
+   */
+  async listMusicTracks(): Promise<SystemMusicTrack[]> {
+    const { data, error } = await this.supabaseAdmin.client
+      .from('system_music_tracks')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return ((data as unknown as MusicTrackRow[]) ?? []).map(mapMusicTrackRow)
   }
 
   /**

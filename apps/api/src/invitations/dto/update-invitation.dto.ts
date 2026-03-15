@@ -2,6 +2,7 @@ import {
   IsString,
   IsOptional,
   IsDateString,
+  IsUUID,
   Matches,
   IsIn,
 } from 'class-validator'
@@ -43,6 +44,16 @@ class InvitationFieldsDto {
     message: 'Giao dien khong hop le',
   })
   templateId: 'traditional' | 'modern' | 'minimalist'
+
+  @IsOptional()
+  @IsUUID('4', { message: 'ID nhac khong hop le' })
+  musicTrackId: string | null
+
+  @IsString({ message: 'Ten ngan hang phai la chuoi ky tu' })
+  bankName: string
+
+  @IsString({ message: 'Chu tai khoan phai la chuoi ky tu' })
+  bankAccountHolder: string
 }
 
 /**

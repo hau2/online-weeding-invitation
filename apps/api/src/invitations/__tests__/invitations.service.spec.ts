@@ -30,49 +30,34 @@ const baseMockRow = {
   venue_address: '',
   invitation_message: '',
   thank_you_text: '',
-  view_count: 0,
+  photo_urls: [],
+  music_track_id: null,
+  bank_qr_url: null,
+  bank_name: '',
+  bank_account_holder: '',
   created_at: '2026-01-01T00:00:00Z',
   updated_at: '2026-01-01T00:00:00Z',
   deleted_at: null,
 }
 
 /**
- * Creates a service with both supabaseUser and supabaseAdmin mocks.
- * The userMock is used for reads (findOne, list), the adminMock for slug writes.
+ * Creates a service with a supabaseAdmin mock.
+ * The service uses only the admin client (service role) for all operations.
+ * Second argument is ignored (kept for backward compat with existing test calls).
  */
 function makeService(
-  userMock: ReturnType<typeof makeSupabaseMock>,
-  adminMock?: ReturnType<typeof makeSupabaseMock>,
+  mock: ReturnType<typeof makeSupabaseMock>,
+  _unused?: ReturnType<typeof makeSupabaseMock>,
 ) {
   return new InvitationsService(
-    { client: userMock } as any,
-    { client: adminMock ?? makeSupabaseMock(null) } as any,
+    { client: mock } as any,
   )
 }
 
 describe('InvitationsService', () => {
   describe('listByUser', () => {
     it('filters by userId and excludes deleted records', async () => {
-      const mockRow = {
-        id: 'inv-1',
-        user_id: 'user-a',
-        slug: null,
-        status: 'draft',
-        template_id: 'traditional',
-        groom_name: 'Thao',
-        bride_name: 'Minh',
-        wedding_date: null,
-        wedding_time: null,
-        venue_name: '',
-        venue_address: '',
-        invitation_message: '',
-        thank_you_text: '',
-        view_count: 0,
-        created_at: '2026-01-01T00:00:00Z',
-        updated_at: '2026-01-01T00:00:00Z',
-        deleted_at: null,
-      }
-      const supabaseMock = makeSupabaseMock([mockRow])
+      const supabaseMock = makeSupabaseMock([baseMockRow])
       const service = makeService(supabaseMock)
 
       const result = await service.listByUser('user-a')
@@ -97,8 +82,8 @@ describe('InvitationsService', () => {
 
     it('maps snake_case DB columns to camelCase', async () => {
       const mockRow = {
+        ...baseMockRow,
         id: 'inv-2',
-        user_id: 'user-a',
         slug: 'my-wedding',
         status: 'published',
         template_id: 'modern',
@@ -110,10 +95,7 @@ describe('InvitationsService', () => {
         venue_address: '123 Street',
         invitation_message: 'Welcome!',
         thank_you_text: 'Thanks!',
-        view_count: 42,
-        created_at: '2026-01-01T00:00:00Z',
         updated_at: '2026-01-02T00:00:00Z',
-        deleted_at: null,
       }
       const supabaseMock = makeSupabaseMock([mockRow])
       const service = makeService(supabaseMock)
@@ -130,7 +112,7 @@ describe('InvitationsService', () => {
       expect(result[0].venueAddress).toBe('123 Street')
       expect(result[0].invitationMessage).toBe('Welcome!')
       expect(result[0].thankYouText).toBe('Thanks!')
-      expect(result[0].viewCount).toBe(42)
+      expect(result[0].photoUrls).toEqual([])
     })
 
     it('orders by created_at descending', async () => {
@@ -156,23 +138,9 @@ describe('InvitationsService', () => {
   describe('create', () => {
     it('sets user_id from parameter, not from dto', async () => {
       const newRow = {
+        ...baseMockRow,
         id: 'inv-new',
-        user_id: 'user-a',
-        slug: null,
-        status: 'draft',
         template_id: 'modern',
-        groom_name: 'Thao',
-        bride_name: 'Minh',
-        wedding_date: null,
-        wedding_time: null,
-        venue_name: '',
-        venue_address: '',
-        invitation_message: '',
-        thank_you_text: '',
-        view_count: 0,
-        created_at: '2026-01-01T00:00:00Z',
-        updated_at: '2026-01-01T00:00:00Z',
-        deleted_at: null,
       }
       const supabaseMock = makeSupabaseMock(newRow)
       // Override chain for insert->select->single path
@@ -197,23 +165,10 @@ describe('InvitationsService', () => {
 
     it('returns the full created invitation in camelCase', async () => {
       const newRow = {
+        ...baseMockRow,
         id: 'inv-new',
-        user_id: 'user-a',
-        slug: null,
-        status: 'draft',
-        template_id: 'traditional',
         groom_name: 'Hung',
         bride_name: 'Mai',
-        wedding_date: null,
-        wedding_time: null,
-        venue_name: '',
-        venue_address: '',
-        invitation_message: '',
-        thank_you_text: '',
-        view_count: 0,
-        created_at: '2026-01-01T00:00:00Z',
-        updated_at: '2026-01-01T00:00:00Z',
-        deleted_at: null,
       }
       const supabaseMock = makeSupabaseMock(newRow)
       supabaseMock._chain.insert = vi.fn().mockReturnValue({
@@ -387,20 +342,18 @@ describe('InvitationsService', () => {
         slug: 'minh-thao-a1b2',
         status: 'published',
       }
-      const userMock = makeSupabaseMock(null)
-      userMock._chain.single = vi
+      const mock = makeSupabaseMock(null)
+      mock._chain.single = vi
         .fn()
         .mockResolvedValueOnce({ data: baseMockRow, error: null }) // findOne
-
-      const adminMock = makeSupabaseMock(null)
-      adminMock._chain.update = vi.fn().mockReturnValue({
+      mock._chain.update = vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
           select: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({ data: publishedRow, error: null }),
           }),
         }),
       })
-      const service = makeService(userMock, adminMock)
+      const service = makeService(mock)
 
       const result = await service.publish('user-a', 'inv-1')
 
@@ -444,20 +397,18 @@ describe('InvitationsService', () => {
         slug: 'minh-thao-xyz1',
         status: 'published',
       }
-      const userMock = makeSupabaseMock(null)
-      userMock._chain.single = vi
+      const mock = makeSupabaseMock(null)
+      mock._chain.single = vi
         .fn()
         .mockResolvedValueOnce({ data: baseMockRow, error: null })
-
-      const adminMock = makeSupabaseMock(null)
-      adminMock._chain.update = vi.fn().mockReturnValue({
+      mock._chain.update = vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
           select: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({ data: publishedRow, error: null }),
           }),
         }),
       })
-      const service = makeService(userMock, adminMock)
+      const service = makeService(mock)
 
       const result = await service.publish('user-a', 'inv-1')
       expect(result.status).toBe('published')
@@ -528,13 +479,13 @@ describe('InvitationsService', () => {
         ...rowWithSlug,
         status: 'published',
       }
-      const userMock = makeSupabaseMock(null)
-      userMock._chain.single = vi
+      const mock = makeSupabaseMock(null)
+      mock._chain.single = vi
         .fn()
         .mockResolvedValueOnce({ data: rowWithSlug, error: null }) // findOne
 
-      // When slug already exists, update goes through user client (not admin)
-      userMock._chain.update = vi.fn().mockReturnValue({
+      // When slug already exists, only status is updated (no new slug generated)
+      mock._chain.update = vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
           select: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({ data: republished, error: null }),
@@ -542,15 +493,12 @@ describe('InvitationsService', () => {
         }),
       })
 
-      const adminMock = makeSupabaseMock(null)
-      const service = makeService(userMock, adminMock)
+      const service = makeService(mock)
 
       const result = await service.publish('user-a', 'inv-1')
 
       expect(result.slug).toBe(existingSlug) // slug NOT changed
       expect(result.status).toBe('published')
-      // admin client should NOT have been used for update since slug already exists
-      expect(adminMock.from).not.toHaveBeenCalled()
     })
   })
 

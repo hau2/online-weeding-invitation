@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import { beforeAll } from 'vitest'
 
 // Global test setup for NestJS + Vitest
 // Extend this file with database seeding / teardown as tests are added
