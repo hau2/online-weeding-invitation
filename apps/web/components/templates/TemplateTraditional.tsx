@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import type { TemplateProps } from './types'
+import { MapEmbed } from './MapEmbed'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Chua chon ngay'
@@ -104,14 +105,7 @@ export function TemplateTraditional({ invitation, className }: TemplateProps) {
               </p>
             )}
             {invitation.venueMapUrl && (
-              <a
-                href={invitation.venueMapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-block text-xs text-[#d4a843] underline underline-offset-2"
-              >
-                Xem ban do
-              </a>
+              <MapEmbed url={invitation.venueMapUrl} linkClassName="text-[#d4a843]" />
             )}
           </div>
         )}

@@ -1,44 +1,38 @@
 'use client'
 
 /**
- * Converts a Google Maps share URL to an embeddable URL.
- * Supports:
- * - https://maps.google.com/... → extracts coords for embed
- * - https://www.google.com/maps/place/... → converts to embed
- * - https://goo.gl/maps/... → passed through as link (can't embed short URLs)
- * - https://maps.app.goo.gl/... → passed through as link
+ * Converts any Google Maps URL to an embeddable iframe URL.
+ * Uses the no-API-key approach: https://www.google.com/maps?q=...&output=embed
  */
 function getEmbedUrl(url: string): string | null {
   if (!url.trim()) return null
 
   try {
-    const parsed = new URL(url.trim())
+    // Already an embed URL — use directly
+    if (url.includes('output=embed') || url.includes('/maps/embed')) return url
 
-    // Already an embed URL
-    if (url.includes('/maps/embed')) return url
-
-    // Standard Google Maps URL with @lat,lng
+    // Extract @lat,lng from standard Google Maps URLs
     const atMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)
     if (atMatch) {
-      return `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1000!2d${atMatch[2]}!3d${atMatch[1]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1`
+      return `https://www.google.com/maps?q=${atMatch[1]},${atMatch[2]}&z=15&output=embed`
     }
 
-    // Google Maps place URL — use the query-based embed
-    if (parsed.hostname.includes('google') && url.includes('/maps/place/')) {
-      const place = decodeURIComponent(url.split('/place/')[1]?.split('/')[0] ?? '')
+    // Extract place name from /maps/place/PLACE_NAME/ URLs
+    if (url.includes('/maps/place/')) {
+      const place = decodeURIComponent(url.split('/place/')[1]?.split('/')[0]?.replace(/\+/g, ' ') ?? '')
       if (place) {
-        return `https://www.google.com/maps/embed/v1/place?key=&q=${encodeURIComponent(place)}`
+        return `https://www.google.com/maps?q=${encodeURIComponent(place)}&z=15&output=embed`
       }
     }
 
-    // Fallback: use the URL as a search query embed
-    if (parsed.hostname.includes('google') && url.includes('/maps')) {
-      const q = parsed.searchParams.get('q')
-      if (q) {
-        return `https://www.google.com/maps/embed/v1/place?key=&q=${encodeURIComponent(q)}`
-      }
+    // Extract ?q= param
+    const parsed = new URL(url)
+    const q = parsed.searchParams.get('q')
+    if (q) {
+      return `https://www.google.com/maps?q=${encodeURIComponent(q)}&z=15&output=embed`
     }
 
+    // Short URLs (goo.gl, maps.app.goo.gl) can't be parsed — fallback to link
     return null
   } catch {
     return null
@@ -48,20 +42,22 @@ function getEmbedUrl(url: string): string | null {
 interface MapEmbedProps {
   url: string
   className?: string
+  linkClassName?: string
 }
 
-export function MapEmbed({ url, className = '' }: MapEmbedProps) {
+export function MapEmbed({ url, className = '', linkClassName = '' }: MapEmbedProps) {
+  if (!url.trim()) return null
+
   const embedUrl = getEmbedUrl(url)
 
-  // If we can't create an embed, show a clickable link instead
+  // If we can't embed, show a clickable link
   if (!embedUrl) {
-    if (!url.trim()) return null
     return (
       <a
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className={`block text-center text-sm underline ${className}`}
+        className={`mt-2 inline-block text-xs underline underline-offset-2 ${linkClassName}`}
       >
         Xem ban do
       </a>
@@ -69,11 +65,11 @@ export function MapEmbed({ url, className = '' }: MapEmbedProps) {
   }
 
   return (
-    <div className={`w-full overflow-hidden rounded-lg ${className}`}>
+    <div className={`mt-3 w-full overflow-hidden rounded-lg ${className}`}>
       <iframe
         src={embedUrl}
         width="100%"
-        height="200"
+        height="180"
         style={{ border: 0 }}
         allowFullScreen
         loading="lazy"
