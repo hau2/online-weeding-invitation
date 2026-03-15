@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { randomBytes } from 'crypto'
-import sharp from 'sharp'
+import * as sharp from 'sharp'
 import { filetypemime } from 'magic-bytes.js'
 import type { Invitation, SystemMusicTrack } from '@repo/types'
 import { SupabaseAdminService } from '../supabase/supabase.service'
