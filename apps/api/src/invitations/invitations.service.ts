@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { randomBytes } from 'crypto'
+import * as QRCode from 'qrcode'
 import * as sharp from 'sharp'
 import { filetypemime } from 'magic-bytes.js'
 import type { Invitation, SystemMusicTrack } from '@repo/types'
@@ -239,6 +240,57 @@ export class InvitationsService {
     } catch (err) {
       this.logger.warn(
         `ISR revalidation failed for slug "${slug}": ${err instanceof Error ? err.message : err}`,
+      )
+    }
+  }
+
+  /**
+   * Generate a QR code PNG for the public invitation URL and upload to Supabase Storage.
+   * Stores the public URL in the invitation's qr_code_url column.
+   * Failure is non-blocking: logs a warning but does not throw.
+   */
+  async generateQrCode(invitationId: string, slug: string): Promise<void> {
+    try {
+      const siteUrl =
+        this.config.get<string>('SITE_URL') ?? 'http://localhost:3000'
+      const url = `${siteUrl}/w/${slug}`
+
+      const buffer = await QRCode.toBuffer(url, {
+        type: 'png',
+        width: 512,
+        margin: 2,
+        errorCorrectionLevel: 'H',
+      })
+
+      const storagePath = `${invitationId}/qr.png`
+
+      const { error: uploadError } =
+        await this.supabaseAdmin.client.storage
+          .from('qr-codes')
+          .upload(storagePath, buffer, {
+            contentType: 'image/png',
+            upsert: true,
+          })
+
+      if (uploadError) {
+        this.logger.warn(
+          `QR upload failed for invitation ${invitationId}: ${uploadError.message}`,
+        )
+        return
+      }
+
+      const { data: urlData } = this.supabaseAdmin.client.storage
+        .from('qr-codes')
+        .getPublicUrl(storagePath)
+
+      // Store the public URL in the invitation row
+      await this.supabaseAdmin.client
+        .from('invitations')
+        .update({ qr_code_url: urlData.publicUrl })
+        .eq('id', invitationId)
+    } catch (err) {
+      this.logger.warn(
+        `QR generation failed for invitation ${invitationId}: ${err instanceof Error ? err.message : err}`,
       )
     }
   }
@@ -668,6 +720,8 @@ export class InvitationsService {
         .single()
 
       if (!error && data) {
+        // First publish: generate QR code (non-blocking on failure)
+        await this.generateQrCode(id, slug)
         await this.triggerRevalidation(slug)
         return mapRow(data as unknown as InvitationRow)
       }

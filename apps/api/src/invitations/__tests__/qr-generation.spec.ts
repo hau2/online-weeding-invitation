@@ -1,11 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { InvitationsService } from '../invitations.service'
 
-// Mock QRCode module
+// Mock QRCode module (CJS: import * as QRCode => QRCode.toBuffer)
 vi.mock('qrcode', () => ({
-  default: {
-    toBuffer: vi.fn().mockResolvedValue(Buffer.from('fake-png-data')),
-  },
+  toBuffer: vi.fn().mockResolvedValue(Buffer.from('fake-png-data')),
 }))
 
 /** Base mock row for a draft invitation (no slug yet) */
@@ -148,7 +146,7 @@ describe('QR Code Generation', () => {
 
   it('uses SITE_URL env var to build QR code URL', async () => {
     const QRCode = await import('qrcode')
-    const toBufferSpy = vi.spyOn(QRCode.default, 'toBuffer')
+    const toBufferSpy = vi.spyOn(QRCode as any, 'toBuffer')
 
     const storageMock = buildStorageMock()
     const mock = buildSupabaseMock(storageMock)
