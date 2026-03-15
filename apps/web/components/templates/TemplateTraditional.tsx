@@ -167,7 +167,7 @@ export function TemplateTraditional({ invitation, className }: TemplateProps) {
             <p className="mb-4 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
               Mung cuoi
             </p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               {invitation.bankQrUrl && (
                 <div className="flex-1 max-w-[200px] rounded-lg border border-[#d4a843]/30 bg-[#5c0a0a]/80 p-3 text-center">
                   <p className="mb-2 text-xs font-medium text-[#d4a843]/80">Nha trai</p>

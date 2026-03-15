@@ -128,7 +128,7 @@ export function TemplateMinimalist({ invitation, className }: TemplateProps) {
             <p className="mb-5 text-[10px] font-light uppercase tracking-[0.3em] text-gray-400">
               Mung cuoi
             </p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               {invitation.bankQrUrl && (
                 <div className="flex-1 max-w-[200px] rounded border border-gray-200 p-3 text-center">
                   <p className="mb-2 text-xs font-light text-gray-500">Nha trai</p>

@@ -141,7 +141,7 @@ export function TemplateModern({ invitation, className }: TemplateProps) {
             <p className="mb-4 text-[11px] uppercase tracking-[0.25em] text-rose-400/80">
               Mung cuoi
             </p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               {invitation.bankQrUrl && (
                 <div className="flex-1 max-w-[200px] rounded-lg bg-white p-3 shadow-sm text-center">
                   <p className="mb-2 text-xs font-medium text-rose-400">Nha trai</p>
