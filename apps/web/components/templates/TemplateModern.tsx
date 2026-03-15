@@ -107,6 +107,57 @@ export function TemplateModern({ invitation, className }: TemplateProps) {
           </p>
         </div>
 
+        {/* Photo gallery section */}
+        {invitation.photoUrls.length > 0 && (
+          <div className="mb-10">
+            {/* Rose-gold divider */}
+            <div className="mx-auto mb-6 h-px w-24 bg-rose-300/50" />
+            <p className="mb-4 text-[11px] uppercase tracking-[0.25em] text-rose-400/80">
+              Khoanh khac
+            </p>
+            <div className="space-y-3">
+              {invitation.photoUrls.map((url, i) => (
+                <img
+                  key={url}
+                  src={url}
+                  alt={`Anh cuoi ${i + 1}`}
+                  className="w-full rounded-lg object-cover"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Bank QR "Mung cuoi" section */}
+        {invitation.bankQrUrl && (
+          <div className="mb-10">
+            {/* Rose-gold divider */}
+            <div className="mx-auto mb-6 h-px w-24 bg-rose-300/50" />
+            <p className="mb-4 text-[11px] uppercase tracking-[0.25em] text-rose-400/80">
+              Mung cuoi
+            </p>
+            <div className="mx-auto max-w-[260px] rounded-lg bg-white p-4 shadow-sm">
+              <img
+                src={invitation.bankQrUrl}
+                alt="Bank QR code"
+                className="mx-auto max-w-[200px] rounded-lg"
+                loading="lazy"
+              />
+              {invitation.bankName && (
+                <p className="mt-2 text-sm font-medium text-gray-700">
+                  {invitation.bankName}
+                </p>
+              )}
+              {invitation.bankAccountHolder && (
+                <p className="text-sm text-gray-500">
+                  {invitation.bankAccountHolder}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Thank you text */}
         <div className="mb-10">
           <p className="font-heading text-base italic text-rose-400/80">

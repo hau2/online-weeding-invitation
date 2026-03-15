@@ -120,6 +120,65 @@ export function TemplateTraditional({ invitation, className }: TemplateProps) {
           </p>
         </div>
 
+        {/* Photo gallery section */}
+        {invitation.photoUrls.length > 0 && (
+          <div className="mb-8">
+            {/* Ornamental divider */}
+            <div className="mx-auto mb-6 flex w-32 items-center justify-center gap-2">
+              <div className="h-px flex-1 bg-[#d4a843]/30" />
+              <span className="text-xs text-[#d4a843]/40">&#10022;</span>
+              <div className="h-px flex-1 bg-[#d4a843]/30" />
+            </div>
+            <p className="mb-4 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
+              Khoanh khac
+            </p>
+            <div className="space-y-3">
+              {invitation.photoUrls.map((url, i) => (
+                <img
+                  key={url}
+                  src={url}
+                  alt={`Anh cuoi ${i + 1}`}
+                  className="w-full rounded-lg object-cover"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Bank QR "Mung cuoi" section */}
+        {invitation.bankQrUrl && (
+          <div className="mb-8">
+            {/* Ornamental divider */}
+            <div className="mx-auto mb-6 flex w-32 items-center justify-center gap-2">
+              <div className="h-px flex-1 bg-[#d4a843]/30" />
+              <span className="text-xs text-[#d4a843]/40">&#10022;</span>
+              <div className="h-px flex-1 bg-[#d4a843]/30" />
+            </div>
+            <p className="mb-4 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
+              Mung cuoi
+            </p>
+            <div className="mx-auto max-w-[260px] rounded-lg border border-[#d4a843]/30 bg-[#5c0a0a]/80 p-4">
+              <img
+                src={invitation.bankQrUrl}
+                alt="Bank QR code"
+                className="mx-auto max-w-[200px] rounded-lg"
+                loading="lazy"
+              />
+              {invitation.bankName && (
+                <p className="mt-2 text-sm text-[#f0d68a]">
+                  {invitation.bankName}
+                </p>
+              )}
+              {invitation.bankAccountHolder && (
+                <p className="text-sm text-[#d4a843]/80">
+                  {invitation.bankAccountHolder}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Thank you text */}
         <div className="mb-6">
           <p className="font-script text-lg text-[#d4a843]/70">{thankYou}</p>
