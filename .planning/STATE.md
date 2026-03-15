@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-03-15T13:00:37.696Z"
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-15T13:04:22.783Z"
 last_activity: "2026-03-15 — Plan 05-02 complete: ISR revalidation route + NestJS trigger + htmlLimitedBots for Zalo/Facebook crawlers"
 progress:
   total_phases: 9
   completed_phases: 4
   total_plans: 25
-  completed_plans: 20
+  completed_plans: 21
   percent: 76
 ---
 
@@ -72,6 +72,7 @@ Progress: [████████░░] 76%
 | Phase 04 P02 | 5min | 2 tasks | 8 files |
 | Phase 05 P00 | 3min | 2 tasks | 10 files |
 | Phase 05 P02 | 5min | 2 tasks | 4 files |
+| Phase 05 P01 | 8min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -144,6 +145,8 @@ Recent decisions affecting current work:
 - [Phase 05]: triggerRevalidation is non-blocking with try/catch and logger.warn -- revalidation failure never blocks publish/unpublish
 - [Phase 05]: Revalidation skipped silently when REVALIDATION_SECRET not configured (dev mode)
 - [Phase 05]: ConfigService injected into InvitationsService for NEXT_PUBLIC_URL and REVALIDATION_SECRET
+- [Phase 05]: PublicInvitationsController is separate from JwtGuard-protected controller for clean auth separation
+- [Phase 05]: QR generation failure is non-blocking (try/catch with logger.warn) -- never blocks publish flow
 
 ### Pending Todos
 
@@ -157,6 +160,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T13:00:37.693Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-03-15T13:04:22.781Z
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
