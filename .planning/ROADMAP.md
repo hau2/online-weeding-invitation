@@ -88,10 +88,11 @@ Plans:
   3. User can select a background music track from the system library or upload their own MP3 file
   4. User can upload their bank QR image (PNG or JPG) and it appears in the invitation for guests to scan
   5. All uploads are rejected if the file exceeds the plan's storage quota — user sees a clear error in Vietnamese
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — DB migration (media columns + system_music_tracks + storage buckets), shared types extension, NestJS upload/delete endpoints with sharp + magic-bytes, apiUpload utility
+- [ ] 04-00-PLAN.md — Wave 0: test stub scaffolds for all phase requirements (PhotoGallery, MusicPicker, BankQrUpload, image-optimization, service media methods)
+- [ ] 04-01-PLAN.md — DB migration (media columns + system_music_tracks + storage buckets), shared types extension, NestJS upload/delete/photo-order endpoints with sharp + magic-bytes, apiUpload utility
 - [ ] 04-02-PLAN.md — PhotoGallery (dnd-kit grid reorder + upload + delete), MusicPicker (howler.js 30s preview), BankQrUpload, EditorForm 6-section integration
 - [ ] 04-03-PLAN.md — Template extension: add photo gallery and bank QR rendering to all 3 templates (Traditional, Modern, Minimalist)
 
@@ -205,7 +206,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 1. Foundation | 5/5 | Complete   | 2026-03-14 |
 | 2. App Shell | 4/4 | Complete   | 2026-03-14 |
 | 3. Invitation Editor Core | 5/5 | Complete | 2026-03-14 |
-| 4. Media Upload Pipeline | 0/3 | Not started | - |
+| 4. Media Upload Pipeline | 0/4 | Not started | - |
 | 5. Public Invitation Page | 0/9 | Not started | - |
 | 6. Save-the-Date | 0/3 | Not started | - |
 | 7. Monetization | 0/5 | Not started | - |
