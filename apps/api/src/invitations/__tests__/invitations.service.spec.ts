@@ -553,4 +553,35 @@ describe('InvitationsService', () => {
       expect(adminMock.from).not.toHaveBeenCalled()
     })
   })
+
+  describe('uploadPhotos', () => {
+    it.todo('uploads files to Supabase Storage and appends URLs to photo_urls')
+    it.todo('enforces 10-photo maximum including existing photos')
+    it.todo('throws NotFoundException for non-owner')
+    it.todo('processes each file through processImage before upload')
+  })
+
+  describe('deletePhoto', () => {
+    it.todo('removes photo URL at given index from photo_urls array')
+    it.todo('removes file from Supabase Storage')
+    it.todo('throws BadRequestException for out-of-bounds index')
+    it.todo('throws NotFoundException for non-owner')
+  })
+
+  describe('uploadBankQr', () => {
+    it.todo('uploads QR image and sets bank_qr_url on invitation')
+    it.todo('deletes old QR file when replacing with new one')
+    it.todo('throws NotFoundException for non-owner')
+  })
+
+  describe('updatePhotoOrder', () => {
+    it.todo('updates photo_urls array with new order')
+    it.todo('validates all URLs are existing Supabase Storage URLs')
+    it.todo('throws NotFoundException for non-owner')
+  })
+
+  describe('listMusicTracks', () => {
+    it.todo('returns active tracks ordered by sort_order')
+    it.todo('maps snake_case columns to camelCase SystemMusicTrack')
+  })
 })
