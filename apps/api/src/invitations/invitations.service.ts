@@ -10,7 +10,7 @@ import { randomBytes } from 'crypto'
 import * as QRCode from 'qrcode'
 import * as sharp from 'sharp'
 import { filetypemime } from 'magic-bytes.js'
-import type { Invitation, SystemMusicTrack } from '@repo/types'
+import type { Invitation, LoveStoryMilestone, SystemMusicTrack } from '@repo/types'
 import { SupabaseAdminService } from '../supabase/supabase.service'
 import { CreateInvitationDto } from './dto/create-invitation.dto'
 import { UpdateInvitationDto } from './dto/update-invitation.dto'
@@ -24,10 +24,19 @@ interface InvitationRow {
   template_id: string
   groom_name: string
   bride_name: string
-  wedding_date: string | null
-  wedding_time: string | null
-  venue_name: string
-  venue_address: string
+  groom_father: string
+  groom_mother: string
+  groom_ceremony_date: string | null
+  groom_ceremony_time: string | null
+  groom_venue_name: string
+  groom_venue_address: string
+  bride_father: string
+  bride_mother: string
+  bride_ceremony_date: string | null
+  bride_ceremony_time: string | null
+  bride_venue_name: string
+  bride_venue_address: string
+  love_story: unknown[]
   venue_map_url: string
   invitation_message: string
   thank_you_text: string
@@ -67,10 +76,19 @@ interface MusicTrackRow {
 const FIELD_MAP: Record<string, string> = {
   groomName: 'groom_name',
   brideName: 'bride_name',
-  weddingDate: 'wedding_date',
-  weddingTime: 'wedding_time',
-  venueName: 'venue_name',
-  venueAddress: 'venue_address',
+  groomFather: 'groom_father',
+  groomMother: 'groom_mother',
+  groomCeremonyDate: 'groom_ceremony_date',
+  groomCeremonyTime: 'groom_ceremony_time',
+  groomVenueName: 'groom_venue_name',
+  groomVenueAddress: 'groom_venue_address',
+  brideFather: 'bride_father',
+  brideMother: 'bride_mother',
+  brideCeremonyDate: 'bride_ceremony_date',
+  brideCeremonyTime: 'bride_ceremony_time',
+  brideVenueName: 'bride_venue_name',
+  brideVenueAddress: 'bride_venue_address',
+  loveStory: 'love_story',
   venueMapUrl: 'venue_map_url',
   invitationMessage: 'invitation_message',
   thankYouText: 'thank_you_text',
@@ -92,10 +110,19 @@ function mapRow(row: InvitationRow): Invitation {
     templateId: row.template_id as Invitation['templateId'],
     groomName: row.groom_name,
     brideName: row.bride_name,
-    weddingDate: row.wedding_date,
-    weddingTime: row.wedding_time,
-    venueName: row.venue_name,
-    venueAddress: row.venue_address,
+    groomFather: row.groom_father,
+    groomMother: row.groom_mother,
+    groomCeremonyDate: row.groom_ceremony_date,
+    groomCeremonyTime: row.groom_ceremony_time,
+    groomVenueName: row.groom_venue_name,
+    groomVenueAddress: row.groom_venue_address,
+    brideFather: row.bride_father,
+    brideMother: row.bride_mother,
+    brideCeremonyDate: row.bride_ceremony_date,
+    brideCeremonyTime: row.bride_ceremony_time,
+    brideVenueName: row.bride_venue_name,
+    brideVenueAddress: row.bride_venue_address,
+    loveStory: row.love_story as LoveStoryMilestone[],
     venueMapUrl: row.venue_map_url,
     invitationMessage: row.invitation_message,
     thankYouText: row.thank_you_text,
@@ -132,7 +159,11 @@ function mapMusicTrackRow(row: MusicTrackRow): SystemMusicTrack {
 /** Select clause for all invitation columns */
 const SELECT_ALL =
   'id, user_id, slug, status, template_id, groom_name, bride_name, ' +
-  'wedding_date, wedding_time, venue_name, venue_address, venue_map_url, ' +
+  'groom_father, groom_mother, groom_ceremony_date, groom_ceremony_time, ' +
+  'groom_venue_name, groom_venue_address, ' +
+  'bride_father, bride_mother, bride_ceremony_date, bride_ceremony_time, ' +
+  'bride_venue_name, bride_venue_address, ' +
+  'love_story, venue_map_url, ' +
   'invitation_message, thank_you_text, photo_urls, music_track_id, ' +
   'bank_qr_url, bank_name, bank_account_holder, ' +
   'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
@@ -317,8 +348,6 @@ export class InvitationsService {
         groom_name: dto.groomName,
         template_id: dto.templateId,
         status: 'draft',
-        venue_name: '',
-        venue_address: '',
         invitation_message: '',
         thank_you_text: '',
       })
@@ -371,14 +400,19 @@ export class InvitationsService {
     const row = data as unknown as InvitationRow
     const mapped = mapRow(row)
 
-    // Determine expiry: wedding_date + 7 day grace period in UTC+7
+    // Determine expiry: use the LATER of groom/bride ceremony dates + 7 day grace period
+    // Using the later date ensures neither side's invitation expires prematurely
     let expired = false
-    if (row.wedding_date) {
-      // Parse wedding date as a moment in Vietnam timezone (UTC+7)
-      const weddingStr = `${row.wedding_date}T23:59:59+07:00`
-      const weddingMs = new Date(weddingStr).getTime()
+    const dates = [row.groom_ceremony_date, row.bride_ceremony_date].filter(
+      (d): d is string => d !== null,
+    )
+    if (dates.length > 0) {
+      // Pick the latest ceremony date
+      const latestDate = dates.sort().pop()!
+      const ceremonyStr = `${latestDate}T23:59:59+07:00`
+      const ceremonyMs = new Date(ceremonyStr).getTime()
       const gracePeriodMs = 7 * 24 * 60 * 60 * 1000
-      expired = Date.now() > weddingMs + gracePeriodMs
+      expired = Date.now() > ceremonyMs + gracePeriodMs
     }
 
     // Resolve music URL if musicTrackId is set

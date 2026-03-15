@@ -24,10 +24,20 @@ const baseMockRow = {
   template_id: 'traditional',
   groom_name: 'Thao',
   bride_name: 'Minh',
-  wedding_date: null,
-  wedding_time: null,
-  venue_name: '',
-  venue_address: '',
+  groom_father: '',
+  groom_mother: '',
+  groom_ceremony_date: null,
+  groom_ceremony_time: null,
+  groom_venue_name: '',
+  groom_venue_address: '',
+  bride_father: '',
+  bride_mother: '',
+  bride_ceremony_date: null,
+  bride_ceremony_time: null,
+  bride_venue_name: '',
+  bride_venue_address: '',
+  love_story: [],
+  venue_map_url: '',
   invitation_message: '',
   thank_you_text: '',
   photo_urls: [],
@@ -35,6 +45,10 @@ const baseMockRow = {
   bank_qr_url: null,
   bank_name: '',
   bank_account_holder: '',
+  bride_bank_qr_url: null,
+  bride_bank_name: '',
+  bride_bank_account_holder: '',
+  qr_code_url: null,
   created_at: '2026-01-01T00:00:00Z',
   updated_at: '2026-01-01T00:00:00Z',
   deleted_at: null,
@@ -95,10 +109,10 @@ describe('InvitationsService', () => {
         template_id: 'modern',
         groom_name: 'Duc',
         bride_name: 'Lan',
-        wedding_date: '2026-06-15',
-        wedding_time: '10:00',
-        venue_name: 'Grand Hotel',
-        venue_address: '123 Street',
+        groom_ceremony_date: '2026-06-15',
+        groom_ceremony_time: '10:00',
+        groom_venue_name: 'Grand Hotel',
+        groom_venue_address: '123 Street',
         invitation_message: 'Welcome!',
         thank_you_text: 'Thanks!',
         updated_at: '2026-01-02T00:00:00Z',
@@ -112,10 +126,10 @@ describe('InvitationsService', () => {
       expect(result[0].templateId).toBe('modern')
       expect(result[0].groomName).toBe('Duc')
       expect(result[0].brideName).toBe('Lan')
-      expect(result[0].weddingDate).toBe('2026-06-15')
-      expect(result[0].weddingTime).toBe('10:00')
-      expect(result[0].venueName).toBe('Grand Hotel')
-      expect(result[0].venueAddress).toBe('123 Street')
+      expect(result[0].groomCeremonyDate).toBe('2026-06-15')
+      expect(result[0].groomCeremonyTime).toBe('10:00')
+      expect(result[0].groomVenueName).toBe('Grand Hotel')
+      expect(result[0].groomVenueAddress).toBe('123 Street')
       expect(result[0].invitationMessage).toBe('Welcome!')
       expect(result[0].thankYouText).toBe('Thanks!')
       expect(result[0].photoUrls).toEqual([])
@@ -272,8 +286,8 @@ describe('InvitationsService', () => {
     it('partial update works and maps camelCase to snake_case', async () => {
       const updatedRow = {
         ...baseMockRow,
-        venue_name: 'Grand Hotel',
-        venue_address: '123 Le Loi',
+        groom_venue_name: 'Grand Hotel',
+        groom_venue_address: '123 Le Loi',
         updated_at: '2026-01-02T00:00:00Z',
       }
       const userMock = makeSupabaseMock(null)
@@ -292,12 +306,12 @@ describe('InvitationsService', () => {
       const service = makeService(userMock)
 
       const result = await service.update('user-a', 'inv-1', {
-        venueName: 'Grand Hotel',
-        venueAddress: '123 Le Loi',
+        groomVenueName: 'Grand Hotel',
+        groomVenueAddress: '123 Le Loi',
       })
 
-      expect(result.venueName).toBe('Grand Hotel')
-      expect(result.venueAddress).toBe('123 Le Loi')
+      expect(result.groomVenueName).toBe('Grand Hotel')
+      expect(result.groomVenueAddress).toBe('123 Le Loi')
     })
 
     it('returns full mapped result after partial update', async () => {
