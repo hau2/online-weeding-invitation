@@ -98,7 +98,7 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
       <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
         {/* Form panel */}
         <div className="flex-1 lg:max-w-md overflow-y-auto p-4 border-r border-rose-100">
-          <EditorForm values={invitation} onChange={handleChange} />
+          <EditorForm invitationId={invitation.id} values={invitation} onChange={handleChange} />
         </div>
 
         {/* Preview panel */}

@@ -10,19 +10,32 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { PhotoGallery } from './PhotoGallery'
+import { MusicPicker } from './MusicPicker'
+import { BankQrUpload } from './BankQrUpload'
 
 interface EditorFormProps {
+  invitationId: string
   values: Invitation
   onChange: (changes: Partial<Invitation>) => void
 }
 
-export function EditorForm({ values, onChange }: EditorFormProps) {
+export function EditorForm({ invitationId, values, onChange }: EditorFormProps) {
   return (
-    <Accordion defaultValue={['couple', 'ceremony', 'message']}>
+    <Accordion
+      defaultValue={[
+        'couple',
+        'ceremony',
+        'message',
+        'photos',
+        'music',
+        'bankqr',
+      ]}
+    >
       {/* Section 1: Couple */}
       <AccordionItem value="couple">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Cap doi (1/3)
+          Cap doi (1/6)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">
@@ -51,7 +64,7 @@ export function EditorForm({ values, onChange }: EditorFormProps) {
       {/* Section 2: Ceremony */}
       <AccordionItem value="ceremony">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Le cuoi (2/3)
+          Le cuoi (2/6)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">
@@ -102,7 +115,7 @@ export function EditorForm({ values, onChange }: EditorFormProps) {
       {/* Section 3: Message */}
       <AccordionItem value="message">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Loi moi (3/3)
+          Loi moi (3/6)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">
@@ -129,6 +142,49 @@ export function EditorForm({ values, onChange }: EditorFormProps) {
               />
             </div>
           </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* Section 4: Photos */}
+      <AccordionItem value="photos">
+        <AccordionTrigger className="text-rose-700 font-semibold text-sm">
+          Anh cuoi (4/6)
+        </AccordionTrigger>
+        <AccordionContent>
+          <PhotoGallery
+            invitationId={invitationId}
+            photoUrls={values.photoUrls}
+            onChange={(photoUrls) => onChange({ photoUrls })}
+          />
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* Section 5: Music */}
+      <AccordionItem value="music">
+        <AccordionTrigger className="text-rose-700 font-semibold text-sm">
+          Nhac nen (5/6)
+        </AccordionTrigger>
+        <AccordionContent>
+          <MusicPicker
+            selectedTrackId={values.musicTrackId}
+            onSelect={(musicTrackId) => onChange({ musicTrackId })}
+          />
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* Section 6: Bank QR */}
+      <AccordionItem value="bankqr">
+        <AccordionTrigger className="text-rose-700 font-semibold text-sm">
+          QR Ngan hang (6/6)
+        </AccordionTrigger>
+        <AccordionContent>
+          <BankQrUpload
+            invitationId={invitationId}
+            bankQrUrl={values.bankQrUrl}
+            bankName={values.bankName}
+            bankAccountHolder={values.bankAccountHolder}
+            onChange={onChange}
+          />
         </AccordionContent>
       </AccordionItem>
     </Accordion>
