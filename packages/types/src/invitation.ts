@@ -1,4 +1,4 @@
-export type InvitationStatus = 'draft' | 'published' | 'expired'
+export type InvitationStatus = 'draft' | 'published' | 'save_the_date' | 'expired'
 export type TemplateId = 'traditional' | 'modern' | 'minimalist'
 
 export interface LoveStoryMilestone {
@@ -31,6 +31,7 @@ export interface Invitation {
   venueMapUrl: string
   invitationMessage: string
   thankYouText: string
+  teaserMessage: string
   photoUrls: string[]
   musicTrackId: string | null
   bankQrUrl: string | null
