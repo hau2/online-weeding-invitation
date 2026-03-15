@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05.1-01-PLAN.md
-last_updated: "2026-03-15T17:28:11.723Z"
-last_activity: "2026-03-16 — Plan 05.1-01 complete: Dual-family DB schema + NestJS API for per-family fields and love story"
+stopped_at: Completed 05.1-03-PLAN.md
+last_updated: "2026-03-15T17:37:43.305Z"
+last_activity: "2026-03-16 — Plan 05.1-03 complete: All 3 templates updated with dual-family ceremony info and love story timeline"
 progress:
   total_phases: 10
   completed_phases: 4
   total_plans: 29
-  completed_plans: 25
-  percent: 86
+  completed_plans: 27
+  percent: 93
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 5.1 of 9 (Dual-Family Ceremony Info)
-Plan: 2 of 4 in current phase (05.1-01 complete)
+Plan: 4 of 4 in current phase (05.1-03 complete)
 Status: In Progress
-Last activity: 2026-03-16 — Plan 05.1-01 complete: Dual-family DB schema + NestJS API for per-family fields and love story
+Last activity: 2026-03-16 — Plan 05.1-03 complete: All 3 templates updated with dual-family ceremony info and love story timeline
 
-Progress: [█████████░] 86%
+Progress: [█████████░] 93%
 
 ## Performance Metrics
 
@@ -77,6 +77,8 @@ Progress: [█████████░] 86%
 | Phase 05 P05 | 4min | 2 tasks | 7 files |
 | Phase 05 P04 | 4min | 2 tasks | 4 files |
 | Phase 05.1 P01 | 12min | 2 tasks | 7 files |
+| Phase 05.1 P03 | 2min | 1 tasks | 3 files |
+| Phase 05.1 P02 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -164,6 +166,8 @@ Recent decisions affecting current work:
 - [Phase 05.1]: love_story stored as JSONB NOT NULL DEFAULT '[]' -- no separate table for max 5 milestones
 - [Phase 05.1]: Expiry uses later of groom/bride ceremony dates so neither side expires prematurely
 - [Phase 05.1]: LoveStoryMilestoneDto: nested validation with @ValidateNested + @Type, max 5 milestones, title 100 chars, desc 300 chars
+- [Phase 05.1]: Vietnamese honorifics Ong/Ba used for parents names display on formal invitation
+- [Phase 05.1]: Love story timeline: vertical 2px line with 10px dot circles, template-specific palettes (gold/rose/gray)
 
 ### Roadmap Evolution
 
@@ -181,6 +185,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T17:28:11.721Z
-Stopped at: Completed 05.1-01-PLAN.md
+Last session: 2026-03-15T17:37:33.776Z
+Stopped at: Completed 05.1-03-PLAN.md
 Resume file: None
