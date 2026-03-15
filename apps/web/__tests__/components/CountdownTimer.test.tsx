@@ -17,8 +17,8 @@ describe('CountdownTimer', () => {
 
     render(
       <CountdownTimer
-        weddingDate="2026-07-15"
-        weddingTime="10:00"
+        ceremonyDate="2026-07-15"
+        ceremonyTime="10:00"
         templateId="traditional"
       />
     )
@@ -34,8 +34,8 @@ describe('CountdownTimer', () => {
 
     render(
       <CountdownTimer
-        weddingDate="2026-07-15"
-        weddingTime="10:00"
+        ceremonyDate="2026-07-15"
+        ceremonyTime="10:00"
         templateId="modern"
       />
     )
@@ -58,8 +58,8 @@ describe('CountdownTimer', () => {
 
     const { container } = render(
       <CountdownTimer
-        weddingDate="2026-07-15"
-        weddingTime="10:00"
+        ceremonyDate="2026-07-15"
+        ceremonyTime="10:00"
         templateId="minimalist"
       />
     )
@@ -74,8 +74,8 @@ describe('CountdownTimer', () => {
 
     render(
       <CountdownTimer
-        weddingDate="2026-07-15"
-        weddingTime="10:00"
+        ceremonyDate="2026-07-15"
+        ceremonyTime="10:00"
         templateId="traditional"
       />
     )
@@ -84,12 +84,12 @@ describe('CountdownTimer', () => {
     expect(screen.getByText('04')).toBeInTheDocument()
   })
 
-  it('should default to 10:00 if no weddingTime provided', () => {
+  it('should default to 10:00 if no ceremonyTime provided', () => {
     vi.setSystemTime(new Date('2026-07-15T00:00:00+07:00'))
 
     render(
       <CountdownTimer
-        weddingDate="2026-07-15"
+        ceremonyDate="2026-07-15"
         templateId="modern"
       />
     )

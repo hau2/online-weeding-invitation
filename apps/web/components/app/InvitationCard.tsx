@@ -35,8 +35,8 @@ interface InvitationCardProps {
 }
 
 export function InvitationCard({ invitation }: InvitationCardProps) {
-  const formattedDate = invitation.weddingDate
-    ? new Date(invitation.weddingDate).toLocaleDateString('vi-VN', {
+  const formattedDate = invitation.groomCeremonyDate
+    ? new Date(invitation.groomCeremonyDate).toLocaleDateString('vi-VN', {
         day: '2-digit', month: '2-digit', year: 'numeric',
       })
     : 'Ch\u01b0a c\u00f3 ng\u00e0y'

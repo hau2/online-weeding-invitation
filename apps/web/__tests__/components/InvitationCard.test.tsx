@@ -19,10 +19,20 @@ function makeInvitation(overrides: Partial<Invitation> = {}): Invitation {
     templateId: 'traditional',
     groomName: 'Thao',
     brideName: 'Minh',
-    weddingDate: null,
-    weddingTime: null,
-    venueName: '',
-    venueAddress: '',
+    groomFather: '',
+    groomMother: '',
+    groomCeremonyDate: null,
+    groomCeremonyTime: null,
+    groomVenueName: '',
+    groomVenueAddress: '',
+    brideFather: '',
+    brideMother: '',
+    brideCeremonyDate: null,
+    brideCeremonyTime: null,
+    brideVenueName: '',
+    brideVenueAddress: '',
+    loveStory: [],
+    venueMapUrl: '',
     invitationMessage: '',
     thankYouText: '',
     photoUrls: [],
@@ -30,6 +40,9 @@ function makeInvitation(overrides: Partial<Invitation> = {}): Invitation {
     bankQrUrl: null,
     bankName: '',
     bankAccountHolder: '',
+    brideBankQrUrl: null,
+    brideBankName: '',
+    brideBankAccountHolder: '',
     createdAt: '2026-01-15T00:00:00Z',
     updatedAt: '2026-01-15T00:00:00Z',
     deletedAt: null,
@@ -67,13 +80,13 @@ describe('InvitationCard', () => {
     expect(screen.getByText(/Thao/)).toBeInTheDocument()
   })
 
-  it('renders "Chua co ngay" when wedding date is null', () => {
-    render(<InvitationCard invitation={makeInvitation({ weddingDate: null })} />)
+  it('renders "Chua co ngay" when ceremony date is null', () => {
+    render(<InvitationCard invitation={makeInvitation({ groomCeremonyDate: null })} />)
     expect(screen.getByText('Chưa có ngày')).toBeInTheDocument()
   })
 
-  it('renders formatted date when wedding date is present', () => {
-    render(<InvitationCard invitation={makeInvitation({ weddingDate: '2026-06-15T00:00:00Z' })} />)
+  it('renders formatted date when ceremony date is present', () => {
+    render(<InvitationCard invitation={makeInvitation({ groomCeremonyDate: '2026-06-15T00:00:00Z' })} />)
     // Vietnamese date format: dd/mm/yyyy
     expect(screen.getByText('15/06/2026')).toBeInTheDocument()
   })
@@ -84,16 +97,20 @@ describe('InvitationCard', () => {
     expect(editLink).toHaveAttribute('href', '/thep-cuoi/inv-123')
   })
 
-  it('renders a disabled "Xem trang" button for draft invitations', () => {
+  it('renders disabled copy-link buttons for draft invitations', () => {
     render(<InvitationCard invitation={makeInvitation({ status: 'draft', slug: null })} />)
-    const viewBtn = screen.getByText('Xem trang').closest('button')
-    expect(viewBtn).toBeDisabled()
+    const groomBtn = screen.getByText('Nha trai').closest('button')
+    const brideBtn = screen.getByText('Nha gai').closest('button')
+    expect(groomBtn).toBeDisabled()
+    expect(brideBtn).toBeDisabled()
   })
 
-  it('renders an enabled "Xem trang" button for published invitations with slug', () => {
+  it('renders enabled copy-link buttons for published invitations with slug', () => {
     render(<InvitationCard invitation={makeInvitation({ status: 'published', slug: 'minh-thao-abc' })} />)
-    const viewBtn = screen.getByText('Xem trang').closest('button')
-    expect(viewBtn).not.toBeDisabled()
+    const groomBtn = screen.getByText('Nha trai').closest('button')
+    const brideBtn = screen.getByText('Nha gai').closest('button')
+    expect(groomBtn).not.toBeDisabled()
+    expect(brideBtn).not.toBeDisabled()
   })
 
   it('does NOT render any QR code button', () => {

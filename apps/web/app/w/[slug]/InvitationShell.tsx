@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Invitation, TemplateId } from '@repo/types'
@@ -49,15 +49,45 @@ function sanitizeGuestName(raw: string): string {
 export function InvitationShell({ invitation }: InvitationShellProps) {
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [guestName, setGuestName] = useState<string | undefined>(undefined)
+  const [side, setSide] = useState<'groom' | 'bride'>('groom')
 
   useEffect(() => {
-    // Parse ?to= client-side only (never sent to server)
+    // Parse ?to= and ?side= client-side only (never sent to server)
     const params = new URLSearchParams(window.location.search)
     const toParam = params.get('to')
     if (toParam) {
       setGuestName(sanitizeGuestName(toParam))
     }
+    const sideParam = params.get('side')
+    setSide(sideParam === 'bride' ? 'bride' : 'groom')
   }, [])
+
+  // Filter invitation fields based on side -- hide the other side's family-specific info
+  const filteredInvitation = useMemo(() => {
+    if (side === 'groom') {
+      return {
+        ...invitation,
+        // Hide bride-side-only fields
+        brideFather: '', brideMother: '',
+        brideCeremonyDate: null, brideCeremonyTime: null,
+        brideVenueName: '', brideVenueAddress: '',
+        brideBankQrUrl: null, brideBankName: '', brideBankAccountHolder: '',
+      }
+    } else {
+      return {
+        ...invitation,
+        // Hide groom-side-only fields
+        groomFather: '', groomMother: '',
+        groomCeremonyDate: null, groomCeremonyTime: null,
+        groomVenueName: '', groomVenueAddress: '',
+        bankQrUrl: null, bankName: '', bankAccountHolder: '',
+      }
+    }
+  }, [invitation, side])
+
+  // Determine active side's ceremony date for countdown
+  const ceremonyDate = side === 'groom' ? invitation.groomCeremonyDate : invitation.brideCeremonyDate
+  const ceremonyTime = side === 'groom' ? invitation.groomCeremonyTime : invitation.brideCeremonyTime
 
   // Envelope stage: fullscreen envelope animation
   if (!envelopeOpened) {
@@ -100,15 +130,15 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
         >
           {/* Scrollable content container */}
           <div className="overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
-            {/* 1. Full invitation template content */}
-            <TemplateRenderer invitation={invitation} />
+            {/* 1. Full invitation template content (side-filtered) */}
+            <TemplateRenderer invitation={filteredInvitation} />
 
-            {/* 2. Countdown timer (if wedding date exists and is in the future) */}
-            {invitation.weddingDate && (
+            {/* 2. Countdown timer (uses active side's ceremony date) */}
+            {ceremonyDate && (
               <div className="px-4 pb-4">
                 <CountdownTimer
-                  weddingDate={invitation.weddingDate}
-                  weddingTime={invitation.weddingTime}
+                  ceremonyDate={ceremonyDate}
+                  ceremonyTime={ceremonyTime}
                   templateId={invitation.templateId}
                 />
               </div>

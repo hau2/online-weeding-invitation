@@ -39,14 +39,14 @@ export async function generateMetadata({
   const ogImage = invitation.photoUrls?.[0] ?? '/default-og.jpg'
   const title = `Thiep cuoi ${invitation.groomName} & ${invitation.brideName}`
 
-  const datePart = invitation.weddingDate
+  const datePart = invitation.groomCeremonyDate
     ? new Intl.DateTimeFormat('vi-VN', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-      }).format(new Date(invitation.weddingDate))
+      }).format(new Date(invitation.groomCeremonyDate))
     : ''
-  const description = [datePart, invitation.venueName].filter(Boolean).join(' - ')
+  const description = [datePart, invitation.groomVenueName].filter(Boolean).join(' - ')
 
   return {
     title: { absolute: title },

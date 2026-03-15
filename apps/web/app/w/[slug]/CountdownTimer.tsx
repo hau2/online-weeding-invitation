@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import type { TemplateId } from '@repo/types'
 
 interface CountdownTimerProps {
-  weddingDate: string
-  weddingTime?: string | null
+  ceremonyDate: string
+  ceremonyTime?: string | null
   templateId: TemplateId
 }
 
@@ -81,23 +81,23 @@ function FlipCard({ value, label, templateId }: { value: string; label: string; 
   )
 }
 
-export function CountdownTimer({ weddingDate, weddingTime, templateId }: CountdownTimerProps) {
+export function CountdownTimer({ ceremonyDate, ceremonyTime, templateId }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null)
   const [isPast, setIsPast] = useState(false)
 
   useEffect(() => {
     // Combine date + time in Vietnam timezone (UTC+7)
-    // weddingDate may be ISO "2026-04-15" or just a date string
-    const time = weddingTime || '10:00'
+    // ceremonyDate may be ISO "2026-04-15" or just a date string
+    const time = ceremonyTime || '10:00'
     let targetMs: number
 
     // Try ISO format first, then fallback to parsing date-only
-    const isoStr = `${weddingDate}T${time}:00+07:00`
+    const isoStr = `${ceremonyDate}T${time}:00+07:00`
     targetMs = new Date(isoStr).getTime()
 
     // If ISO parse fails, try raw Date parse
     if (isNaN(targetMs)) {
-      targetMs = new Date(weddingDate).getTime()
+      targetMs = new Date(ceremonyDate).getTime()
     }
 
     // Still invalid — bail out
@@ -139,7 +139,7 @@ export function CountdownTimer({ weddingDate, weddingTime, templateId }: Countdo
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [weddingDate, weddingTime])
+  }, [ceremonyDate, ceremonyTime])
 
   if (isPast || !timeLeft) return null
 
