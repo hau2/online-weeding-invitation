@@ -2,7 +2,6 @@
 
 import { cn } from '@/lib/utils'
 import type { TemplateProps } from './types'
-import { MapEmbed } from './MapEmbed'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Chua chon ngay'
@@ -83,7 +82,9 @@ export function TemplateMinimalist({ invitation, className }: TemplateProps) {
               </p>
             )}
             {invitation.venueMapUrl && (
-              <MapEmbed url={invitation.venueMapUrl} linkClassName="text-gray-400" />
+              <a href={invitation.venueMapUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-gray-400 underline underline-offset-2">
+                Xem ban do
+              </a>
             )}
           </div>
         )}
