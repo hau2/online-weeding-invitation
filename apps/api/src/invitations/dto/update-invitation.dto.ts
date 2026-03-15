@@ -33,6 +33,9 @@ class InvitationFieldsDto {
   @IsString({ message: 'Dia chi phai la chuoi ky tu' })
   venueAddress: string
 
+  @IsString({ message: 'Duong dan ban do phai la chuoi ky tu' })
+  venueMapUrl: string
+
   @IsString({ message: 'Loi moi phai la chuoi ky tu' })
   invitationMessage: string
 

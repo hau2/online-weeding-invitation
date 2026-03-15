@@ -108,6 +108,18 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
                 onChange={(e) => onChange({ venueAddress: e.target.value })}
               />
             </div>
+            <div className="space-y-1.5">
+              <Label className="text-rose-700 text-xs">Google Maps URL</Label>
+              <Input
+                placeholder="Dan link Google Maps vao day"
+                className="border-rose-200 focus-visible:border-rose-400 focus-visible:ring-rose-200"
+                value={values.venueMapUrl}
+                onChange={(e) => onChange({ venueMapUrl: e.target.value })}
+              />
+              {values.venueMapUrl && (
+                <p className="text-xs text-gray-400">Ban do se hien thi tren thiep moi</p>
+              )}
+            </div>
           </div>
         </AccordionContent>
       </AccordionItem>

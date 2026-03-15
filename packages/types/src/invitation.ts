@@ -13,6 +13,7 @@ export interface Invitation {
   weddingTime: string | null
   venueName: string
   venueAddress: string
+  venueMapUrl: string
   invitationMessage: string
   thankYouText: string
   photoUrls: string[]

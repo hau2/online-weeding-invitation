@@ -94,6 +94,11 @@ export function TemplateModern({ invitation, className }: TemplateProps) {
                 {venueAddress}
               </p>
             )}
+            {invitation.venueMapUrl && (
+              <a href={invitation.venueMapUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-rose-400 underline underline-offset-2">
+                Xem ban do
+              </a>
+            )}
           </div>
         )}
 
@@ -130,29 +135,28 @@ export function TemplateModern({ invitation, className }: TemplateProps) {
         )}
 
         {/* Bank QR "Mung cuoi" section */}
-        {invitation.bankQrUrl && (
+        {(invitation.bankQrUrl || invitation.brideBankQrUrl) && (
           <div className="mb-10">
-            {/* Rose-gold divider */}
             <div className="mx-auto mb-6 h-px w-24 bg-rose-300/50" />
             <p className="mb-4 text-[11px] uppercase tracking-[0.25em] text-rose-400/80">
               Mung cuoi
             </p>
-            <div className="mx-auto max-w-[260px] rounded-lg bg-white p-4 shadow-sm">
-              <img
-                src={invitation.bankQrUrl}
-                alt="Bank QR code"
-                className="mx-auto max-w-[200px] rounded-lg"
-                loading="lazy"
-              />
-              {invitation.bankName && (
-                <p className="mt-2 text-sm font-medium text-gray-700">
-                  {invitation.bankName}
-                </p>
+            <div className="flex gap-3 justify-center">
+              {invitation.bankQrUrl && (
+                <div className="flex-1 max-w-[200px] rounded-lg bg-white p-3 shadow-sm text-center">
+                  <p className="mb-2 text-xs font-medium text-rose-400">Nha trai</p>
+                  <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto max-w-[140px] rounded-lg" loading="lazy" />
+                  {invitation.bankName && <p className="mt-2 text-xs font-medium text-gray-700">{invitation.bankName}</p>}
+                  {invitation.bankAccountHolder && <p className="text-xs text-gray-500">{invitation.bankAccountHolder}</p>}
+                </div>
               )}
-              {invitation.bankAccountHolder && (
-                <p className="text-sm text-gray-500">
-                  {invitation.bankAccountHolder}
-                </p>
+              {invitation.brideBankQrUrl && (
+                <div className="flex-1 max-w-[200px] rounded-lg bg-white p-3 shadow-sm text-center">
+                  <p className="mb-2 text-xs font-medium text-rose-400">Nha gai</p>
+                  <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto max-w-[140px] rounded-lg" loading="lazy" />
+                  {invitation.brideBankName && <p className="mt-2 text-xs font-medium text-gray-700">{invitation.brideBankName}</p>}
+                  {invitation.brideBankAccountHolder && <p className="text-xs text-gray-500">{invitation.brideBankAccountHolder}</p>}
+                </div>
               )}
             </div>
           </div>

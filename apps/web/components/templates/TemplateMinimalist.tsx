@@ -81,6 +81,11 @@ export function TemplateMinimalist({ invitation, className }: TemplateProps) {
                 {venueAddress}
               </p>
             )}
+            {invitation.venueMapUrl && (
+              <a href={invitation.venueMapUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-gray-400 underline underline-offset-2">
+                Xem ban do
+              </a>
+            )}
           </div>
         )}
 
@@ -117,29 +122,28 @@ export function TemplateMinimalist({ invitation, className }: TemplateProps) {
         )}
 
         {/* Bank QR "Mung cuoi" section */}
-        {invitation.bankQrUrl && (
+        {(invitation.bankQrUrl || invitation.brideBankQrUrl) && (
           <div className="mb-12">
-            {/* Hairline divider */}
             <div className="mx-auto mb-8 h-px w-10 bg-gray-300" />
             <p className="mb-5 text-[10px] font-light uppercase tracking-[0.3em] text-gray-400">
               Mung cuoi
             </p>
-            <div className="mx-auto max-w-[260px] rounded border border-gray-200 p-4">
-              <img
-                src={invitation.bankQrUrl}
-                alt="Bank QR code"
-                className="mx-auto max-w-[200px] rounded"
-                loading="lazy"
-              />
-              {invitation.bankName && (
-                <p className="mt-2 text-sm font-light text-gray-600">
-                  {invitation.bankName}
-                </p>
+            <div className="flex gap-3 justify-center">
+              {invitation.bankQrUrl && (
+                <div className="flex-1 max-w-[200px] rounded border border-gray-200 p-3 text-center">
+                  <p className="mb-2 text-xs font-light text-gray-500">Nha trai</p>
+                  <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                  {invitation.bankName && <p className="mt-2 text-xs font-light text-gray-600">{invitation.bankName}</p>}
+                  {invitation.bankAccountHolder && <p className="text-xs font-light text-gray-400">{invitation.bankAccountHolder}</p>}
+                </div>
               )}
-              {invitation.bankAccountHolder && (
-                <p className="text-sm font-light text-gray-400">
-                  {invitation.bankAccountHolder}
-                </p>
+              {invitation.brideBankQrUrl && (
+                <div className="flex-1 max-w-[200px] rounded border border-gray-200 p-3 text-center">
+                  <p className="mb-2 text-xs font-light text-gray-500">Nha gai</p>
+                  <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                  {invitation.brideBankName && <p className="mt-2 text-xs font-light text-gray-600">{invitation.brideBankName}</p>}
+                  {invitation.brideBankAccountHolder && <p className="text-xs font-light text-gray-400">{invitation.brideBankAccountHolder}</p>}
+                </div>
               )}
             </div>
           </div>

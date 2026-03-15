@@ -25,6 +25,7 @@ interface InvitationRow {
   wedding_time: string | null
   venue_name: string
   venue_address: string
+  venue_map_url: string
   invitation_message: string
   thank_you_text: string
   photo_urls: string[]
@@ -66,6 +67,7 @@ const FIELD_MAP: Record<string, string> = {
   weddingTime: 'wedding_time',
   venueName: 'venue_name',
   venueAddress: 'venue_address',
+  venueMapUrl: 'venue_map_url',
   invitationMessage: 'invitation_message',
   thankYouText: 'thank_you_text',
   templateId: 'template_id',
@@ -90,6 +92,7 @@ function mapRow(row: InvitationRow): Invitation {
     weddingTime: row.wedding_time,
     venueName: row.venue_name,
     venueAddress: row.venue_address,
+    venueMapUrl: row.venue_map_url,
     invitationMessage: row.invitation_message,
     thankYouText: row.thank_you_text,
     photoUrls: row.photo_urls ?? [],
@@ -124,7 +127,7 @@ function mapMusicTrackRow(row: MusicTrackRow): SystemMusicTrack {
 /** Select clause for all invitation columns */
 const SELECT_ALL =
   'id, user_id, slug, status, template_id, groom_name, bride_name, ' +
-  'wedding_date, wedding_time, venue_name, venue_address, ' +
+  'wedding_date, wedding_time, venue_name, venue_address, venue_map_url, ' +
   'invitation_message, thank_you_text, photo_urls, music_track_id, ' +
   'bank_qr_url, bank_name, bank_account_holder, ' +
   'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
