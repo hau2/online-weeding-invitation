@@ -15,6 +15,11 @@ export interface Invitation {
   venueAddress: string
   invitationMessage: string
   thankYouText: string
+  photoUrls: string[]
+  musicTrackId: string | null
+  bankQrUrl: string | null
+  bankName: string
+  bankAccountHolder: string
   createdAt: string
   updatedAt: string
   deletedAt: string | null
