@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import type { Invitation } from '@repo/types'
+import dynamic from 'next/dynamic'
+import { motion, AnimatePresence } from 'framer-motion'
+import type { Invitation, TemplateId } from '@repo/types'
 import { TemplateRenderer } from '@/components/templates/TemplateRenderer'
-import { EnvelopeAnimation } from './EnvelopeAnimation'
 
 type PublicInvitation = Invitation & {
   expired: boolean
@@ -14,6 +15,31 @@ interface InvitationShellProps {
   invitation: PublicInvitation
 }
 
+// Dynamic imports for heavy client components (avoid SSR issues)
+const EnvelopeAnimation = dynamic(
+  () => import('./EnvelopeAnimation').then((m) => ({ default: m.EnvelopeAnimation })),
+  { ssr: false }
+)
+const FallingPetals = dynamic(
+  () => import('./FallingPetals').then((m) => ({ default: m.FallingPetals })),
+  { ssr: false }
+)
+const MusicPlayer = dynamic(
+  () => import('./MusicPlayer').then((m) => ({ default: m.MusicPlayer })),
+  { ssr: false }
+)
+const CountdownTimer = dynamic(
+  () => import('./CountdownTimer').then((m) => ({ default: m.CountdownTimer })),
+  { ssr: false }
+)
+
+// Template-specific background colors for envelope stage
+const ENVELOPE_BG: Record<TemplateId, string> = {
+  traditional: '#FFF5F5',
+  modern: '#FFF0F5',
+  minimalist: '#FFFFF0',
+}
+
 function sanitizeGuestName(raw: string): string {
   // Strip HTML/script tags, max 50 characters
   const stripped = raw.replace(/<[^>]*>/g, '').trim()
@@ -22,7 +48,6 @@ function sanitizeGuestName(raw: string): string {
 
 export function InvitationShell({ invitation }: InvitationShellProps) {
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
-  const [musicStarted, setMusicStarted] = useState(false)
   const [guestName, setGuestName] = useState<string | undefined>(undefined)
 
   useEffect(() => {
@@ -34,24 +59,86 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
     }
   }, [])
 
+  // Envelope stage: fullscreen envelope animation
   if (!envelopeOpened) {
     return (
-      <EnvelopeAnimation
-        templateId={invitation.templateId}
-        groomName={invitation.groomName}
-        brideName={invitation.brideName}
-        guestName={guestName}
-        onOpen={() => {
-          setEnvelopeOpened(true)
-          setMusicStarted(true)
-        }}
-      />
+      <div
+        className="min-h-screen"
+        style={{ backgroundColor: ENVELOPE_BG[invitation.templateId] }}
+      >
+        <EnvelopeAnimation
+          templateId={invitation.templateId}
+          groomName={invitation.groomName}
+          brideName={invitation.brideName}
+          guestName={guestName}
+          onOpen={() => setEnvelopeOpened(true)}
+        />
+      </div>
     )
   }
 
+  // Revealed stage: full invitation with all interactive components
   return (
-    <div className="min-h-screen">
-      <TemplateRenderer invitation={invitation} />
+    <div className="relative min-h-screen">
+      {/* Falling petals overlay */}
+      <FallingPetals templateId={invitation.templateId} enabled={true} />
+
+      {/* Music player (auto-starts after envelope opens) */}
+      {invitation.musicUrl && (
+        <MusicPlayer musicUrl={invitation.musicUrl} autoStart={true} />
+      )}
+
+      {/* Invitation content with fade-in */}
+      <AnimatePresence>
+        <motion.div
+          key="invitation-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="relative z-10"
+          style={{ scrollBehavior: 'smooth' }}
+        >
+          {/* Scrollable content container */}
+          <div className="overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
+            {/* 1. Full invitation template content */}
+            <TemplateRenderer invitation={invitation} />
+
+            {/* 2. Countdown timer (if wedding date exists and is in the future) */}
+            {invitation.weddingDate && (
+              <div className="px-4 pb-4">
+                <CountdownTimer
+                  weddingDate={invitation.weddingDate}
+                  weddingTime={invitation.weddingTime}
+                  templateId={invitation.templateId}
+                />
+              </div>
+            )}
+
+            {/* 3. QR code (if available) */}
+            {invitation.qrCodeUrl && (
+              <div className="flex flex-col items-center px-4 pb-8">
+                <p className="mb-3 text-sm text-gray-500">
+                  Quet ma de xem thiep cuoi
+                </p>
+                <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
+                  <img
+                    src={invitation.qrCodeUrl}
+                    alt="QR code thiep cuoi"
+                    className="h-40 w-40 object-contain"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* 4. Footer / watermark */}
+            <footer className="pb-8 pt-4 text-center">
+              <p className="text-xs text-gray-400">
+                Thiep cuoi duoc tao boi ThiepCuoiOnline.vn
+              </p>
+            </footer>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

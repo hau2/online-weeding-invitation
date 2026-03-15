@@ -1,6 +1,51 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import type { Invitation } from '@repo/types'
+
+// Track which dynamic component is loaded via loader function
+let dynamicCallIndex = 0
+
+// Mock next/dynamic -- in InvitationShell the order is:
+// 1. EnvelopeAnimation, 2. FallingPetals, 3. MusicPlayer, 4. CountdownTimer
+vi.mock('next/dynamic', () => ({
+  __esModule: true,
+  default: (_loader: () => Promise<any>, _opts?: any) => {
+    const idx = dynamicCallIndex++
+    const MockComponent = (props: any) => {
+      switch (idx) {
+        case 0: // EnvelopeAnimation
+          return (
+            <div data-testid="envelope-animation" onClick={props.onOpen}>
+              <span>{props.groomName} & {props.brideName}</span>
+              {props.guestName && <span>{props.guestName}</span>}
+            </div>
+          )
+        case 1: // FallingPetals
+          return props.enabled ? <div data-testid="falling-petals" /> : null
+        case 2: // MusicPlayer
+          return <div data-testid="music-player" />
+        case 3: // CountdownTimer
+          return <div data-testid="countdown-timer" />
+        default:
+          return <div data-testid="dynamic-unknown" />
+      }
+    }
+    MockComponent.displayName = `DynamicMock_${idx}`
+    return MockComponent
+  },
+}))
+
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => {
+      const { initial, animate, transition, ...rest } = props
+      return <div {...rest}>{children}</div>
+    },
+  },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+  useAnimation: () => ({ start: vi.fn() }),
+}))
 
 // Mock TemplateRenderer
 vi.mock('@/components/templates/TemplateRenderer', () => ({
@@ -43,22 +88,31 @@ const mockInvitation: Invitation & { expired: boolean; musicUrl?: string } = {
 }
 
 describe('InvitationShell', () => {
-  it('should render TemplateRenderer with invitation data when envelope is opened', async () => {
+  beforeEach(() => {
+    // Reset the dynamic call index before each test
+    dynamicCallIndex = 0
+  })
+
+  it('should render envelope with couple names when not opened', async () => {
     const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
     render(<InvitationShell invitation={mockInvitation} />)
 
-    // Initially envelope is closed, should show the cover
+    // Initially envelope is closed, should show the cover with names
     expect(screen.getByText(/Minh/)).toBeInTheDocument()
     expect(screen.getByText(/Thao/)).toBeInTheDocument()
   })
 
-  it('should display all invitation fields after opening', async () => {
+  it('should display template content after opening envelope', async () => {
     const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
     render(<InvitationShell invitation={mockInvitation} />)
 
-    // The couple names should be visible on the invitation cover
-    expect(screen.getByText(/Minh/)).toBeInTheDocument()
-    expect(screen.getByText(/Thao/)).toBeInTheDocument()
+    // Click the envelope to open
+    const envelope = screen.getByTestId('envelope-animation')
+    fireEvent.click(envelope)
+
+    // After opening, template renderer should be visible
+    expect(screen.getByTestId('template-renderer')).toBeInTheDocument()
+    expect(screen.getByText(/Minh & Thao/)).toBeInTheDocument()
   })
 
   it('should have envelope state management', async () => {
@@ -67,5 +121,39 @@ describe('InvitationShell', () => {
 
     // Should render something (envelope cover or template)
     expect(container.firstChild).toBeTruthy()
+  })
+
+  it('should show falling petals and music player after opening', async () => {
+    const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
+    render(<InvitationShell invitation={mockInvitation} />)
+
+    // Open the envelope
+    fireEvent.click(screen.getByTestId('envelope-animation'))
+
+    // After opening, petals and music player should appear
+    expect(screen.getByTestId('falling-petals')).toBeInTheDocument()
+    expect(screen.getByTestId('music-player')).toBeInTheDocument()
+  })
+
+  it('should show countdown timer when wedding date exists', async () => {
+    const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
+    render(<InvitationShell invitation={mockInvitation} />)
+
+    // Open the envelope
+    fireEvent.click(screen.getByTestId('envelope-animation'))
+
+    // Countdown timer should be present
+    expect(screen.getByTestId('countdown-timer')).toBeInTheDocument()
+  })
+
+  it('should show footer watermark after opening', async () => {
+    const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
+    render(<InvitationShell invitation={mockInvitation} />)
+
+    // Open the envelope
+    fireEvent.click(screen.getByTestId('envelope-animation'))
+
+    // Footer watermark should be present
+    expect(screen.getByText(/ThiepCuoiOnline.vn/)).toBeInTheDocument()
   })
 })

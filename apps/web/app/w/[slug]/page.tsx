@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import type { Invitation } from '@repo/types'
@@ -76,5 +77,20 @@ export default async function PublicInvitationPage({
     return <ThankYouPage invitation={invitation} />
   }
 
-  return <InvitationShell invitation={invitation} />
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <InvitationShell invitation={invitation} />
+    </Suspense>
+  )
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-rose-50/50">
+      <div className="flex flex-col items-center gap-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-rose-200 border-t-rose-500" />
+        <p className="text-sm text-rose-400">Dang tai thiep cuoi...</p>
+      </div>
+    </div>
+  )
 }
