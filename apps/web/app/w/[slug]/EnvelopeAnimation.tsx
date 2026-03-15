@@ -169,6 +169,7 @@ export function EnvelopeAnimation({
               backgroundColor: '#FFF',
               boxShadow: '0 -2px 8px rgba(0,0,0,0.1)',
               opacity: 0,
+              zIndex: 15,
             }}
             animate={cardControls}
           >

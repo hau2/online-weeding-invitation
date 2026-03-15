@@ -91,7 +91,7 @@ export function FallingPetals({ templateId, enabled = true }: FallingPetalsProps
   return (
     <div
       className="pointer-events-none fixed inset-0"
-      style={{ zIndex: 1 }}
+      style={{ zIndex: 40 }}
       aria-hidden="true"
     >
       <style dangerouslySetInnerHTML={{ __html: KEYFRAMES_CSS }} />

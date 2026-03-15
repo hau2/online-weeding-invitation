@@ -87,9 +87,23 @@ export function CountdownTimer({ weddingDate, weddingTime, templateId }: Countdo
 
   useEffect(() => {
     // Combine date + time in Vietnam timezone (UTC+7)
+    // weddingDate may be ISO "2026-04-15" or just a date string
     const time = weddingTime || '10:00'
-    const targetStr = `${weddingDate}T${time}:00+07:00`
-    const targetMs = new Date(targetStr).getTime()
+    let targetMs: number
+
+    // Try ISO format first, then fallback to parsing date-only
+    const isoStr = `${weddingDate}T${time}:00+07:00`
+    targetMs = new Date(isoStr).getTime()
+
+    // If ISO parse fails, try raw Date parse
+    if (isNaN(targetMs)) {
+      targetMs = new Date(weddingDate).getTime()
+    }
+
+    // Still invalid — bail out
+    if (isNaN(targetMs)) {
+      return
+    }
 
     function calculate() {
       const diff = targetMs - Date.now()
