@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-03-15T02:24:53.956Z"
-last_activity: "2026-03-15 — Plan 04-03 complete: Photo gallery and bank QR sections in all 3 templates"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-15T02:27:09.231Z"
+last_activity: "2026-03-15 — Plan 04-02 complete: Media editor components (PhotoGallery, MusicPicker, BankQrUpload) with EditorForm integration"
 progress:
   total_phases: 9
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 18
-  completed_plans: 17
+  completed_plans: 18
   percent: 94
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 4 of 9 (Media Upload Pipeline)
-Plan: 4 of 4 in current phase (04-00 + 04-01 + 04-03 complete)
+Plan: 4 of 4 in current phase (04-00 + 04-01 + 04-02 + 04-03 complete)
 Status: In Progress
-Last activity: 2026-03-15 — Plan 04-03 complete: Photo gallery and bank QR sections in all 3 templates
+Last activity: 2026-03-15 — Plan 04-02 complete: Media editor components (PhotoGallery, MusicPicker, BankQrUpload) with EditorForm integration
 
 Progress: [█████████░] 94%
 
@@ -69,6 +69,7 @@ Progress: [█████████░] 94%
 | Phase 04 P00 | 2min | 2 tasks | 6 files |
 | Phase 04 P01 | 8min | 2 tasks | 14 files |
 | Phase 04 P03 | 2min | 2 tasks | 3 files |
+| Phase 04 P02 | 5min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -133,6 +134,10 @@ Recent decisions affecting current work:
 - [Phase 04 P01]: Photo order validation checks exact same URL set to prevent URL injection via reorder endpoint
 - [Phase 04]: Photo gallery uses space-y-3 (Traditional/Modern) and space-y-4 (Minimalist) for vertical stacking
 - [Phase 04]: Bank QR card styled per template palette: burgundy/gold border for Traditional, white shadow card for Modern, thin gray border for Minimalist
+- [Phase 04]: Dynamic import('howler') instead of top-level import to avoid SSR/Node.js Audio context errors
+- [Phase 04]: Native drag events for file drops, dnd-kit for thumbnail reorder -- separate concerns, no conflict
+- [Phase 04]: Photo URLs used directly as dnd-kit sortable IDs (each URL is unique)
+- [Phase 04]: Reorder optimistically updates UI then PATCHes to dedicated photo-order endpoint; reverts on error
 
 ### Pending Todos
 
@@ -146,6 +151,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T02:24:53.953Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-03-15T02:27:09.229Z
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
