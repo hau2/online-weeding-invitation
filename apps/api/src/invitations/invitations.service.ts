@@ -38,6 +38,7 @@ interface InvitationRow {
   bride_bank_qr_url: string | null
   bride_bank_name: string
   bride_bank_account_holder: string
+  qr_code_url: string | null
   created_at: string
   updated_at: string
   deleted_at: string | null
@@ -105,6 +106,7 @@ function mapRow(row: InvitationRow): Invitation {
     brideBankQrUrl: row.bride_bank_qr_url,
     brideBankName: row.bride_bank_name,
     brideBankAccountHolder: row.bride_bank_account_holder,
+    qrCodeUrl: row.qr_code_url,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deletedAt: row.deleted_at,
@@ -133,7 +135,7 @@ const SELECT_ALL =
   'invitation_message, thank_you_text, photo_urls, music_track_id, ' +
   'bank_qr_url, bank_name, bank_account_holder, ' +
   'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
-  'created_at, updated_at, deleted_at'
+  'qr_code_url, created_at, updated_at, deleted_at'
 
 /** Allowed image MIME types for upload validation */
 const ALLOWED_IMAGE_MIMES = new Set([
@@ -294,6 +296,54 @@ export class InvitationsService {
     }
 
     return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Public: find a published invitation by slug (no auth required).
+   * Returns 404 for draft/deleted/nonexistent slugs.
+   * Includes expiry flag and resolved musicUrl when applicable.
+   */
+  async findBySlug(slug: string): Promise<Invitation & { expired: boolean; musicUrl?: string }> {
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select(SELECT_ALL)
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .is('deleted_at', null)
+      .single()
+
+    if (error || !data) {
+      throw new NotFoundException('Khong tim thay thiep cuoi')
+    }
+
+    const row = data as unknown as InvitationRow
+    const mapped = mapRow(row)
+
+    // Determine expiry: wedding_date + 7 day grace period in UTC+7
+    let expired = false
+    if (row.wedding_date) {
+      // Parse wedding date as a moment in Vietnam timezone (UTC+7)
+      const weddingStr = `${row.wedding_date}T23:59:59+07:00`
+      const weddingMs = new Date(weddingStr).getTime()
+      const gracePeriodMs = 7 * 24 * 60 * 60 * 1000
+      expired = Date.now() > weddingMs + gracePeriodMs
+    }
+
+    // Resolve music URL if musicTrackId is set
+    let musicUrl: string | undefined
+    if (row.music_track_id) {
+      const { data: trackData } = await this.supabaseAdmin.client
+        .from('system_music_tracks')
+        .select('url')
+        .eq('id', row.music_track_id)
+        .single()
+
+      if (trackData) {
+        musicUrl = (trackData as unknown as { url: string }).url
+      }
+    }
+
+    return { ...mapped, expired, ...(musicUrl ? { musicUrl } : {}) }
   }
 
   /**

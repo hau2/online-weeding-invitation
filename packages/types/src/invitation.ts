@@ -27,4 +27,5 @@ export interface Invitation {
   createdAt: string
   updatedAt: string
   deletedAt: string | null
+  qrCodeUrl?: string | null
 }
