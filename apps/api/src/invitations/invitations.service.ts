@@ -32,6 +32,9 @@ interface InvitationRow {
   bank_qr_url: string | null
   bank_name: string
   bank_account_holder: string
+  bride_bank_qr_url: string | null
+  bride_bank_name: string
+  bride_bank_account_holder: string
   created_at: string
   updated_at: string
   deleted_at: string | null
@@ -69,6 +72,8 @@ const FIELD_MAP: Record<string, string> = {
   musicTrackId: 'music_track_id',
   bankName: 'bank_name',
   bankAccountHolder: 'bank_account_holder',
+  brideBankName: 'bride_bank_name',
+  brideBankAccountHolder: 'bride_bank_account_holder',
 }
 
 /** Map a snake_case DB row to camelCase for the frontend */
@@ -92,6 +97,9 @@ function mapRow(row: InvitationRow): Invitation {
     bankQrUrl: row.bank_qr_url,
     bankName: row.bank_name,
     bankAccountHolder: row.bank_account_holder,
+    brideBankQrUrl: row.bride_bank_qr_url,
+    brideBankName: row.bride_bank_name,
+    brideBankAccountHolder: row.bride_bank_account_holder,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deletedAt: row.deleted_at,
@@ -119,6 +127,7 @@ const SELECT_ALL =
   'wedding_date, wedding_time, venue_name, venue_address, ' +
   'invitation_message, thank_you_text, photo_urls, music_track_id, ' +
   'bank_qr_url, bank_name, bank_account_holder, ' +
+  'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
   'created_at, updated_at, deleted_at'
 
 /** Allowed image MIME types for upload validation */
@@ -421,6 +430,58 @@ export class InvitationsService {
     const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .update({ bank_qr_url: urlData.publicUrl })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Upload a bride-side bank QR image for an invitation.
+   */
+  async uploadBrideBankQr(
+    userId: string,
+    invitationId: string,
+    file: Express.Multer.File,
+  ): Promise<Invitation> {
+    const invitation = await this.findOne(userId, invitationId)
+
+    const compressed = await this.processImage(file.buffer)
+
+    if (invitation.brideBankQrUrl) {
+      const oldPath = this.extractStoragePath(invitation.brideBankQrUrl, 'bank-qr')
+      if (oldPath) {
+        await this.supabaseAdmin.client.storage
+          .from('bank-qr')
+          .remove([oldPath])
+      }
+    }
+
+    const storagePath = `${invitationId}/bride-bank-qr.webp`
+
+    const { error: uploadError } = await this.supabaseAdmin.client.storage
+      .from('bank-qr')
+      .upload(storagePath, compressed, {
+        contentType: 'image/webp',
+        upsert: true,
+      })
+
+    if (uploadError) {
+      throw new InternalServerErrorException(
+        `Khong the tai anh QR len: ${uploadError.message}`,
+      )
+    }
+
+    const { data: urlData } = this.supabaseAdmin.client.storage
+      .from('bank-qr')
+      .getPublicUrl(storagePath)
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ bride_bank_qr_url: urlData.publicUrl })
       .eq('id', invitationId)
       .select(SELECT_ALL)
       .single()

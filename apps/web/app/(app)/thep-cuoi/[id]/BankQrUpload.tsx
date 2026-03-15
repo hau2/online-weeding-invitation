@@ -14,16 +14,35 @@ interface BankQrUploadProps {
   bankQrUrl: string | null
   bankName: string
   bankAccountHolder: string
+  brideBankQrUrl: string | null
+  brideBankName: string
+  brideBankAccountHolder: string
   onChange: (changes: Partial<Invitation>) => void
 }
 
-export function BankQrUpload({
+function QrSide({
+  label,
   invitationId,
-  bankQrUrl,
-  bankName,
-  bankAccountHolder,
+  endpoint,
+  qrUrl,
+  qrUrlKey,
+  bankNameValue,
+  bankNameKey,
+  bankAccountValue,
+  bankAccountKey,
   onChange,
-}: BankQrUploadProps) {
+}: {
+  label: string
+  invitationId: string
+  endpoint: string
+  qrUrl: string | null
+  qrUrlKey: keyof Invitation
+  bankNameValue: string
+  bankNameKey: keyof Invitation
+  bankAccountValue: string
+  bankAccountKey: keyof Invitation
+  onChange: (changes: Partial<Invitation>) => void
+}) {
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -37,7 +56,7 @@ export function BankQrUpload({
       formData.append('file', file)
 
       const { data, error } = await apiUpload<Invitation>(
-        `/invitations/${invitationId}/bank-qr`,
+        `/invitations/${invitationId}/${endpoint}`,
         formData,
       )
 
@@ -49,33 +68,33 @@ export function BankQrUpload({
       }
 
       if (data) {
-        onChange({ bankQrUrl: data.bankQrUrl })
+        onChange({ [qrUrlKey]: data[qrUrlKey] } as Partial<Invitation>)
       }
 
-      // Reset input
       e.target.value = ''
     },
-    [invitationId, onChange],
+    [invitationId, endpoint, qrUrlKey, onChange],
   )
 
   return (
-    <div className="space-y-4">
-      {/* QR Upload zone */}
+    <div className="flex-1 space-y-3">
+      <p className="text-xs font-semibold text-rose-800 text-center">{label}</p>
+
       <div className="flex flex-col items-center">
-        {bankQrUrl ? (
+        {qrUrl ? (
           <div className="space-y-2 flex flex-col items-center">
-            <div className="relative w-48 h-48 rounded-lg overflow-hidden border border-gray-200">
+            <div className="relative w-36 h-36 rounded-lg overflow-hidden border border-gray-200">
               <Image
-                src={bankQrUrl}
-                alt="QR ngan hang"
+                src={qrUrl}
+                alt={`QR ${label}`}
                 fill
                 className="object-contain"
-                sizes="192px"
+                sizes="144px"
               />
             </div>
             <button
               type="button"
-              className="text-sm text-rose-600 hover:text-rose-700 font-medium"
+              className="text-xs text-rose-600 hover:text-rose-700 font-medium"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
             >
@@ -85,25 +104,22 @@ export function BankQrUpload({
         ) : (
           <button
             type="button"
-            className="w-full py-8 border-2 border-dashed border-rose-200 hover:border-rose-400 rounded-lg flex flex-col items-center justify-center text-rose-400 hover:text-rose-600 transition-colors disabled:opacity-50"
+            className="w-full py-6 border-2 border-dashed border-rose-200 hover:border-rose-400 rounded-lg flex flex-col items-center justify-center text-rose-400 hover:text-rose-600 transition-colors disabled:opacity-50"
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
           >
             {isUploading ? (
-              <Loader2 className="size-8 animate-spin" />
+              <Loader2 className="size-6 animate-spin" />
             ) : (
               <>
-                <Upload className="size-8 mb-2" />
-                <span className="text-sm font-medium">
-                  Tai anh QR ngan hang len
-                </span>
+                <Upload className="size-6 mb-1" />
+                <span className="text-xs font-medium">Tai anh QR</span>
               </>
             )}
           </button>
         )}
       </div>
 
-      {/* Hidden file input */}
       <input
         ref={fileInputRef}
         type="file"
@@ -112,27 +128,67 @@ export function BankQrUpload({
         onChange={handleFileSelect}
       />
 
-      {/* Bank info fields */}
-      <div className="space-y-3">
-        <div className="space-y-1.5">
-          <Label className="text-rose-700 text-xs">Ten ngan hang</Label>
+      <div className="space-y-2">
+        <div className="space-y-1">
+          <Label className="text-rose-700 text-xs">Ngan hang</Label>
           <Input
-            placeholder="VD: Vietcombank, MB Bank..."
-            className="border-rose-200 focus-visible:border-rose-400 focus-visible:ring-rose-200"
-            value={bankName}
-            onChange={(e) => onChange({ bankName: e.target.value })}
+            placeholder="VD: Vietcombank"
+            className="border-rose-200 focus-visible:border-rose-400 focus-visible:ring-rose-200 text-sm h-8"
+            value={bankNameValue}
+            onChange={(e) => onChange({ [bankNameKey]: e.target.value } as Partial<Invitation>)}
           />
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <Label className="text-rose-700 text-xs">Chu tai khoan</Label>
           <Input
             placeholder="VD: NGUYEN VAN A"
-            className="border-rose-200 focus-visible:border-rose-400 focus-visible:ring-rose-200"
-            value={bankAccountHolder}
-            onChange={(e) => onChange({ bankAccountHolder: e.target.value })}
+            className="border-rose-200 focus-visible:border-rose-400 focus-visible:ring-rose-200 text-sm h-8"
+            value={bankAccountValue}
+            onChange={(e) => onChange({ [bankAccountKey]: e.target.value } as Partial<Invitation>)}
           />
         </div>
       </div>
+    </div>
+  )
+}
+
+export function BankQrUpload({
+  invitationId,
+  bankQrUrl,
+  bankName,
+  bankAccountHolder,
+  brideBankQrUrl,
+  brideBankName,
+  brideBankAccountHolder,
+  onChange,
+}: BankQrUploadProps) {
+  return (
+    <div className="flex gap-4">
+      <QrSide
+        label="Nha trai"
+        invitationId={invitationId}
+        endpoint="bank-qr"
+        qrUrl={bankQrUrl}
+        qrUrlKey="bankQrUrl"
+        bankNameValue={bankName}
+        bankNameKey="bankName"
+        bankAccountValue={bankAccountHolder}
+        bankAccountKey="bankAccountHolder"
+        onChange={onChange}
+      />
+      <div className="w-px bg-rose-100" />
+      <QrSide
+        label="Nha gai"
+        invitationId={invitationId}
+        endpoint="bride-bank-qr"
+        qrUrl={brideBankQrUrl}
+        qrUrlKey="brideBankQrUrl"
+        bankNameValue={brideBankName}
+        bankNameKey="brideBankName"
+        bankAccountValue={brideBankAccountHolder}
+        bankAccountKey="brideBankAccountHolder"
+        onChange={onChange}
+      />
     </div>
   )
 }

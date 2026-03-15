@@ -183,6 +183,9 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
             bankQrUrl={values.bankQrUrl}
             bankName={values.bankName}
             bankAccountHolder={values.bankAccountHolder}
+            brideBankQrUrl={values.brideBankQrUrl}
+            brideBankName={values.brideBankName}
+            brideBankAccountHolder={values.brideBankAccountHolder}
             onChange={onChange}
           />
         </AccordionContent>

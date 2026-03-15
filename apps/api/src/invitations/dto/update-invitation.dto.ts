@@ -54,6 +54,12 @@ class InvitationFieldsDto {
 
   @IsString({ message: 'Chu tai khoan phai la chuoi ky tu' })
   bankAccountHolder: string
+
+  @IsString({ message: 'Ten ngan hang co dau phai la chuoi ky tu' })
+  brideBankName: string
+
+  @IsString({ message: 'Chu tai khoan co dau phai la chuoi ky tu' })
+  brideBankAccountHolder: string
 }
 
 /**

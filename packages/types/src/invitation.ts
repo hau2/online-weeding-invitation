@@ -20,6 +20,9 @@ export interface Invitation {
   bankQrUrl: string | null
   bankName: string
   bankAccountHolder: string
+  brideBankQrUrl: string | null
+  brideBankName: string
+  brideBankAccountHolder: string
   createdAt: string
   updatedAt: string
   deletedAt: string | null

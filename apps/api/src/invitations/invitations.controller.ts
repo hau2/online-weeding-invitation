@@ -122,6 +122,26 @@ export class InvitationsController {
   }
 
   /**
+   * Upload a bride-side bank QR image (single file, 5MB max).
+   */
+  @Post(':id/bride-bank-qr')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadBrideBankQr(
+    @CurrentUser() user: JwtPayload,
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.invitationsService.uploadBrideBankQr(user.sub, id, file)
+  }
+
+  /**
    * Update photo order for an invitation.
    * Dedicated endpoint because photoUrls is excluded from FIELD_MAP
    * to prevent arbitrary URL injection via generic PATCH auto-save.
