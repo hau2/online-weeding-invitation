@@ -61,7 +61,7 @@ Each task was committed atomically:
 
 1. **Task 1: Add standalone preview button to editor topbar and clean up PublishButton dropdown** - `0c6f998` (feat)
 
-**Plan metadata:** TBD (docs: complete plan)
+**Plan metadata:** `5148987` (docs: complete plan)
 
 ## Files Created/Modified
 - `apps/web/app/(app)/thep-cuoi/[id]/EditorShell.tsx` - Added Eye icon import, Button import, standalone preview button in topbar; removed onPreview prop from PublishButton usage

@@ -8,7 +8,7 @@
   /* =====================================================
      Typography — font variables set in layout.tsx body
      ===================================================== */
-  --font-sans: var(--font-be-vietnam-pro), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans);
   --font-heading: var(--font-heading), ui-serif, Georgia, serif;
   --font-script: var(--font-script), cursive;
 
