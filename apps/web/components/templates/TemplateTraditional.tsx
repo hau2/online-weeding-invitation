@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import type { TemplateProps } from './types'
+import type { LoveStoryMilestone } from '@repo/types'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Chua chon ngay'
@@ -21,14 +22,28 @@ function formatTime(timeStr: string | null): string {
 export function TemplateTraditional({ invitation, className }: TemplateProps) {
   const groomName = invitation.groomName || 'Chu re'
   const brideName = invitation.brideName || 'Co dau'
-  const venueName = invitation.venueName || ''
-  const venueAddress = invitation.venueAddress || ''
   const message =
     invitation.invitationMessage ||
     'Tran trong kinh moi quy khach den du buoi tiec chung vui cung gia dinh chung toi.'
   const thankYou =
     invitation.thankYouText ||
     'Su hien dien cua quy khach la niem vinh hanh cua chung toi.'
+
+  const hasGroomParents = invitation.groomFather || invitation.groomMother
+  const hasBrideParents = invitation.brideFather || invitation.brideMother
+
+  const hasGroomCeremony =
+    invitation.groomCeremonyDate ||
+    invitation.groomCeremonyTime ||
+    invitation.groomVenueName ||
+    invitation.groomVenueAddress
+  const hasBrideCeremony =
+    invitation.brideCeremonyDate ||
+    invitation.brideCeremonyTime ||
+    invitation.brideVenueName ||
+    invitation.brideVenueAddress
+
+  const loveStory: LoveStoryMilestone[] = invitation.loveStory ?? []
 
   return (
     <div
@@ -67,6 +82,68 @@ export function TemplateTraditional({ invitation, className }: TemplateProps) {
           </h2>
         </div>
 
+        {/* Parents names */}
+        {(hasGroomParents || hasBrideParents) && (
+          <div className="mb-8">
+            {hasGroomParents && (
+              <div className="mb-4">
+                <p className="mb-1 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
+                  Nha trai
+                </p>
+                <p className="text-sm text-[#f0d68a]/80">
+                  {invitation.groomFather && <span>Ong: {invitation.groomFather}</span>}
+                  {invitation.groomFather && invitation.groomMother && (
+                    <span className="mx-2 text-[#d4a843]/40">|</span>
+                  )}
+                  {invitation.groomMother && <span>Ba: {invitation.groomMother}</span>}
+                </p>
+              </div>
+            )}
+            {hasBrideParents && (
+              <div>
+                <p className="mb-1 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
+                  Nha gai
+                </p>
+                <p className="text-sm text-[#f0d68a]/80">
+                  {invitation.brideFather && <span>Ong: {invitation.brideFather}</span>}
+                  {invitation.brideFather && invitation.brideMother && (
+                    <span className="mx-2 text-[#d4a843]/40">|</span>
+                  )}
+                  {invitation.brideMother && <span>Ba: {invitation.brideMother}</span>}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Love story timeline */}
+        {loveStory.length > 0 && (
+          <div className="mb-8">
+            <p className="mb-4 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
+              Cau chuyen tinh yeu
+            </p>
+            <div className="relative mx-auto max-w-xs pl-6 text-left">
+              {/* Vertical line */}
+              <div className="absolute left-[7px] top-1 bottom-1 w-[2px] bg-[#d4a843]/40" />
+              {loveStory.map((milestone, i) => (
+                <div key={i} className="relative mb-5 last:mb-0">
+                  {/* Dot */}
+                  <div className="absolute -left-6 top-1 h-[10px] w-[10px] rounded-full bg-[#d4a843]" />
+                  {milestone.date && (
+                    <p className="text-[11px] text-[#d4a843]/60">{milestone.date}</p>
+                  )}
+                  <p className="text-sm font-medium text-[#f0d68a]">{milestone.title}</p>
+                  {milestone.description && (
+                    <p className="mt-0.5 text-xs leading-relaxed text-[#d4a843]/70">
+                      {milestone.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Ornamental divider */}
         <div className="mx-auto mb-8 flex w-48 items-center justify-center gap-2">
           <div className="h-px flex-1 bg-[#d4a843]/40" />
@@ -74,34 +151,65 @@ export function TemplateTraditional({ invitation, className }: TemplateProps) {
           <div className="h-px flex-1 bg-[#d4a843]/40" />
         </div>
 
-        {/* Date and time */}
-        <div className="mb-8">
-          <p className="mb-1 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
-            Ngay cuoi
-          </p>
-          <p className="font-heading text-lg font-medium text-[#f0d68a]">
-            {formatDate(invitation.weddingDate)}
-          </p>
-          <p className="mt-2 text-sm text-[#d4a843]/80">
-            Luc {formatTime(invitation.weddingTime)}
-          </p>
-        </div>
-
-        {/* Venue */}
-        {(venueName || venueAddress) && (
+        {/* Groom family ceremony - Le Nha Trai */}
+        {hasGroomCeremony && (
           <div className="mb-8">
             <p className="mb-1 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
-              Dia diem
+              Le Nha Trai
             </p>
-            {venueName && (
-              <p className="font-heading text-base font-medium text-[#f0d68a]">
-                {venueName}
-              </p>
+            <p className="font-heading text-lg font-medium text-[#f0d68a]">
+              {formatDate(invitation.groomCeremonyDate)}
+            </p>
+            <p className="mt-2 text-sm text-[#d4a843]/80">
+              Luc {formatTime(invitation.groomCeremonyTime)}
+            </p>
+            {(invitation.groomVenueName || invitation.groomVenueAddress) && (
+              <div className="mt-3">
+                {invitation.groomVenueName && (
+                  <p className="font-heading text-base font-medium text-[#f0d68a]">
+                    {invitation.groomVenueName}
+                  </p>
+                )}
+                {invitation.groomVenueAddress && (
+                  <p className="mt-1 text-sm leading-relaxed text-[#d4a843]/70">
+                    {invitation.groomVenueAddress}
+                  </p>
+                )}
+              </div>
             )}
-            {venueAddress && (
-              <p className="mt-1 text-sm leading-relaxed text-[#d4a843]/70">
-                {venueAddress}
-              </p>
+            {invitation.venueMapUrl && (
+              <a href={invitation.venueMapUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-[#d4a843] underline underline-offset-2">
+                Xem ban do
+              </a>
+            )}
+          </div>
+        )}
+
+        {/* Bride family ceremony - Le Nha Gai */}
+        {hasBrideCeremony && (
+          <div className="mb-8">
+            <p className="mb-1 text-xs uppercase tracking-[0.2em] text-[#d4a843]/60">
+              Le Nha Gai
+            </p>
+            <p className="font-heading text-lg font-medium text-[#f0d68a]">
+              {formatDate(invitation.brideCeremonyDate)}
+            </p>
+            <p className="mt-2 text-sm text-[#d4a843]/80">
+              Luc {formatTime(invitation.brideCeremonyTime)}
+            </p>
+            {(invitation.brideVenueName || invitation.brideVenueAddress) && (
+              <div className="mt-3">
+                {invitation.brideVenueName && (
+                  <p className="font-heading text-base font-medium text-[#f0d68a]">
+                    {invitation.brideVenueName}
+                  </p>
+                )}
+                {invitation.brideVenueAddress && (
+                  <p className="mt-1 text-sm leading-relaxed text-[#d4a843]/70">
+                    {invitation.brideVenueAddress}
+                  </p>
+                )}
+              </div>
             )}
             {invitation.venueMapUrl && (
               <a href={invitation.venueMapUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-[#d4a843] underline underline-offset-2">
