@@ -40,6 +40,11 @@ const baseMockRow = {
   deleted_at: null,
 }
 
+/** Minimal ConfigService mock — returns undefined for all keys (dev mode: skips revalidation) */
+function makeConfigMock() {
+  return { get: vi.fn().mockReturnValue(undefined) }
+}
+
 /**
  * Creates a service with a supabaseAdmin mock.
  * The service uses only the admin client (service role) for all operations.
@@ -51,6 +56,7 @@ function makeService(
 ) {
   return new InvitationsService(
     { client: mock } as any,
+    makeConfigMock() as any,
   )
 }
 

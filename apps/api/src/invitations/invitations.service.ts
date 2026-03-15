@@ -2,8 +2,10 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { randomBytes } from 'crypto'
 import * as sharp from 'sharp'
 import { filetypemime } from 'magic-bytes.js'
@@ -142,8 +144,11 @@ const ALLOWED_IMAGE_MIMES = new Set([
 
 @Injectable()
 export class InvitationsService {
+  private readonly logger = new Logger(InvitationsService.name)
+
   constructor(
     private readonly supabaseAdmin: SupabaseAdminService,
+    private readonly config: ConfigService,
   ) {}
 
   /**
@@ -204,6 +209,36 @@ export class InvitationsService {
       return parts.length > 1 ? parts[parts.length - 1] : ''
     }
     return publicUrl.slice(idx + marker.length)
+  }
+
+  /**
+   * Trigger on-demand ISR revalidation for a public invitation page.
+   * Non-blocking: logs a warning on failure but does not throw.
+   */
+  private async triggerRevalidation(slug: string): Promise<void> {
+    const nextUrl =
+      this.config.get<string>('NEXT_PUBLIC_URL') ?? 'http://localhost:3000'
+    const secret = this.config.get<string>('REVALIDATION_SECRET')
+
+    if (!secret) {
+      // Dev mode — no secret configured, skip silently
+      return
+    }
+
+    try {
+      await fetch(`${nextUrl}/api/revalidate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-revalidation-secret': secret,
+        },
+        body: JSON.stringify({ slug }),
+      })
+    } catch (err) {
+      this.logger.warn(
+        `ISR revalidation failed for slug "${slug}": ${err instanceof Error ? err.message : err}`,
+      )
+    }
   }
 
   async listByUser(userId: string) {
@@ -565,6 +600,8 @@ export class InvitationsService {
         .single()
 
       if (error) throw new InternalServerErrorException(error.message)
+
+      await this.triggerRevalidation(invitation.slug)
       return mapRow(data as unknown as InvitationRow)
     }
 
@@ -581,6 +618,7 @@ export class InvitationsService {
         .single()
 
       if (!error && data) {
+        await this.triggerRevalidation(slug)
         return mapRow(data as unknown as InvitationRow)
       }
 
@@ -603,7 +641,7 @@ export class InvitationsService {
    */
   async unpublish(userId: string, id: string) {
     // Verify ownership
-    await this.findOne(userId, id)
+    const invitation = await this.findOne(userId, id)
 
     const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
@@ -613,6 +651,10 @@ export class InvitationsService {
       .single()
 
     if (error) throw new InternalServerErrorException(error.message)
+
+    if (invitation.slug) {
+      await this.triggerRevalidation(invitation.slug)
+    }
 
     return mapRow(data as unknown as InvitationRow)
   }
