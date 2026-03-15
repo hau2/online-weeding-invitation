@@ -115,6 +115,10 @@ class InvitationFieldsDto {
 
   @IsString({ message: 'Chu tai khoan co dau phai la chuoi ky tu' })
   brideBankAccountHolder: string
+
+  @IsOptional()
+  @IsString({ message: 'Loi nhan save the date phai la chuoi ky tu' })
+  teaserMessage: string
 }
 
 /**

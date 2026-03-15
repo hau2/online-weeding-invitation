@@ -48,6 +48,7 @@ interface InvitationRow {
   bride_bank_qr_url: string | null
   bride_bank_name: string
   bride_bank_account_holder: string
+  teaser_message: string
   qr_code_url: string | null
   created_at: string
   updated_at: string
@@ -98,6 +99,7 @@ const FIELD_MAP: Record<string, string> = {
   bankAccountHolder: 'bank_account_holder',
   brideBankName: 'bride_bank_name',
   brideBankAccountHolder: 'bride_bank_account_holder',
+  teaserMessage: 'teaser_message',
 }
 
 /** Map a snake_case DB row to camelCase for the frontend */
@@ -126,6 +128,7 @@ function mapRow(row: InvitationRow): Invitation {
     venueMapUrl: row.venue_map_url,
     invitationMessage: row.invitation_message,
     thankYouText: row.thank_you_text,
+    teaserMessage: row.teaser_message,
     photoUrls: row.photo_urls ?? [],
     musicTrackId: row.music_track_id,
     bankQrUrl: row.bank_qr_url,
@@ -164,7 +167,7 @@ const SELECT_ALL =
   'bride_father, bride_mother, bride_ceremony_date, bride_ceremony_time, ' +
   'bride_venue_name, bride_venue_address, ' +
   'love_story, venue_map_url, ' +
-  'invitation_message, thank_you_text, photo_urls, music_track_id, ' +
+  'invitation_message, thank_you_text, teaser_message, photo_urls, music_track_id, ' +
   'bank_qr_url, bank_name, bank_account_holder, ' +
   'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
   'qr_code_url, created_at, updated_at, deleted_at'
@@ -380,16 +383,16 @@ export class InvitationsService {
   }
 
   /**
-   * Public: find a published invitation by slug (no auth required).
+   * Public: find a published or save_the_date invitation by slug (no auth required).
    * Returns 404 for draft/deleted/nonexistent slugs.
-   * Includes expiry flag and resolved musicUrl when applicable.
+   * Includes expiry flag, isSaveTheDate flag, and resolved musicUrl when applicable.
    */
-  async findBySlug(slug: string): Promise<Invitation & { expired: boolean; musicUrl?: string }> {
+  async findBySlug(slug: string): Promise<Invitation & { expired: boolean; isSaveTheDate: boolean; musicUrl?: string }> {
     const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .select(SELECT_ALL)
       .eq('slug', slug)
-      .eq('status', 'published')
+      .in('status', ['published', 'save_the_date'])
       .is('deleted_at', null)
       .single()
 
@@ -399,25 +402,29 @@ export class InvitationsService {
 
     const row = data as unknown as InvitationRow
     const mapped = mapRow(row)
+    const isSaveTheDate = row.status === 'save_the_date'
 
-    // Determine expiry: use the LATER of groom/bride ceremony dates + 7 day grace period
-    // Using the later date ensures neither side's invitation expires prematurely
+    // Teasers (save_the_date) don't expire
     let expired = false
-    const dates = [row.groom_ceremony_date, row.bride_ceremony_date].filter(
-      (d): d is string => d !== null,
-    )
-    if (dates.length > 0) {
-      // Pick the latest ceremony date
-      const latestDate = dates.sort().pop()!
-      const ceremonyStr = `${latestDate}T23:59:59+07:00`
-      const ceremonyMs = new Date(ceremonyStr).getTime()
-      const gracePeriodMs = 7 * 24 * 60 * 60 * 1000
-      expired = Date.now() > ceremonyMs + gracePeriodMs
+    if (!isSaveTheDate) {
+      // Determine expiry: use the LATER of groom/bride ceremony dates + 7 day grace period
+      // Using the later date ensures neither side's invitation expires prematurely
+      const dates = [row.groom_ceremony_date, row.bride_ceremony_date].filter(
+        (d): d is string => d !== null,
+      )
+      if (dates.length > 0) {
+        // Pick the latest ceremony date
+        const latestDate = dates.sort().pop()!
+        const ceremonyStr = `${latestDate}T23:59:59+07:00`
+        const ceremonyMs = new Date(ceremonyStr).getTime()
+        const gracePeriodMs = 7 * 24 * 60 * 60 * 1000
+        expired = Date.now() > ceremonyMs + gracePeriodMs
+      }
     }
 
-    // Resolve music URL if musicTrackId is set
+    // Resolve music URL if musicTrackId is set (skip for save_the_date teasers)
     let musicUrl: string | undefined
-    if (row.music_track_id) {
+    if (!isSaveTheDate && row.music_track_id) {
       const { data: trackData } = await this.supabaseAdmin.client
         .from('system_music_tracks')
         .select('url')
@@ -429,7 +436,7 @@ export class InvitationsService {
       }
     }
 
-    return { ...mapped, expired, ...(musicUrl ? { musicUrl } : {}) }
+    return { ...mapped, expired, isSaveTheDate, ...(musicUrl ? { musicUrl } : {}) }
   }
 
   /**
@@ -718,7 +725,89 @@ export class InvitationsService {
   }
 
   /**
+   * Publish as save-the-date teaser.
+   * - Only transitions from 'draft' status.
+   * - Validates minimum fields: groomName, brideName, and at least one ceremony date.
+   * - First time: generates slug + QR code.
+   * - Re-publish (slug exists): just updates status.
+   */
+  async publishSaveTheDate(userId: string, id: string) {
+    const invitation = await this.findOne(userId, id)
+
+    // Only allow transition from 'draft'
+    if (invitation.status === 'published') {
+      throw new BadRequestException(
+        'Thiep da duoc xuat ban day du, khong the chuyen sang Save the Date',
+      )
+    }
+    if (invitation.status !== 'draft') {
+      throw new BadRequestException(
+        'Chi co the xuat ban Save the Date tu trang thai nhap',
+      )
+    }
+
+    // Validate minimum fields
+    if (!invitation.groomName || !invitation.brideName) {
+      throw new BadRequestException(
+        'Can nhap ten chu re va co dau truoc khi xuat ban Save the Date',
+      )
+    }
+    if (!invitation.groomCeremonyDate && !invitation.brideCeremonyDate) {
+      throw new BadRequestException(
+        'Can chon it nhat mot ngay le truoc khi xuat ban Save the Date',
+      )
+    }
+
+    // If slug already exists (previously published), just update status
+    if (invitation.slug) {
+      const { data, error } = await this.supabaseAdmin.client
+        .from('invitations')
+        .update({ status: 'save_the_date' })
+        .eq('id', id)
+        .select(SELECT_ALL)
+        .single()
+
+      if (error) throw new InternalServerErrorException(error.message)
+
+      await this.triggerRevalidation(invitation.slug)
+      return mapRow(data as unknown as InvitationRow)
+    }
+
+    // First time: generate slug with retry
+    const maxAttempts = 3
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const slug = this.generateSlug(invitation.brideName, invitation.groomName)
+
+      const { data, error } = await this.supabaseAdmin.client
+        .from('invitations')
+        .update({ slug, status: 'save_the_date' })
+        .eq('id', id)
+        .select(SELECT_ALL)
+        .single()
+
+      if (!error && data) {
+        await this.generateQrCode(id, slug)
+        await this.triggerRevalidation(slug)
+        return mapRow(data as unknown as InvitationRow)
+      }
+
+      // If it's a unique constraint violation on slug, retry
+      if (error?.code === '23505' && attempt < maxAttempts - 1) {
+        continue
+      }
+
+      throw new InternalServerErrorException(
+        error?.message ?? 'Khong the xuat ban Save the Date',
+      )
+    }
+
+    // Should not reach here, but satisfy TypeScript
+    throw new InternalServerErrorException('Khong the tao slug duy nhat')
+  }
+
+  /**
    * Publish an invitation.
+   * - Allows transition from both 'draft' and 'save_the_date' statuses.
    * - First publish: generates slug via admin client (bypasses RLS for slug write)
    * - Re-publish: just sets status, preserves existing slug
    * - Slug collision: retries up to 3 times with new random suffix

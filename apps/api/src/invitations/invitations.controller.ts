@@ -159,6 +159,15 @@ export class InvitationsController {
     )
   }
 
+  @Post(':id/publish-save-the-date')
+  @HttpCode(HttpStatus.OK)
+  publishSaveTheDate(
+    @CurrentUser() user: JwtPayload,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.invitationsService.publishSaveTheDate(user.sub, id)
+  }
+
   @Post(':id/publish')
   @HttpCode(HttpStatus.OK)
   publish(
