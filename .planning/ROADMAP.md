@@ -119,6 +119,26 @@ Plans:
 - [ ] 05-05-PLAN.md — MusicPlayer (howler.js floating button, equalizer bars) + CountdownTimer (flip-clock) + guest name parsing
 - [ ] 05-06-PLAN.md — Wire all components into InvitationShell + visual checkpoint
 
+### Phase 05.1: Dual-family ceremony info — groom and bride family details, parents names, dual ceremony venues and times (INSERTED)
+
+**Goal:** Vietnamese invitations display culturally correct dual-family ceremony information with per-family parent names, venues, dates/times, a love story timeline, and side-specific URLs so each family receives only their relevant details
+**Requirements**: DUAL-SCHEMA, DUAL-API, DUAL-EDITOR, DUAL-TEMPLATES, DUAL-LOVESTORY, DUAL-URL, DUAL-DASHBOARD
+**Depends on:** Phase 5
+**Success Criteria** (what must be TRUE):
+  1. Each family side (Nha trai / Nha gai) has independent father, mother, ceremony date/time, and venue fields in the database and editor
+  2. Love story timeline supports up to 5 milestones (date + title + description) stored as JSONB
+  3. All 3 templates render parents names, per-family ceremony details, and love story timeline with template-appropriate styling
+  4. Visiting /w/{slug}?side=groom shows only groom family info, and ?side=bride shows only bride family info (default = groom)
+  5. Dashboard shows two copy-link buttons (Link nha trai / Link nha gai) per published invitation
+  6. Post-publish celebration dialog displays both family-specific URLs
+**Plans:** 4 plans
+
+Plans:
+- [ ] 05.1-01-PLAN.md — DB migration (per-family columns + love_story JSONB, migrate old data, drop old columns), shared types update, NestJS service/DTO update
+- [ ] 05.1-02-PLAN.md — Editor form: replace single ceremony section with Nha trai + Nha gai + love story sections (9 total)
+- [ ] 05.1-03-PLAN.md — Template rendering: parents names, love story timeline, per-family ceremony details in all 3 templates
+- [ ] 05.1-04-PLAN.md — Public page dual-URL system (?side=groom/bride) + dashboard dual copy-link buttons + celebration dialog
+
 ### Phase 6: Save-the-Date
 **Goal**: A couple can publish a lightweight teaser page with just their names and wedding date before the full invitation is ready, using the same permanent URL
 **Depends on**: Phase 5
@@ -199,7 +219,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 → 8 → 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -208,6 +228,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 3. Invitation Editor Core | 5/5 | Complete | 2026-03-14 |
 | 4. Media Upload Pipeline | 0/4 | Not started | - |
 | 5. Public Invitation Page | 4/7 | In Progress|  |
+| 5.1 Dual-Family Ceremony | 0/4 | Not started | - |
 | 6. Save-the-Date | 0/3 | Not started | - |
 | 7. Monetization | 0/5 | Not started | - |
 | 8. Admin Panel | 0/8 | Not started | - |
