@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-00-PLAN.md
-last_updated: "2026-03-15T12:05:26.889Z"
-last_activity: "2026-03-15 — Plan 05-00 complete: Wave 0 test stubs (33 it.todo entries) and qrcode dependency installed"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-15T13:00:37.696Z"
+last_activity: "2026-03-15 — Plan 05-02 complete: ISR revalidation route + NestJS trigger + htmlLimitedBots for Zalo/Facebook crawlers"
 progress:
   total_phases: 9
   completed_phases: 4
   total_plans: 25
-  completed_plans: 19
+  completed_plans: 20
   percent: 76
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 5 of 9 (Public Invitation Page)
-Plan: 1 of 5 in current phase (05-00 complete)
+Plan: 3 of 7 in current phase (05-00 + 05-01 + 05-02 complete)
 Status: In Progress
-Last activity: 2026-03-15 — Plan 05-00 complete: Wave 0 test stubs (33 it.todo entries) and qrcode dependency installed
+Last activity: 2026-03-15 — Plan 05-02 complete: ISR revalidation route + NestJS trigger + htmlLimitedBots for Zalo/Facebook crawlers
 
 Progress: [████████░░] 76%
 
@@ -71,6 +71,7 @@ Progress: [████████░░] 76%
 | Phase 04 P03 | 2min | 2 tasks | 3 files |
 | Phase 04 P02 | 5min | 2 tasks | 8 files |
 | Phase 05 P00 | 3min | 2 tasks | 10 files |
+| Phase 05 P02 | 5min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -140,6 +141,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Photo URLs used directly as dnd-kit sortable IDs (each URL is unique)
 - [Phase 04]: Reorder optimistically updates UI then PATCHes to dedicated photo-order endpoint; reverts on error
 - [Phase 05 P00]: Followed existing vitest it.todo() pattern from Phase 3/4 stubs for consistency
+- [Phase 05]: triggerRevalidation is non-blocking with try/catch and logger.warn -- revalidation failure never blocks publish/unpublish
+- [Phase 05]: Revalidation skipped silently when REVALIDATION_SECRET not configured (dev mode)
+- [Phase 05]: ConfigService injected into InvitationsService for NEXT_PUBLIC_URL and REVALIDATION_SECRET
 
 ### Pending Todos
 
@@ -153,6 +157,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T12:05:26.887Z
-Stopped at: Completed 05-00-PLAN.md
+Last session: 2026-03-15T13:00:37.693Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None

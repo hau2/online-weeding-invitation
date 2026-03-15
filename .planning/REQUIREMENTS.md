@@ -43,8 +43,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PUBL-06**: Displays all invitation details: names, photos, message, date/time, venue, bank QR, music, thank-you
 - [x] **PUBL-07**: Wedding date countdown timer
 - [x] **PUBL-08**: Background music with explicit play/pause toggle (no autoplay)
-- [ ] **PUBL-09**: Zalo/Facebook OG meta tags for proper link preview
-- [ ] **PUBL-10**: Mobile-first, loads fast on 3G/4G (<1MB page weight)
+- [x] **PUBL-09**: Zalo/Facebook OG meta tags for proper link preview
+- [x] **PUBL-10**: Mobile-first, loads fast on 3G/4G (<1MB page weight)
 - [x] **PUBL-11**: Auto-expires after wedding date + configurable grace period
 - [x] **PUBL-12**: Switches to thank-you page after wedding date instead of just expiring
 
@@ -147,8 +147,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PUBL-06 | Phase 5 | Complete |
 | PUBL-07 | Phase 5 | Complete |
 | PUBL-08 | Phase 5 | Complete |
-| PUBL-09 | Phase 5 | Pending |
-| PUBL-10 | Phase 9 | Pending |
+| PUBL-09 | Phase 5 | Complete |
+| PUBL-10 | Phase 9 | Complete |
 | PUBL-11 | Phase 5 | Complete |
 | PUBL-12 | Phase 5 | Complete |
 | SAVE-01 | Phase 6 | Pending |
