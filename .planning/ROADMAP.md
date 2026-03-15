@@ -108,18 +108,16 @@ Plans:
   5. Background music plays only after the guest taps the envelope (no autoplay); a visible play/pause button lets guests control it
   6. Sharing the link on Zalo or Facebook shows the couple's photo as the preview image with the invitation title
   7. After the wedding date plus the configured grace period, the URL switches to a thank-you page rather than going to a 404
-**Plans**: TBD
+**Plans**: 7 plans
 
 Plans:
-- [ ] 05-01: ISR public page at /w/[slug] — SSR for OG tags, ISR with on-demand revalidation triggered by NestJS on publish/unpublish
-- [ ] 05-02: QR generation service — NestJS generates PNG once at publish time, stores to Supabase Storage, slug permanently locked at DB constraint level
-- [ ] 05-03: EnvelopeAnimation component — framer-motion orchestration (ssr: false), multi-stage reveal, performance gate (halve particle density if frame > 20ms)
-- [ ] 05-04: Falling petals (CSS keyframes) and confetti burst (canvas-confetti via next/dynamic) — zero-JS petals for 3G
-- [ ] 05-05: Background music player (howler.js) — unlocked by envelope-tap gesture, loop, play/pause toggle, cross-mount persistence
-- [ ] 05-06: Guest name personalization — client-side ?to=Name parsing, personalized greeting rendering
-- [ ] 05-07: Zalo/Facebook OG meta tags — server-rendered og:image (couple photo), og:title, og:description
-- [ ] 05-08: Wedding date countdown timer and post-wedding thank-you page switch
-- [ ] 05-09: Auto-expiry logic — NestJS checks expiry on page request; returns expired state with thank-you content after grace period
+- [ ] 05-00-PLAN.md — Wave 0: test stubs for all PUBL requirements + install qrcode dependency
+- [ ] 05-01-PLAN.md — Public NestJS endpoint (findBySlug with expiry logic) + QR code generation at publish time
+- [ ] 05-02-PLAN.md — ISR revalidation route handler + NestJS revalidation trigger + htmlLimitedBots for Zalo
+- [ ] 05-03-PLAN.md — Public page shell at /w/[slug] with generateMetadata OG tags, ThankYouPage, InvitationShell skeleton
+- [ ] 05-04-PLAN.md — EnvelopeAnimation (framer-motion multi-stage reveal, confetti burst) + FallingPetals (CSS keyframes)
+- [ ] 05-05-PLAN.md — MusicPlayer (howler.js floating button, equalizer bars) + CountdownTimer (flip-clock) + guest name parsing
+- [ ] 05-06-PLAN.md — Wire all components into InvitationShell + visual checkpoint
 
 ### Phase 6: Save-the-Date
 **Goal**: A couple can publish a lightweight teaser page with just their names and wedding date before the full invitation is ready, using the same permanent URL
@@ -207,7 +205,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 2. App Shell | 4/4 | Complete   | 2026-03-14 |
 | 3. Invitation Editor Core | 5/5 | Complete | 2026-03-14 |
 | 4. Media Upload Pipeline | 0/4 | Not started | - |
-| 5. Public Invitation Page | 0/9 | Not started | - |
+| 5. Public Invitation Page | 0/7 | Not started | - |
 | 6. Save-the-Date | 0/3 | Not started | - |
 | 7. Monetization | 0/5 | Not started | - |
 | 8. Admin Panel | 0/8 | Not started | - |
