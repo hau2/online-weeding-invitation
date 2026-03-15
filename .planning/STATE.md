@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-03-PLAN.md
-last_updated: "2026-03-15T13:09:16Z"
-last_activity: "2026-03-15 — Plan 05-03 complete: ISR-cached /w/[slug] server component with OG meta, ThankYouPage, InvitationShell"
+stopped_at: Completed 05-04-PLAN.md
+last_updated: "2026-03-15T13:18:27.229Z"
+last_activity: "2026-03-15 — Plan 05-05 complete: MusicPlayer with howler.js, CountdownTimer flip-clock, parseGuestName utility"
 progress:
   total_phases: 9
   completed_phases: 4
   total_plans: 25
-  completed_plans: 22
-  percent: 80
+  completed_plans: 24
+  percent: 96
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 5 of 9 (Public Invitation Page)
-Plan: 4 of 7 in current phase (05-00 + 05-01 + 05-02 + 05-03 complete)
+Plan: 6 of 7 in current phase (05-00 through 05-05 complete)
 Status: In Progress
-Last activity: 2026-03-15 — Plan 05-03 complete: ISR-cached /w/[slug] server component with OG meta, ThankYouPage, InvitationShell
+Last activity: 2026-03-15 — Plan 05-05 complete: MusicPlayer with howler.js, CountdownTimer flip-clock, parseGuestName utility
 
-Progress: [████████░░] 80%
+Progress: [██████████] 96%
 
 ## Performance Metrics
 
@@ -74,6 +74,8 @@ Progress: [████████░░] 80%
 | Phase 05 P02 | 5min | 2 tasks | 4 files |
 | Phase 05 P01 | 8min | 2 tasks | 6 files |
 | Phase 05 P03 | 3min | 2 tasks | 5 files |
+| Phase 05 P05 | 4min | 2 tasks | 7 files |
+| Phase 05 P04 | 4min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -151,6 +153,12 @@ Recent decisions affecting current work:
 - [Phase 05]: metadataBase from NEXT_PUBLIC_SITE_URL for absolute OG image URL composition
 - [Phase 05]: Template-aware ThankYouPage colors via TEMPLATE_COLORS record mapping templateId to color palette
 - [Phase 05]: InvitationShell uses simple "Mo thiep" button as placeholder for EnvelopeAnimation (Plan 05-04)
+- [Phase 05]: Equalizer and flip keyframes in globals.css rather than styled-jsx for consistency with project CSS approach
+- [Phase 05]: parseGuestName in shared utils.ts (not inline in component) for reuse by EnvelopeAnimation and InvitationShell
+- [Phase 05]: FlipCard sub-component with CSS perspective for 3D digit flip on value change
+- [Phase 05]: window.location.search for ?to= parsing instead of useSearchParams -- avoids Next.js router dependency in tests and keeps guest name purely client-side
+- [Phase 05]: Deterministic seeded PRNG for petal randomization -- prevents React hydration mismatch from Math.random()
+- [Phase 05]: Unicode U+56CD (double happiness) for traditional wax seal, heart for modern/minimalist
 
 ### Pending Todos
 
@@ -164,6 +172,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T13:09:16Z
-Stopped at: Completed 05-03-PLAN.md
+Last session: 2026-03-15T13:18:27.227Z
+Stopped at: Completed 05-04-PLAN.md
 Resume file: None
