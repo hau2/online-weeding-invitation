@@ -61,7 +61,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 1: Cap doi */}
       <AccordionItem value="couple">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Cap doi (1/9)
+          Cap doi (1/10)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">
@@ -90,7 +90,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 2: Nha trai */}
       <AccordionItem value="groom-family">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Nha trai (2/9)
+          Nha trai (2/10)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">
@@ -161,7 +161,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 3: Nha gai */}
       <AccordionItem value="bride-family">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Nha gai (3/9)
+          Nha gai (3/10)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">
@@ -232,7 +232,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 4: Cau chuyen tinh yeu */}
       <AccordionItem value="love-story">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Cau chuyen tinh yeu (4/9){' '}
+          Cau chuyen tinh yeu (4/10){' '}
           <span className="font-normal text-xs text-gray-400 ml-1">
             ({loveStory.length}/5 moc)
           </span>
@@ -312,7 +312,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 5: Loi moi */}
       <AccordionItem value="message">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Loi moi (5/9)
+          Loi moi (5/10)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">
@@ -342,10 +342,34 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
         </AccordionContent>
       </AccordionItem>
 
-      {/* Section 6: Anh cuoi */}
+      {/* Section 6: Save the Date */}
+      <AccordionItem value="save-the-date">
+        <AccordionTrigger className="text-rose-700 font-semibold text-sm">
+          Save the Date (6/10)
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-4 py-2">
+            <div className="space-y-1.5">
+              <Label className="text-rose-700 text-xs">Loi nhan Save the Date</Label>
+              <Textarea
+                placeholder="VD: Chung toi sap ket hon! Thiep cuoi se duoc gui sau."
+                rows={3}
+                className="border-rose-200 focus-visible:border-rose-400 focus-visible:ring-rose-200"
+                value={values.teaserMessage}
+                onChange={(e) => onChange({ teaserMessage: e.target.value })}
+              />
+              <p className="text-xs text-gray-400">
+                Loi nhan nay se hien thi tren trang Save the Date (tuy chon)
+              </p>
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* Section 7: Anh cuoi */}
       <AccordionItem value="photos">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Anh cuoi (6/9)
+          Anh cuoi (7/10)
         </AccordionTrigger>
         <AccordionContent>
           <PhotoGallery
@@ -359,7 +383,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 7: Nhac nen */}
       <AccordionItem value="music">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Nhac nen (7/9)
+          Nhac nen (8/10)
         </AccordionTrigger>
         <AccordionContent>
           <MusicPicker
@@ -372,7 +396,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 8: QR Ngan hang */}
       <AccordionItem value="bankqr">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          QR Ngan hang (8/9)
+          QR Ngan hang (9/10)
         </AccordionTrigger>
         <AccordionContent>
           <BankQrUpload
@@ -391,7 +415,7 @@ export function EditorForm({ invitationId, values, onChange }: EditorFormProps) 
       {/* Section 9: Ban do */}
       <AccordionItem value="map">
         <AccordionTrigger className="text-rose-700 font-semibold text-sm">
-          Ban do (9/9)
+          Ban do (10/10)
         </AccordionTrigger>
         <AccordionContent>
           <div className="space-y-4 py-2">

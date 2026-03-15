@@ -46,7 +46,7 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
     day: '2-digit', month: '2-digit', year: 'numeric',
   })
 
-  const canViewPublic = invitation.status === 'published' && invitation.slug
+  const canViewPublic = (invitation.status === 'published' || invitation.status === 'save_the_date') && invitation.slug
 
   const copyUrl = async (side: 'groom' | 'bride') => {
     const url = `${window.location.origin}/w/${invitation.slug}?side=${side}`
