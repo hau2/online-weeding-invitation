@@ -168,6 +168,29 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Music player equalizer animation */
+@keyframes equalizer {
+  0% {
+    transform: scaleY(0.3);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+/* Countdown timer flip animation */
+@keyframes flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
