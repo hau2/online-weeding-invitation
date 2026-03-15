@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05.1-03-PLAN.md
-last_updated: "2026-03-15T17:37:43.305Z"
+stopped_at: Completed 05.1-02-PLAN.md
+last_updated: "2026-03-15T17:37:50.587Z"
 last_activity: "2026-03-16 — Plan 05.1-03 complete: All 3 templates updated with dual-family ceremony info and love story timeline"
 progress:
   total_phases: 10
@@ -168,6 +168,8 @@ Recent decisions affecting current work:
 - [Phase 05.1]: LoveStoryMilestoneDto: nested validation with @ValidateNested + @Type, max 5 milestones, title 100 chars, desc 300 chars
 - [Phase 05.1]: Vietnamese honorifics Ong/Ba used for parents names display on formal invitation
 - [Phase 05.1]: Love story timeline: vertical 2px line with 10px dot circles, template-specific palettes (gold/rose/gray)
+- [Phase 05.1]: Love story editor uses immutable array copy + onChange for auto-save compatibility
+- [Phase 05.1]: Ban do section uses shared venueMapUrl (not per-family) per deferred decision
 
 ### Roadmap Evolution
 
@@ -185,6 +187,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T17:37:33.776Z
-Stopped at: Completed 05.1-03-PLAN.md
+Last session: 2026-03-15T17:37:50.585Z
+Stopped at: Completed 05.1-02-PLAN.md
 Resume file: None
