@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-15T13:04:22.783Z"
-last_activity: "2026-03-15 — Plan 05-02 complete: ISR revalidation route + NestJS trigger + htmlLimitedBots for Zalo/Facebook crawlers"
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-03-15T13:09:16Z"
+last_activity: "2026-03-15 — Plan 05-03 complete: ISR-cached /w/[slug] server component with OG meta, ThankYouPage, InvitationShell"
 progress:
   total_phases: 9
   completed_phases: 4
   total_plans: 25
-  completed_plans: 21
-  percent: 76
+  completed_plans: 22
+  percent: 80
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 5 of 9 (Public Invitation Page)
-Plan: 3 of 7 in current phase (05-00 + 05-01 + 05-02 complete)
+Plan: 4 of 7 in current phase (05-00 + 05-01 + 05-02 + 05-03 complete)
 Status: In Progress
-Last activity: 2026-03-15 — Plan 05-02 complete: ISR revalidation route + NestJS trigger + htmlLimitedBots for Zalo/Facebook crawlers
+Last activity: 2026-03-15 — Plan 05-03 complete: ISR-cached /w/[slug] server component with OG meta, ThankYouPage, InvitationShell
 
-Progress: [████████░░] 76%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -73,6 +73,7 @@ Progress: [████████░░] 76%
 | Phase 05 P00 | 3min | 2 tasks | 10 files |
 | Phase 05 P02 | 5min | 2 tasks | 4 files |
 | Phase 05 P01 | 8min | 2 tasks | 6 files |
+| Phase 05 P03 | 3min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -147,6 +148,9 @@ Recent decisions affecting current work:
 - [Phase 05]: ConfigService injected into InvitationsService for NEXT_PUBLIC_URL and REVALIDATION_SECRET
 - [Phase 05]: PublicInvitationsController is separate from JwtGuard-protected controller for clean auth separation
 - [Phase 05]: QR generation failure is non-blocking (try/catch with logger.warn) -- never blocks publish flow
+- [Phase 05]: metadataBase from NEXT_PUBLIC_SITE_URL for absolute OG image URL composition
+- [Phase 05]: Template-aware ThankYouPage colors via TEMPLATE_COLORS record mapping templateId to color palette
+- [Phase 05]: InvitationShell uses simple "Mo thiep" button as placeholder for EnvelopeAnimation (Plan 05-04)
 
 ### Pending Todos
 
@@ -160,6 +164,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T13:04:22.781Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-03-15T13:09:16Z
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
