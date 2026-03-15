@@ -131,7 +131,7 @@ Plans:
   4. Visiting /w/{slug}?side=groom shows only groom family info, and ?side=bride shows only bride family info (default = groom)
   5. Dashboard shows two copy-link buttons (Link nha trai / Link nha gai) per published invitation
   6. Post-publish celebration dialog displays both family-specific URLs
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 - [ ] 05.1-01-PLAN.md — DB migration (per-family columns + love_story JSONB, migrate old data, drop old columns), shared types update, NestJS service/DTO update

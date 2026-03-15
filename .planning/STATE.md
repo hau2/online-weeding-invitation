@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 05.1-02-PLAN.md
-last_updated: "2026-03-15T17:37:50.587Z"
-last_activity: "2026-03-16 — Plan 05.1-03 complete: All 3 templates updated with dual-family ceremony info and love story timeline"
+status: completed
+stopped_at: Completed 05.1-04-PLAN.md (Phase 05.1 complete)
+last_updated: "2026-03-15T17:45:34.239Z"
+last_activity: "2026-03-16 — Plan 05.1-04 complete: Side-aware public page with ?side= filtering and dual copy-link dashboard buttons"
 progress:
   total_phases: 10
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 29
-  completed_plans: 27
-  percent: 93
+  completed_plans: 28
+  percent: 97
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 5.1 of 9 (Dual-Family Ceremony Info)
-Plan: 4 of 4 in current phase (05.1-03 complete)
-Status: In Progress
-Last activity: 2026-03-16 — Plan 05.1-03 complete: All 3 templates updated with dual-family ceremony info and love story timeline
+Plan: 4 of 4 in current phase (05.1-04 complete -- phase complete)
+Status: Phase 05.1 Complete
+Last activity: 2026-03-16 — Plan 05.1-04 complete: Side-aware public page with ?side= filtering and dual copy-link dashboard buttons
 
-Progress: [█████████░] 93%
+Progress: [██████████] 97%
 
 ## Performance Metrics
 
@@ -79,6 +79,7 @@ Progress: [█████████░] 93%
 | Phase 05.1 P01 | 12min | 2 tasks | 7 files |
 | Phase 05.1 P03 | 2min | 1 tasks | 3 files |
 | Phase 05.1 P02 | 2 | 1 tasks | 1 files |
+| Phase 05.1 P04 | 4 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -170,6 +171,10 @@ Recent decisions affecting current work:
 - [Phase 05.1]: Love story timeline: vertical 2px line with 10px dot circles, template-specific palettes (gold/rose/gray)
 - [Phase 05.1]: Love story editor uses immutable array copy + onChange for auto-save compatibility
 - [Phase 05.1]: Ban do section uses shared venueMapUrl (not per-family) per deferred decision
+- [Phase 05.1]: Side filtering done at InvitationShell level via useMemo -- templates receive pre-filtered data
+- [Phase 05.1]: Default side is groom when no ?side= param provided
+- [Phase 05.1]: OG metadata uses groom ceremony date/venue (server-side, no side param)
+- [Phase 05.1]: Copy-link buttons replace single Xem trang view button on dashboard cards
 
 ### Roadmap Evolution
 
@@ -187,6 +192,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T17:37:50.585Z
-Stopped at: Completed 05.1-02-PLAN.md
+Last session: 2026-03-15T17:45:34.237Z
+Stopped at: Completed 05.1-04-PLAN.md (Phase 05.1 complete)
 Resume file: None
