@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { Invitation } from '@repo/types'
 import { TemplateRenderer } from '@/components/templates/TemplateRenderer'
+import { EnvelopeAnimation } from './EnvelopeAnimation'
 
 type PublicInvitation = Invitation & {
   expired: boolean
@@ -13,32 +15,37 @@ interface InvitationShellProps {
   invitation: PublicInvitation
 }
 
+function sanitizeGuestName(raw: string): string {
+  // Strip HTML/script tags, max 50 characters
+  const stripped = raw.replace(/<[^>]*>/g, '').trim()
+  return stripped.slice(0, 50)
+}
+
 export function InvitationShell({ invitation }: InvitationShellProps) {
-  // State placeholders for envelope and music (wired in Plan 05-04)
+  const searchParams = useSearchParams()
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [musicStarted, setMusicStarted] = useState(false)
+  const [guestName, setGuestName] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    const toParam = searchParams.get('to')
+    if (toParam) {
+      setGuestName(sanitizeGuestName(toParam))
+    }
+  }, [searchParams])
 
   if (!envelopeOpened) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-rose-50 to-white">
-        <div className="text-center">
-          <p className="mb-4 text-sm tracking-widest text-gray-500 uppercase">
-            Tran trong kinh moi
-          </p>
-          <h1 className="mb-6 font-serif text-3xl font-bold text-gray-800">
-            {invitation.groomName} & {invitation.brideName}
-          </h1>
-          <button
-            onClick={() => {
-              setEnvelopeOpened(true)
-              setMusicStarted(true)
-            }}
-            className="rounded-full bg-rose-500 px-8 py-3 text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
-          >
-            Mo thiep
-          </button>
-        </div>
-      </div>
+      <EnvelopeAnimation
+        templateId={invitation.templateId}
+        groomName={invitation.groomName}
+        brideName={invitation.brideName}
+        guestName={guestName}
+        onOpen={() => {
+          setEnvelopeOpened(true)
+          setMusicStarted(true)
+        }}
+      />
     )
   }
 
