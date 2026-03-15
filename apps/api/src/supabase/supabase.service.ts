@@ -34,8 +34,10 @@ export class SupabaseUserService {
     @Inject(REQUEST) private readonly request: Request,
     private readonly config: ConfigService,
   ) {
-    // Extract Bearer JWT from Authorization header
-    const token = request.headers.authorization?.replace('Bearer ', '') ?? ''
+    // Extract JWT from cookie first, then Authorization header
+    const token = request.cookies?.['auth-token']
+      ?? request.headers.authorization?.replace('Bearer ', '')
+      ?? ''
     this.client = createClient(
       this.config.getOrThrow<string>('SUPABASE_URL'),
       this.config.getOrThrow<string>('SUPABASE_ANON_KEY'),

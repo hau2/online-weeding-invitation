@@ -9,13 +9,21 @@ async function getInvitation(id: string): Promise<Invitation | null> {
   if (!token) return null
 
   try {
-    const res = await fetch(`http://localhost:3001/invitations/${id}`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
+    const url = `${apiUrl}/invitations/${id}`
+    console.log('[EditorPage] fetching:', url)
+    const res = await fetch(url, {
       headers: { Cookie: `auth-token=${token}` },
       cache: 'no-store',
     })
-    if (!res.ok) return null
+    if (!res.ok) {
+      const body = await res.text()
+      console.error('[EditorPage] API error:', res.status, body)
+      return null
+    }
     return res.json()
-  } catch {
+  } catch (err) {
+    console.error('[EditorPage] fetch error:', err)
     return null
   }
 }

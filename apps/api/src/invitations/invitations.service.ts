@@ -4,10 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { randomBytes } from 'crypto'
-import {
-  SupabaseUserService,
-  SupabaseAdminService,
-} from '../supabase/supabase.service'
+import { SupabaseAdminService } from '../supabase/supabase.service'
 import { CreateInvitationDto } from './dto/create-invitation.dto'
 import { UpdateInvitationDto } from './dto/update-invitation.dto'
 
@@ -26,7 +23,6 @@ interface InvitationRow {
   venue_address: string
   invitation_message: string
   thank_you_text: string
-  view_count: number
   created_at: string
   updated_at: string
   deleted_at: string | null
@@ -61,7 +57,6 @@ function mapRow(row: InvitationRow) {
     venueAddress: row.venue_address,
     invitationMessage: row.invitation_message,
     thankYouText: row.thank_you_text,
-    viewCount: row.view_count ?? 0,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deletedAt: row.deleted_at,
@@ -72,12 +67,11 @@ function mapRow(row: InvitationRow) {
 const SELECT_ALL =
   'id, user_id, slug, status, template_id, groom_name, bride_name, ' +
   'wedding_date, wedding_time, venue_name, venue_address, ' +
-  'invitation_message, thank_you_text, view_count, created_at, updated_at, deleted_at'
+  'invitation_message, thank_you_text, created_at, updated_at, deleted_at'
 
 @Injectable()
 export class InvitationsService {
   constructor(
-    private readonly supabaseUser: SupabaseUserService,
     private readonly supabaseAdmin: SupabaseAdminService,
   ) {}
 
@@ -105,7 +99,7 @@ export class InvitationsService {
   }
 
   async listByUser(userId: string) {
-    const { data, error } = await this.supabaseUser.client
+    const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .select(SELECT_ALL)
       .eq('user_id', userId)
@@ -118,7 +112,7 @@ export class InvitationsService {
   }
 
   async create(userId: string, dto: CreateInvitationDto) {
-    const { data, error } = await this.supabaseUser.client
+    const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .insert({
         user_id: userId, // ALWAYS from JWT, never from dto
@@ -144,7 +138,7 @@ export class InvitationsService {
    * Returns 404 for non-existent OR non-owned invitations (no existence leaking).
    */
   async findOne(userId: string, id: string) {
-    const { data, error } = await this.supabaseUser.client
+    const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .select(SELECT_ALL)
       .eq('id', id)
@@ -176,7 +170,7 @@ export class InvitationsService {
       }
     }
 
-    const { data, error } = await this.supabaseUser.client
+    const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .update(updateObj)
       .eq('id', id)
@@ -199,7 +193,7 @@ export class InvitationsService {
 
     // If slug already exists, just update status (use user client, no slug change)
     if (invitation.slug) {
-      const { data, error } = await this.supabaseUser.client
+      const { data, error } = await this.supabaseAdmin.client
         .from('invitations')
         .update({ status: 'published' })
         .eq('id', id)
@@ -247,7 +241,7 @@ export class InvitationsService {
     // Verify ownership
     await this.findOne(userId, id)
 
-    const { data, error } = await this.supabaseUser.client
+    const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .update({ status: 'draft' })
       .eq('id', id)

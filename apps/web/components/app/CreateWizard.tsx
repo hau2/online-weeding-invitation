@@ -43,7 +43,8 @@ export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
     if (!selectedTemplate || !brideName.trim() || !groomName.trim()) return
     setLoading(true)
     try {
-      const res = await fetch('http://localhost:3001/invitations', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
+      const res = await fetch(`${apiUrl}/invitations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',  // sends httpOnly session cookie

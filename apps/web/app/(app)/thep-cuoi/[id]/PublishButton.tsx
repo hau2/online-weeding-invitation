@@ -233,7 +233,7 @@ export function PublishButton({
         open={showCelebrationDialog}
         onOpenChange={setShowCelebrationDialog}
       >
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center text-lg">
               Thiep cuoi da duoc xuat ban!
@@ -243,8 +243,8 @@ export function PublishButton({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3">
-            <span className="flex-1 truncate text-sm text-rose-800">
+          <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
+            <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
               {publishedUrl}
             </span>
             <Button

@@ -8,7 +8,8 @@ async function getInvitations(): Promise<Invitation[]> {
   if (!token) return []
 
   try {
-    const res = await fetch('http://localhost:3001/invitations', {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
+    const res = await fetch(`${apiUrl}/invitations`, {
       headers: { Cookie: `auth-token=${token}` },
       cache: 'no-store',  // always fresh list
     })
