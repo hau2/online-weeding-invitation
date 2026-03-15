@@ -1,6 +1,12 @@
 export type InvitationStatus = 'draft' | 'published' | 'expired'
 export type TemplateId = 'traditional' | 'modern' | 'minimalist'
 
+export interface LoveStoryMilestone {
+  date: string
+  title: string
+  description: string
+}
+
 export interface Invitation {
   id: string
   userId: string
@@ -9,10 +15,19 @@ export interface Invitation {
   templateId: TemplateId
   groomName: string
   brideName: string
-  weddingDate: string | null
-  weddingTime: string | null
-  venueName: string
-  venueAddress: string
+  groomFather: string
+  groomMother: string
+  groomCeremonyDate: string | null
+  groomCeremonyTime: string | null
+  groomVenueName: string
+  groomVenueAddress: string
+  brideFather: string
+  brideMother: string
+  brideCeremonyDate: string | null
+  brideCeremonyTime: string | null
+  brideVenueName: string
+  brideVenueAddress: string
+  loveStory: LoveStoryMilestone[]
   venueMapUrl: string
   invitationMessage: string
   thankYouText: string
