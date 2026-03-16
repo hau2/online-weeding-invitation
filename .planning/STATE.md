@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 09.1-03-PLAN.md
-last_updated: "2026-03-16T10:15:39.000Z"
-last_activity: "2026-03-16 — Plan 09.1-03 complete: InvitationShell rewired to SharedTemplate + StickyNav, FallingPetals/ThankYouPage/SaveTheDatePage migrated to theme system"
+stopped_at: Completed 09.1-05-PLAN.md
+last_updated: "2026-03-16T10:54:12.669Z"
+last_activity: "2026-03-16 — Plan 09.1-05 complete: Deleted 3 old templates + DesktopFrame (1099 lines), updated tests, user-verified visual result"
 progress:
   total_phases: 14
-  completed_phases: 10
+  completed_phases: 11
   total_plans: 47
-  completed_plans: 46
-  percent: 96
+  completed_plans: 47
+  percent: 100
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 9.1 (Public Page Redesign - Modern Full-Width Templates)
-Plan: 4 of 5 in phase 9.1 (09.1-03 complete, 09.1-05 remaining)
-Status: In Progress
-Last activity: 2026-03-16 — Plan 09.1-03 complete: InvitationShell rewired to SharedTemplate + StickyNav, FallingPetals/ThankYouPage/SaveTheDatePage migrated to theme system
+Plan: 5 of 5 in phase 9.1 (all plans complete)
+Status: Phase Complete
+Last activity: 2026-03-16 — Plan 09.1-05 complete: Deleted 3 old templates + DesktopFrame (1099 lines), updated tests, user-verified visual result
 
-Progress: [██████████] 96%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -98,6 +98,7 @@ Progress: [██████████] 96%
 | Phase 09.1 P02 | 3 | 2 tasks | 9 files |
 | Phase 09.1 P04 | 2 | 2 tasks | 6 files |
 | Phase 09.1 P03 | 4min | 2 tasks | 6 files |
+| Phase 09.1 P05 | 2min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -243,6 +244,8 @@ Recent decisions affecting current work:
 - [Phase 09.1]: InvitationShell envelope stage uses theme.backgroundColor; revealed stage is full-width with Plus Jakarta Sans
 - [Phase 09.1]: ThankYouPage/SaveTheDatePage use inline styles with theme hex colors instead of Tailwind class TEMPLATE_COLORS records
 - [Phase 09.1]: CountdownTimer dynamic import removed from InvitationShell -- countdown now inside SharedTemplate via CountdownSection
+- [Phase 09.1 P05]: CountdownTimer.tsx kept at app/w/[slug]/ -- SaveTheDatePage still imports it directly for standalone countdown
+- [Phase 09.1 P05]: Theme-based architecture is the canonical template system going forward -- old 3-component lookup table fully removed
 
 ### Roadmap Evolution
 
@@ -263,6 +266,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T10:15:39.000Z
-Stopped at: Completed 09.1-03-PLAN.md
+Last session: 2026-03-16T10:52:54.000Z
+Stopped at: Completed 09.1-05-PLAN.md (Phase 9.1 complete)
 Resume file: None
