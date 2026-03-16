@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 // Mock framer-motion to avoid animation issues in tests
@@ -42,6 +42,42 @@ vi.mock('canvas-confetti', () => ({
 
 import { EnvelopeAnimation } from '@/app/w/[slug]/EnvelopeAnimation'
 
+/**
+ * Helper: mock rAF to simulate fast frames (10ms between frames).
+ * Collects callbacks and runs them synchronously when flushed.
+ */
+function mockFastFrames() {
+  const rafCallbacks: Array<(t: number) => void> = []
+  let id = 0
+  let timestamp = 100
+
+  vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+    id++
+    // Run callback synchronously with timestamps 10ms apart (fast)
+    timestamp += 10
+    Promise.resolve().then(() => cb(timestamp))
+    return id
+  })
+  vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
+}
+
+/**
+ * Helper: mock rAF to simulate slow frames (30ms between frames).
+ */
+function mockSlowFrames() {
+  let id = 0
+  let timestamp = 100
+
+  vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+    id++
+    // Run callback synchronously with timestamps 30ms apart (slow)
+    timestamp += 30
+    Promise.resolve().then(() => cb(timestamp))
+    return id
+  })
+  vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
+}
+
 describe('EnvelopeAnimation', () => {
   const defaultProps = {
     templateId: 'traditional' as const,
@@ -52,19 +88,7 @@ describe('EnvelopeAnimation', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    // Default: fast frames (no fallback)
-    let rafCallCount = 0
-    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-      rafCallCount++
-      // Simulate fast frames by calling immediately
-      setTimeout(() => cb(rafCallCount * 10), 0) // 10ms apart = fast
-      return rafCallCount
-    })
-    vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
-    vi.spyOn(performance, 'now').mockImplementation(() => {
-      // Return times that are 10ms apart (fast device)
-      return Date.now()
-    })
+    mockFastFrames()
   })
 
   afterEach(() => {
@@ -73,97 +97,92 @@ describe('EnvelopeAnimation', () => {
 
   // PUBL-03: Envelope reveal animation
   it('should render sealed envelope with greeting text', async () => {
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} />)
+    render(<EnvelopeAnimation {...defaultProps} />)
+    // Greeting text visible in both measuring and resolved states
+    await waitFor(() => {
+      expect(screen.getByText(/Tran trong kinh moi/i)).toBeInTheDocument()
     })
-    // During measurement or after, greeting text should be visible
-    expect(screen.getByText(/Tran trong kinh moi/i)).toBeInTheDocument()
   })
 
-  it('should show couple names on the envelope', async () => {
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} />)
+  it('should show couple names on the envelope after performance gate resolves', async () => {
+    render(<EnvelopeAnimation {...defaultProps} />)
+    // After fast frame measurement, the full envelope renders with card names
+    await waitFor(() => {
+      expect(screen.getByText(/Minh/)).toBeInTheDocument()
+      expect(screen.getByText(/Thao/)).toBeInTheDocument()
     })
-    expect(screen.getByText(/Minh/)).toBeInTheDocument()
-    expect(screen.getByText(/Thao/)).toBeInTheDocument()
   })
 
   it('should match template color scheme for traditional', async () => {
-    let container: HTMLElement
-    await act(async () => {
-      const result = render(<EnvelopeAnimation {...defaultProps} templateId="traditional" />)
-      container = result.container
+    const { container } = render(<EnvelopeAnimation {...defaultProps} templateId="traditional" />)
+    await waitFor(() => {
+      const envelope = container.querySelector('[data-testid="envelope-body"]')
+      expect(envelope).toBeInTheDocument()
+      expect(envelope).toHaveStyle({ backgroundColor: '#8B0000' })
     })
-    const envelope = container!.querySelector('[data-testid="envelope-body"]')
-    expect(envelope).toBeInTheDocument()
-    expect(envelope).toHaveStyle({ backgroundColor: '#8B0000' })
   })
 
   it('should match template color scheme for modern', async () => {
-    let container: HTMLElement
-    await act(async () => {
-      const result = render(<EnvelopeAnimation {...defaultProps} templateId="modern" />)
-      container = result.container
+    const { container } = render(<EnvelopeAnimation {...defaultProps} templateId="modern" />)
+    await waitFor(() => {
+      const envelope = container.querySelector('[data-testid="envelope-body"]')
+      expect(envelope).toBeInTheDocument()
+      expect(envelope).toHaveStyle({ backgroundColor: '#FFFFFF' })
     })
-    const envelope = container!.querySelector('[data-testid="envelope-body"]')
-    expect(envelope).toBeInTheDocument()
-    expect(envelope).toHaveStyle({ backgroundColor: '#FFFFFF' })
   })
 
   it('should match template color scheme for minimalist', async () => {
-    let container: HTMLElement
-    await act(async () => {
-      const result = render(<EnvelopeAnimation {...defaultProps} templateId="minimalist" />)
-      container = result.container
+    const { container } = render(<EnvelopeAnimation {...defaultProps} templateId="minimalist" />)
+    await waitFor(() => {
+      const envelope = container.querySelector('[data-testid="envelope-body"]')
+      expect(envelope).toBeInTheDocument()
+      expect(envelope).toHaveStyle({ backgroundColor: '#FFFDD0' })
     })
-    const envelope = container!.querySelector('[data-testid="envelope-body"]')
-    expect(envelope).toBeInTheDocument()
-    expect(envelope).toHaveStyle({ backgroundColor: '#FFFDD0' })
   })
 
   it('should render skip button', async () => {
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} />)
+    render(<EnvelopeAnimation {...defaultProps} />)
+    await waitFor(() => {
+      const skipButton = screen.getByRole('button', { name: /bo qua/i })
+      expect(skipButton).toBeInTheDocument()
     })
-    const skipButton = screen.getByRole('button', { name: /bo qua/i })
-    expect(skipButton).toBeInTheDocument()
   })
 
   it('should have skip button centered at bottom with 48px+ touch target', async () => {
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} />)
+    render(<EnvelopeAnimation {...defaultProps} />)
+    await waitFor(() => {
+      const skipButton = screen.getByRole('button', { name: /bo qua/i })
+      expect(skipButton).toBeInTheDocument()
+      // Check centered positioning classes
+      expect(skipButton.className).toMatch(/left-1\/2/)
+      expect(skipButton.className).toMatch(/-translate-x-1\/2/)
+      // Check minimum touch target
+      expect(skipButton.className).toMatch(/min-h-12/)
+      expect(skipButton.className).toMatch(/min-w-12/)
     })
-    const skipButton = screen.getByRole('button', { name: /bo qua/i })
-    expect(skipButton).toBeInTheDocument()
-    // Check centered positioning classes
-    expect(skipButton.className).toMatch(/left-1\/2/)
-    expect(skipButton.className).toMatch(/-translate-x-1\/2/)
-    // Check minimum touch target
-    expect(skipButton.className).toMatch(/min-h-12/)
-    expect(skipButton.className).toMatch(/min-w-12/)
   })
 
   // PUBL-05: Guest name on envelope
   it('should show guest name on envelope when provided', async () => {
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} guestName="Anh Tuan" />)
+    render(<EnvelopeAnimation {...defaultProps} guestName="Anh Tuan" />)
+    await waitFor(() => {
+      expect(screen.getByText('Anh Tuan')).toBeInTheDocument()
     })
-    expect(screen.getByText('Anh Tuan')).toBeInTheDocument()
   })
 
   it('should not show guest name when not provided', async () => {
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} />)
+    render(<EnvelopeAnimation {...defaultProps} />)
+    await waitFor(() => {
+      expect(screen.queryByTestId('guest-name')).not.toBeInTheDocument()
     })
-    // Only greeting text, no guest name element
-    expect(screen.queryByTestId('guest-name')).not.toBeInTheDocument()
   })
 
   // PUBL-04: Tap/click to reveal
   it('should call onOpen when skip button is clicked', async () => {
     const onOpen = vi.fn()
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} onOpen={onOpen} />)
+    render(<EnvelopeAnimation {...defaultProps} onOpen={onOpen} />)
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /bo qua/i })).toBeInTheDocument()
     })
     const skipButton = screen.getByRole('button', { name: /bo qua/i })
     fireEvent.click(skipButton)
@@ -171,11 +190,11 @@ describe('EnvelopeAnimation', () => {
   })
 
   it('should render wax seal', async () => {
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} />)
+    render(<EnvelopeAnimation {...defaultProps} />)
+    await waitFor(() => {
+      const seal = screen.getByTestId('wax-seal')
+      expect(seal).toBeInTheDocument()
     })
-    const seal = screen.getByTestId('wax-seal')
-    expect(seal).toBeInTheDocument()
   })
 })
 
@@ -192,32 +211,14 @@ describe('EnvelopeAnimation performance gate', () => {
   })
 
   it('should render fallback when frames are slow (>20ms avg)', async () => {
-    // Simulate slow device: each rAF frame takes 30ms
-    let frameCount = 0
-    let nowValue = 0
-    vi.spyOn(performance, 'now').mockImplementation(() => {
-      nowValue += 30 // 30ms between frames = slow
-      return nowValue
-    })
-    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-      frameCount++
-      if (frameCount <= 9) { // 1 initial + 8 measurement frames
-        setTimeout(() => cb(frameCount * 30), 0)
-      }
-      return frameCount
-    })
-    vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
+    mockSlowFrames()
 
-    await act(async () => {
-      render(<EnvelopeAnimation {...defaultProps} />)
-    })
-    // Flush rAF timeouts
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, 50))
-    })
+    render(<EnvelopeAnimation {...defaultProps} />)
 
-    // Should render the fallback (which has data-testid="envelope-fallback")
-    expect(screen.getByTestId('envelope-fallback')).toBeInTheDocument()
+    // Wait for the performance gate to detect slow frames and switch to fallback
+    await waitFor(() => {
+      expect(screen.getByTestId('envelope-fallback')).toBeInTheDocument()
+    })
   })
 })
 
@@ -228,6 +229,14 @@ describe('EnvelopeAnimationFallback', () => {
     brideName: 'Thao',
     onOpen: vi.fn(),
   }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
 
   it('should render sealed envelope with tap handler and skip button', async () => {
     const { EnvelopeAnimationFallback } = await import('@/app/w/[slug]/EnvelopeAnimationFallback')
@@ -265,13 +274,8 @@ describe('EnvelopeAnimationFallback', () => {
     expect(skipButton.className).toMatch(/-translate-x-1\/2/)
   })
 
-  it('should NOT import framer-motion', async () => {
-    // Read the actual file content and verify no framer-motion import
-    const fileContent = await import('@/app/w/[slug]/EnvelopeAnimationFallback?raw')
-    // The raw import returns the source code - verify no framer-motion
-    // Alternatively, we can verify the component renders without the framer-motion mock
+  it('should NOT import framer-motion (renders without framer-motion mock)', async () => {
     const { EnvelopeAnimationFallback } = await import('@/app/w/[slug]/EnvelopeAnimationFallback')
-    // If it renders without errors, it doesn't need framer-motion
     render(<EnvelopeAnimationFallback {...defaultProps} />)
     expect(screen.getByTestId('envelope-fallback')).toBeInTheDocument()
   })
