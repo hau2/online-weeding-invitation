@@ -1,18 +1,16 @@
 'use client'
 
-import type { TemplateId } from '@repo/types'
 import type { TemplateProps } from './types'
-import { TemplateTraditional } from './TemplateTraditional'
-import { TemplateModern } from './TemplateModern'
-import { TemplateMinimalist } from './TemplateMinimalist'
-
-const TEMPLATES: Record<TemplateId, React.ComponentType<TemplateProps>> = {
-  traditional: TemplateTraditional,
-  modern: TemplateModern,
-  minimalist: TemplateMinimalist,
-}
+import { getTheme } from './themes'
+import { SharedTemplate } from './SharedTemplate'
 
 export function TemplateRenderer({ invitation, className }: TemplateProps) {
-  const Component = TEMPLATES[invitation.templateId] ?? TemplateTraditional
-  return <Component invitation={invitation} className={className} />
+  const theme = getTheme(invitation.templateId)
+  return (
+    <SharedTemplate
+      invitation={invitation}
+      theme={theme}
+      className={className}
+    />
+  )
 }
