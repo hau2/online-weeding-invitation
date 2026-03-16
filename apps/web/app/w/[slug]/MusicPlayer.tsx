@@ -75,36 +75,36 @@ export function MusicPlayer({ musicUrl, autoStart = false }: MusicPlayerProps) {
     <button
       onClick={handleToggle}
       aria-label={isPlaying ? 'Tam dung nhac' : 'Phat nhac'}
-      className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
+      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 min-h-14 min-w-14 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
     >
       {isPlaying ? (
         <div data-testid="equalizer-bars" className="flex items-end gap-[3px]">
           <span
-            className="w-[3px] rounded-full bg-rose-500"
+            className="w-[4px] rounded-full bg-rose-500"
             style={{
-              height: '14px',
+              height: '16px',
               animation: 'equalizer 0.4s ease-in-out infinite alternate',
             }}
           />
           <span
-            className="w-[3px] rounded-full bg-rose-500"
+            className="w-[4px] rounded-full bg-rose-500"
             style={{
-              height: '18px',
+              height: '22px',
               animation: 'equalizer 0.6s ease-in-out infinite alternate',
               animationDelay: '0.2s',
             }}
           />
           <span
-            className="w-[3px] rounded-full bg-rose-500"
+            className="w-[4px] rounded-full bg-rose-500"
             style={{
-              height: '12px',
+              height: '14px',
               animation: 'equalizer 0.5s ease-in-out infinite alternate',
               animationDelay: '0.4s',
             }}
           />
         </div>
       ) : (
-        <Play className="h-5 w-5 text-rose-500" fill="currentColor" />
+        <Play className="h-6 w-6 text-rose-500" fill="currentColor" />
       )}
 
     </button>

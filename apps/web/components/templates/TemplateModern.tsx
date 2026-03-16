@@ -252,29 +252,31 @@ export function TemplateModern({ invitation, className }: TemplateProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               {invitation.bankQrUrl && (
-                <div className="flex-1 max-w-[200px] rounded-lg bg-white p-3 shadow-sm text-center">
+                <div className="flex-1 max-w-[280px] rounded-lg bg-white p-3 shadow-sm text-center">
                   <p className="mb-2 text-xs font-medium text-rose-400">Nha trai</p>
                   {(invitation.plan ?? 'free') === 'free' ? (
                     <BankQrLock>
-                      <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto max-w-[140px] rounded-lg" loading="lazy" />
+                      <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto w-full max-w-[240px] rounded-lg" loading="lazy" />
                     </BankQrLock>
                   ) : (
-                    <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto max-w-[140px] rounded-lg" loading="lazy" />
+                    <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto w-full max-w-[240px] rounded-lg" loading="lazy" />
                   )}
+                  <p className="mt-2 text-center text-sm text-gray-500">Mo ung dung ngan hang va quet ma QR</p>
                   {invitation.bankName && <p className="mt-2 text-xs font-medium text-gray-700">{invitation.bankName}</p>}
                   {invitation.bankAccountHolder && <p className="text-xs text-gray-500">{invitation.bankAccountHolder}</p>}
                 </div>
               )}
               {invitation.brideBankQrUrl && (
-                <div className="flex-1 max-w-[200px] rounded-lg bg-white p-3 shadow-sm text-center">
+                <div className="flex-1 max-w-[280px] rounded-lg bg-white p-3 shadow-sm text-center">
                   <p className="mb-2 text-xs font-medium text-rose-400">Nha gai</p>
                   {(invitation.plan ?? 'free') === 'free' ? (
                     <BankQrLock>
-                      <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto max-w-[140px] rounded-lg" loading="lazy" />
+                      <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto w-full max-w-[240px] rounded-lg" loading="lazy" />
                     </BankQrLock>
                   ) : (
-                    <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto max-w-[140px] rounded-lg" loading="lazy" />
+                    <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto w-full max-w-[240px] rounded-lg" loading="lazy" />
                   )}
+                  <p className="mt-2 text-center text-sm text-gray-500">Mo ung dung ngan hang va quet ma QR</p>
                   {invitation.brideBankName && <p className="mt-2 text-xs font-medium text-gray-700">{invitation.brideBankName}</p>}
                   {invitation.brideBankAccountHolder && <p className="text-xs text-gray-500">{invitation.brideBankAccountHolder}</p>}
                 </div>
