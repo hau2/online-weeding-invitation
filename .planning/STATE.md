@@ -207,6 +207,7 @@ Recent decisions affecting current work:
 ### Roadmap Evolution
 
 - Phase 05.1 inserted after Phase 5: Dual-family ceremony info — groom/bride family details, parents names, dual ceremony venues and times (URGENT)
+- Phase 10 added: Agent Tier and Storage Management — monthly subscription for printing vendors, 20 invitations/month quota, draft auto-delete, published link expiration, admin Clear Storage button
 
 ### Pending Todos
 
