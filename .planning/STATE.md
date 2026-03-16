@@ -210,6 +210,9 @@ Recent decisions affecting current work:
 - [Phase 08]: Theme metadata stored in JSONB inside system_settings key-value store -- no separate themes table
 - [Phase 08]: AdminModule uses class-level JwtGuard + AdminGuard; theme IDs are string slugs not UUIDs
 - [Phase 08]: getInvitationDetail returns raw DB row shape (snake_case) -- detail dialog handles both field name conventions
+- [Phase 08 P02]: Dashboard stat cards use xl:grid-cols-5 layout for 5 cards including storage estimate
+- [Phase 08 P02]: Debounced user search (300ms) via useRef timer -- no external debounce library
+- [Phase 08 P02]: Delete confirmation dialog warns about cascading photo/invitation deletion
 
 ### Roadmap Evolution
 
