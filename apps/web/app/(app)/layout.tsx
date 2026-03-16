@@ -7,12 +7,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex items-center gap-2 px-4 h-14 border-b border-rose-100 bg-white">
-          <SidebarTrigger className="text-rose-400 hover:text-rose-600" />
-          <div className="flex-1" />
+        {/* Top Header — Stitch style: h-16, white bg, breadcrumb left, actions right */}
+        <header className="h-16 flex items-center justify-between px-8 bg-white border-b border-[#e6dbde] shrink-0 z-10">
+          <div className="flex items-center gap-2">
+            <SidebarTrigger className="text-[#5e4d52] hover:text-[#ec1349] md:hidden" />
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-[#89616b]">Trang chủ</span>
+              <span className="text-[#e6dbde]">/</span>
+              <span className="text-[#181113] font-medium">Tổng quan</span>
+            </div>
+          </div>
           <TopBar />
         </header>
-        <main className="flex-1 bg-rose-50/30 min-h-[calc(100vh-3.5rem)] p-6">
+        {/* Scrollable Page Content — Stitch style: #f8f6f6 bg, p-8 */}
+        <main className="flex-1 overflow-y-auto bg-[#f8f6f6] p-8">
           {children}
         </main>
       </SidebarInset>

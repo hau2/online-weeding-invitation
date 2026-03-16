@@ -1,38 +1,57 @@
-import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 import type { InvitationStatus } from '@repo/types'
 
-const badge = cva(
-  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
-  {
-    variants: {
-      status: {
-        draft: 'bg-gray-100 text-gray-600',
-        published: 'bg-green-100 text-green-700',
-        save_the_date: 'bg-teal-100 text-teal-700',
-        expired: 'bg-red-100 text-red-600',
-      },
-    },
-    defaultVariants: { status: 'draft' },
-  }
-)
-
-const LABELS: Record<string, string> = {
-  draft: 'Nháp',
-  published: 'Đã xuất bản',
-  save_the_date: 'Save the Date',
-  expired: 'Hết hạn',
+const STATUS_CONFIG: Record<string, { bg: string; text: string; dot: string; border: string; label: string }> = {
+  draft: {
+    bg: 'bg-gray-100',
+    text: 'text-gray-700',
+    dot: 'bg-gray-500',
+    border: 'border-gray-200',
+    label: 'Bản nháp',
+  },
+  published: {
+    bg: 'bg-green-100',
+    text: 'text-green-700',
+    dot: 'bg-green-600',
+    border: 'border-green-200',
+    label: 'Đang chạy',
+  },
+  save_the_date: {
+    bg: 'bg-teal-100',
+    text: 'text-teal-700',
+    dot: 'bg-teal-600',
+    border: 'border-teal-200',
+    label: 'Save the Date',
+  },
+  expired: {
+    bg: 'bg-red-100',
+    text: 'text-red-600',
+    dot: 'bg-red-500',
+    border: 'border-red-200',
+    label: 'Hết hạn',
+  },
 }
 
-interface StatusBadgeProps extends VariantProps<typeof badge> {
+interface StatusBadgeProps {
   status: InvitationStatus
   className?: string
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
+  const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.draft
+
   return (
-    <span className={cn(badge({ status }), className)}>
-      {LABELS[status]}
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm',
+        config.bg,
+        config.text,
+        config.border,
+        className
+      )}
+    >
+      <span className={cn('size-1.5 rounded-full', config.dot)} />
+      {config.label}
     </span>
   )
 }

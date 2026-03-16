@@ -2,16 +2,15 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import Link from 'next/link'
-import { Heart, Monitor, Smartphone, Share2, Copy, QrCode } from 'lucide-react'
+import { Heart, Monitor, Smartphone, Share2, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import type { Invitation } from '@repo/types'
 import { TemplateRenderer } from '@/components/templates'
 import { PublishButton } from '../PublishButton'
 import { plusJakartaSans } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
 
-type Tab = 'phone' | 'desktop' | 'share'
+type Tab = 'phone' | 'desktop'
 
 interface PreviewShellProps {
   invitation: Invitation
@@ -66,113 +65,149 @@ export function PreviewShell({ invitation: initial }: PreviewShellProps) {
     }
   }, [])
 
-  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-    { key: 'phone', label: 'Dien thoai', icon: <Smartphone className="size-4" /> },
-    { key: 'desktop', label: 'May tinh', icon: <Monitor className="size-4" /> },
-    { key: 'share', label: 'Chia se lien ket', icon: <Share2 className="size-4" /> },
-  ]
-
   const origin = typeof window !== 'undefined' ? window.location.origin : ''
   const publicUrl = invitation.slug ? `${origin}/w/${invitation.slug}` : null
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* Top bar */}
-      <div className="flex items-center gap-3 px-4 py-3 bg-white border-b border-gray-200 shrink-0">
-        <div className="flex items-center gap-2">
-          <Heart className="size-5 text-red-500" fill="currentColor" />
-          <h1 className="text-base font-semibold text-gray-900">Xem truoc thiep</h1>
+    <div className="flex flex-col h-screen overflow-hidden bg-[#f8f6f6]">
+      {/* Top Navigation Bar — matches Stitch header */}
+      <header className="flex items-center justify-between whitespace-nowrap border-b border-gray-200 bg-white px-6 py-3 shrink-0 z-20 shadow-sm">
+        <div className="flex items-center gap-4 text-[#181113]">
+          <div className="flex items-center justify-center size-8 rounded-full bg-[#ec1349]/10 text-[#ec1349]">
+            <Heart className="size-5" fill="currentColor" />
+          </div>
+          <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Xem truoc thiep</h2>
         </div>
-        <div className="flex-1" />
-        <Link href={`/thep-cuoi/${invitation.id}`}>
-          <Button variant="outline" size="sm">
-            Quay lai chinh sua
-          </Button>
-        </Link>
-        <PublishButton
-          invitation={invitation}
-          onPublished={handlePublished}
-          onUnpublished={handleUnpublished}
-        />
-      </div>
+        <div className="flex items-center gap-4 sm:gap-6">
+          <Link
+            href={`/thep-cuoi/${invitation.id}`}
+            className="flex items-center gap-2 text-[#181113] text-sm font-medium hover:text-[#ec1349] transition-colors"
+          >
+            <ArrowLeft className="size-[18px]" />
+            <span className="hidden sm:inline">Quay lai chinh sua</span>
+          </Link>
+          <PublishButton
+            invitation={invitation}
+            onPublished={handlePublished}
+            onUnpublished={handleUnpublished}
+          />
+        </div>
+      </header>
 
-      {/* Tab bar */}
-      <div className="bg-white border-b border-gray-200 shrink-0">
-        <div className="flex items-center justify-center gap-6 px-4">
-          {tabs.map((tab) => (
+      {/* Main Workspace */}
+      <main className="flex-1 flex flex-col overflow-hidden relative">
+        {/* Toolbar / Controls */}
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 py-4 px-4 bg-[#f8f6f6] shrink-0 z-10">
+          {/* View Toggle (Segmented Buttons) — matches Stitch */}
+          <div className="flex h-10 items-center justify-center rounded-lg bg-white p-1 shadow-sm border border-gray-200">
             <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
+              onClick={() => setActiveTab('phone')}
               className={cn(
-                'flex items-center gap-2 py-3 px-1 text-sm font-medium border-b-2 transition-colors',
-                activeTab === tab.key
-                  ? 'border-red-500 text-red-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700',
+                'flex cursor-pointer h-full items-center justify-center rounded-md px-4 text-sm font-medium transition-all gap-2',
+                activeTab === 'phone'
+                  ? 'bg-[#ec1349]/10 text-[#ec1349]'
+                  : 'text-[#89616b] hover:text-[#181113]',
               )}
             >
-              {tab.icon}
-              {tab.label}
+              <Smartphone className="size-[18px]" />
+              <span className="truncate">Dien thoai</span>
             </button>
-          ))}
+            <button
+              onClick={() => setActiveTab('desktop')}
+              className={cn(
+                'flex cursor-pointer h-full items-center justify-center rounded-md px-4 text-sm font-medium transition-all gap-2',
+                activeTab === 'desktop'
+                  ? 'bg-[#ec1349]/10 text-[#ec1349]'
+                  : 'text-[#89616b] hover:text-[#181113]',
+              )}
+            >
+              <Monitor className="size-[18px]" />
+              <span className="truncate">May tinh</span>
+            </button>
+          </div>
+
+          {/* Share Button — matches Stitch */}
+          {publicUrl ? (
+            <button
+              onClick={() => handleCopyUrl(publicUrl)}
+              className="flex cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-white border border-gray-200 text-[#181113] hover:bg-gray-50 gap-2 text-sm font-bold shadow-sm transition-colors"
+            >
+              <Share2 className="size-5" />
+              <span className="truncate">Chia se lien ket</span>
+            </button>
+          ) : (
+            <div className="flex items-center justify-center rounded-lg h-10 px-4 bg-white border border-gray-200 text-[#89616b] gap-2 text-sm font-bold shadow-sm opacity-60 cursor-not-allowed">
+              <Share2 className="size-5" />
+              <span className="truncate">Chia se lien ket</span>
+            </div>
+          )}
+
+          {/* Side toggle */}
+          <div className="flex h-10 items-center justify-center rounded-lg bg-white p-1 shadow-sm border border-gray-200">
+            <button
+              onClick={() => setPreviewSide('groom')}
+              className={cn(
+                'flex cursor-pointer h-full items-center justify-center rounded-md px-4 text-sm font-medium transition-all',
+                previewSide === 'groom'
+                  ? 'bg-[#ec1349]/10 text-[#ec1349]'
+                  : 'text-[#89616b] hover:text-[#181113]',
+              )}
+            >
+              Nha trai
+            </button>
+            <button
+              onClick={() => setPreviewSide('bride')}
+              className={cn(
+                'flex cursor-pointer h-full items-center justify-center rounded-md px-4 text-sm font-medium transition-all',
+                previewSide === 'bride'
+                  ? 'bg-[#ec1349]/10 text-[#ec1349]'
+                  : 'text-[#89616b] hover:text-[#181113]',
+              )}
+            >
+              Nha gai
+            </button>
+          </div>
         </div>
 
-        {/* Side toggle -- only for phone/desktop tabs */}
-        {activeTab !== 'share' && (
-          <div className="flex justify-center pb-3">
-            <div className="inline-flex rounded-full bg-gray-100 p-0.5">
-              <button
-                onClick={() => setPreviewSide('groom')}
-                className={cn(
-                  'px-4 py-1 text-xs font-medium rounded-full transition-colors',
-                  previewSide === 'groom'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700',
-                )}
-              >
-                Nha trai
-              </button>
-              <button
-                onClick={() => setPreviewSide('bride')}
-                className={cn(
-                  'px-4 py-1 text-xs font-medium rounded-full transition-colors',
-                  previewSide === 'bride'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700',
-                )}
-              >
-                Nha gai
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Tab content */}
-      <div className="flex-1 overflow-y-auto">
-        {activeTab === 'phone' && (
-          <div className="flex justify-center py-8">
-            <div className="relative w-[280px] h-[560px] rounded-[2.5rem] border-4 border-gray-800 bg-gray-800 shadow-xl overflow-hidden">
-              {/* Notch */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-gray-800 rounded-b-2xl z-10" />
-              {/* Screen */}
+        {/* Preview Canvas */}
+        <div className="flex-1 overflow-hidden flex justify-center items-start pb-8 px-4 w-full">
+          {activeTab === 'phone' && (
+            /* Phone Container Simulator — matches Stitch exactly */
+            <div className="relative w-full max-w-[400px] h-full bg-white rounded-[32px] shadow-2xl border-[8px] border-gray-800 overflow-hidden flex flex-col ring-1 ring-black/5">
+              {/* Status Bar Mockup */}
+              <div className="absolute top-0 left-0 right-0 h-7 bg-black/20 z-20 flex justify-between items-center px-6 text-[10px] text-white font-medium backdrop-blur-sm">
+                <span>9:41</span>
+                <div className="flex gap-1 items-center">
+                  <svg className="size-3" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2V10H2v12zm4 0h2V7H6v15zm4 0h2V4h-2v18zm4 0h2V1h-2v21z"/></svg>
+                  <svg className="size-3" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                  <svg className="size-3" viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+                </div>
+              </div>
+              {/* Scrollable Content Area */}
               <div
                 className={cn(
-                  'w-full h-full overflow-y-auto bg-white rounded-[2rem] pt-5',
+                  'flex-1 overflow-y-auto bg-white w-full relative',
                   plusJakartaSans.variable,
                   'font-[family-name:var(--font-display)]',
                 )}
+                style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: 'rgba(0,0,0,0.1) transparent',
+                }}
               >
                 <TemplateRenderer invitation={filtered} />
               </div>
+              {/* Home Indicator Mockup */}
+              <div className="absolute bottom-1 left-0 right-0 flex justify-center pb-2 z-20 pointer-events-none">
+                <div className="w-32 h-1 bg-black/20 rounded-full backdrop-blur-md" />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {activeTab === 'desktop' && (
-          <div className="flex justify-center py-8">
-            <div className="relative w-[680px] max-w-[90vw] h-[480px] rounded-lg border-2 border-gray-300 bg-gray-100 shadow-lg overflow-hidden">
+          {activeTab === 'desktop' && (
+            <div className="relative w-[680px] max-w-[90vw] h-full rounded-lg border-2 border-gray-300 bg-gray-100 shadow-lg overflow-hidden flex flex-col">
               {/* Browser chrome bar */}
-              <div className="h-8 bg-gray-200 border-b border-gray-300 flex items-center px-3 gap-2">
+              <div className="h-8 bg-gray-200 border-b border-gray-300 flex items-center px-3 gap-2 shrink-0">
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                   <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
@@ -183,7 +218,7 @@ export function PreviewShell({ invitation: initial }: PreviewShellProps) {
               {/* Content area */}
               <div
                 className={cn(
-                  'w-full h-[calc(100%-2rem)] overflow-y-auto bg-white',
+                  'flex-1 overflow-y-auto bg-white',
                   plusJakartaSans.variable,
                   'font-[family-name:var(--font-display)]',
                 )}
@@ -191,89 +226,9 @@ export function PreviewShell({ invitation: initial }: PreviewShellProps) {
                 <TemplateRenderer invitation={filtered} />
               </div>
             </div>
-          </div>
-        )}
-
-        {activeTab === 'share' && (
-          <div className="flex justify-center py-8">
-            <div className="w-full max-w-md mx-auto px-4">
-              {publicUrl ? (
-                <div className="space-y-6">
-                  {/* QR code */}
-                  {invitation.qrCodeUrl && (
-                    <div className="flex flex-col items-center gap-3">
-                      <QrCode className="size-5 text-gray-400" />
-                      <img
-                        src={invitation.qrCodeUrl}
-                        alt="QR Code"
-                        className="w-48 h-48 rounded-lg border border-gray-200 shadow-sm"
-                      />
-                    </div>
-                  )}
-
-                  {/* Copyable URL */}
-                  <div className="rounded-lg border border-gray-200 bg-white p-4">
-                    <p className="text-xs text-gray-500 mb-2 font-medium">Link thiep cuoi</p>
-                    <div className="flex items-center gap-2">
-                      <span className="flex-1 text-sm text-gray-800 truncate select-all">
-                        {publicUrl}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={() => handleCopyUrl(publicUrl)}
-                      >
-                        <Copy className="size-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Per-side copy links */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
-                      <span className="text-xs text-rose-500 font-medium shrink-0">
-                        Nha trai
-                      </span>
-                      <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
-                        {publicUrl}?side=groom
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={() => handleCopyUrl(`${publicUrl}?side=groom`)}
-                      >
-                        <Copy className="size-4" />
-                      </Button>
-                    </div>
-                    <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
-                      <span className="text-xs text-rose-500 font-medium shrink-0">
-                        Nha gai
-                      </span>
-                      <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
-                        {publicUrl}?side=bride
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={() => handleCopyUrl(`${publicUrl}?side=bride`)}
-                      >
-                        <Copy className="size-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Share2 className="size-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 text-sm">
-                    Xuat ban thiep de tao lien ket chia se
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </main>
     </div>
   )
 }

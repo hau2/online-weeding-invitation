@@ -207,43 +207,38 @@ export function PublishButton({
 
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {isPublished ? (
-          <Button
-            className="bg-teal-600 text-white hover:bg-teal-700"
-            size="sm"
+          <button
+            className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-teal-600 hover:bg-teal-700 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-teal-600/30 gap-2"
             onClick={handlePublishClick}
           >
             <Globe className="size-3.5" />
-            Da xuat ban
-          </Button>
+            <span className="truncate">Da xuat ban</span>
+          </button>
         ) : isSaveTheDate ? (
-          <Button
-            className="bg-teal-500 text-white hover:bg-teal-600"
-            size="sm"
+          <button
+            className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-teal-500 hover:bg-teal-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-teal-500/30 gap-2"
             onClick={handlePublishClick}
           >
             <Globe className="size-3.5" />
-            Save the Date
-          </Button>
+            <span className="truncate">Save the Date</span>
+          </button>
         ) : (
           <>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-teal-600 border-teal-200 hover:bg-teal-50 gap-1"
+            <button
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-white border border-teal-200 text-teal-600 hover:bg-teal-50 transition-colors text-sm font-bold leading-normal tracking-[0.015em] gap-1.5"
               onClick={handleSaveTheDateClick}
             >
               <CalendarHeart className="size-3.5" />
-              Save the Date
-            </Button>
-            <Button
-              className="bg-rose-500 text-white hover:bg-rose-600"
-              size="sm"
+              <span className="truncate">Save the Date</span>
+            </button>
+            <button
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-red-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-[#ec1349]/30"
               onClick={handlePublishClick}
             >
-              Xuat ban
-            </Button>
+              <span className="truncate">Xuat ban ngay</span>
+            </button>
           </>
         )}
 
@@ -275,209 +270,246 @@ export function PublishButton({
         )}
       </div>
 
-      {/* Publish confirmation dialog */}
+      {/* Publish confirmation dialog — Stitch-inspired styling */}
       <Dialog
         open={showConfirmDialog}
         onOpenChange={setShowConfirmDialog}
       >
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Xuat ban thiep cuoi</DialogTitle>
-            <DialogDescription>
-              {isFirstPublish ? (
-                <>
-                  He thong se tao duong link tu dong cho thiep cuoi cua ban.{' '}
-                  <strong className="text-rose-700">
-                    Duong link se khong the thay doi sau khi xuat ban.
-                  </strong>
-                </>
-              ) : (
-                <>
-                  Ban muon xuat ban lai thiep cuoi?
-                  <br />
-                  <span className="mt-1 block text-xs text-muted-foreground">
-                    {`${typeof window !== 'undefined' ? window.location.origin : ''}/w/${invitation.slug}`}
-                  </span>
-                </>
-              )}
-            </DialogDescription>
+            <div className="flex flex-col items-center text-center">
+              <div className="size-14 rounded-full bg-[#ec1349]/10 flex items-center justify-center mb-3 text-[#ec1349]">
+                <Globe className="size-7" />
+              </div>
+              <DialogTitle className="text-xl font-bold text-[#181113] tracking-tight">Xuat ban thiep cuoi</DialogTitle>
+              <DialogDescription className="mt-2 text-gray-600 text-sm leading-relaxed">
+                {isFirstPublish ? (
+                  <>
+                    He thong se tao duong link tu dong cho thiep cuoi cua ban.{' '}
+                    <strong className="text-[#ec1349] font-medium">
+                      Duong link se khong the thay doi sau khi xuat ban.
+                    </strong>
+                  </>
+                ) : (
+                  <>
+                    Ban muon xuat ban lai thiep cuoi?
+                    <br />
+                    <span className="mt-2 block text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
+                      {`${typeof window !== 'undefined' ? window.location.origin : ''}/w/${invitation.slug}`}
+                    </span>
+                  </>
+                )}
+              </DialogDescription>
+            </div>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="mt-2">
             <Button
               variant="outline"
               onClick={() => setShowConfirmDialog(false)}
               disabled={publishing}
+              className="border-gray-200"
             >
               Huy
             </Button>
-            <Button
-              className="bg-rose-500 text-white hover:bg-rose-600"
+            <button
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-red-600 transition-all text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none"
               onClick={handleConfirmPublish}
               disabled={publishing}
             >
               {publishing ? 'Dang xuat ban...' : 'Xuat ban'}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Save the Date confirmation dialog */}
+      {/* Save the Date confirmation dialog — Stitch-inspired styling */}
       <Dialog
         open={showSaveTheDateConfirmDialog}
         onOpenChange={setShowSaveTheDateConfirmDialog}
       >
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Gui Save the Date</DialogTitle>
-            <DialogDescription>
-              {isFirstPublish ? (
-                <>
-                  He thong se tao duong link tu dong. Khach moi se thay trang Save the Date voi ten cap doi, ngay cuoi va dem nguoc.{' '}
-                  <strong className="text-teal-700">
-                    Duong link se khong the thay doi.
-                  </strong>
-                </>
-              ) : (
-                <>
-                  Ban muon gui lai Save the Date?
-                  <br />
-                  <span className="mt-1 block text-xs text-muted-foreground">
-                    {`${typeof window !== 'undefined' ? window.location.origin : ''}/w/${invitation.slug}`}
-                  </span>
-                </>
-              )}
-            </DialogDescription>
+            <div className="flex flex-col items-center text-center">
+              <div className="size-14 rounded-full bg-teal-50 flex items-center justify-center mb-3 text-teal-600">
+                <CalendarHeart className="size-7" />
+              </div>
+              <DialogTitle className="text-xl font-bold text-[#181113] tracking-tight">Gui Save the Date</DialogTitle>
+              <DialogDescription className="mt-2 text-gray-600 text-sm leading-relaxed">
+                {isFirstPublish ? (
+                  <>
+                    He thong se tao duong link tu dong. Khach moi se thay trang Save the Date voi ten cap doi, ngay cuoi va dem nguoc.{' '}
+                    <strong className="text-teal-700 font-medium">
+                      Duong link se khong the thay doi.
+                    </strong>
+                  </>
+                ) : (
+                  <>
+                    Ban muon gui lai Save the Date?
+                    <br />
+                    <span className="mt-2 block text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
+                      {`${typeof window !== 'undefined' ? window.location.origin : ''}/w/${invitation.slug}`}
+                    </span>
+                  </>
+                )}
+              </DialogDescription>
+            </div>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="mt-2">
             <Button
               variant="outline"
               onClick={() => setShowSaveTheDateConfirmDialog(false)}
               disabled={publishing}
+              className="border-gray-200"
             >
               Huy
             </Button>
-            <Button
-              className="bg-teal-500 text-white hover:bg-teal-600"
+            <button
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-teal-500 hover:bg-teal-600 transition-all text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none"
               onClick={handleConfirmSaveTheDate}
               disabled={publishing}
             >
               {publishing ? 'Dang gui...' : 'Gui Save the Date'}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Transition dialog: save_the_date -> published */}
+      {/* Transition dialog: save_the_date -> published — Stitch-inspired styling */}
       <Dialog
         open={showTransitionDialog}
         onOpenChange={setShowTransitionDialog}
       >
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Xuat ban thiep cuoi day du</DialogTitle>
-            <DialogDescription>
-              Dieu nay se thay the Save the Date bang thiep cuoi day du. Khach moi se thay thiep cuoi hoan chinh voi tat ca thong tin. Tiep tuc?
-            </DialogDescription>
+            <div className="flex flex-col items-center text-center">
+              <div className="size-14 rounded-full bg-[#ec1349]/10 flex items-center justify-center mb-3 text-[#ec1349]">
+                <Globe className="size-7" />
+              </div>
+              <DialogTitle className="text-xl font-bold text-[#181113] tracking-tight">Xuat ban thiep cuoi day du</DialogTitle>
+              <DialogDescription className="mt-2 text-gray-600 text-sm leading-relaxed">
+                Dieu nay se thay the Save the Date bang thiep cuoi day du. Khach moi se thay thiep cuoi hoan chinh voi tat ca thong tin. Tiep tuc?
+              </DialogDescription>
+            </div>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="mt-2">
             <Button
               variant="outline"
               onClick={() => setShowTransitionDialog(false)}
               disabled={publishing}
+              className="border-gray-200"
             >
               Huy
             </Button>
-            <Button
-              className="bg-rose-500 text-white hover:bg-rose-600"
+            <button
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-red-600 transition-all text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none"
               onClick={handleConfirmPublish}
               disabled={publishing}
             >
               {publishing ? 'Dang xuat ban...' : 'Xuat ban day du'}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Celebration dialog (first publish / save-the-date transition) */}
+      {/* Celebration dialog (first publish / save-the-date transition) — Stitch-inspired styling */}
       <Dialog
         open={showCelebrationDialog}
         onOpenChange={setShowCelebrationDialog}
       >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center text-lg">
-              {celebrationType === 'save_the_date' ? 'Save the Date da duoc xuat ban!' : 'Thiep cuoi da duoc xuat ban!'}
-            </DialogTitle>
-            <DialogDescription className="text-center">
-              {celebrationType === 'save_the_date' ? 'Chia se link nay de thong bao ngay cuoi' : 'Chia se duong link nay voi khach moi cua ban'}
-            </DialogDescription>
+        <DialogContent className="sm:max-w-md overflow-hidden">
+          {/* Gradient background accent */}
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#fff0f4] to-transparent pointer-events-none" />
+          <DialogHeader className="relative">
+            <div className="flex flex-col items-center text-center">
+              <div className="size-16 rounded-full bg-green-50 flex items-center justify-center mb-4 text-green-600 ring-4 ring-green-100">
+                <svg className="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <DialogTitle className="text-xl font-extrabold text-[#181113] tracking-tight">
+                {celebrationType === 'save_the_date' ? 'Save the Date da duoc xuat ban!' : 'Thiep cuoi da duoc xuat ban!'}
+              </DialogTitle>
+              <DialogDescription className="mt-2 text-gray-600 text-sm leading-relaxed">
+                {celebrationType === 'save_the_date' ? 'Chia se link nay de thong bao ngay cuoi' : 'Chia se duong link nay voi khach moi cua ban'}
+              </DialogDescription>
+            </div>
           </DialogHeader>
 
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
-              <span className="text-xs text-rose-500 font-medium shrink-0">Nha trai</span>
-              <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
+          <div className="space-y-3 relative">
+            {/* Groom link */}
+            <div className="flex items-center gap-3 rounded-xl border border-[#e6dbde] bg-white p-3.5 min-w-0 shadow-sm">
+              <span className="text-xs text-[#ec1349] font-bold shrink-0 uppercase tracking-wider">Nha trai</span>
+              <span className="min-w-0 flex-1 truncate text-sm text-[#181113] select-all font-medium">
                 {groomUrl}
               </span>
-              <Button
-                variant="ghost"
-                size="icon-sm"
+              <button
+                className="flex items-center justify-center size-8 rounded-lg hover:bg-gray-100 transition-colors text-gray-500 hover:text-[#181113] shrink-0"
                 onClick={() => handleCopyUrl(groomUrl)}
               >
                 <Copy className="size-4" />
-              </Button>
+              </button>
             </div>
-            <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 min-w-0">
-              <span className="text-xs text-rose-500 font-medium shrink-0">Nha gai</span>
-              <span className="min-w-0 flex-1 truncate text-sm text-rose-800 select-all">
+            {/* Bride link */}
+            <div className="flex items-center gap-3 rounded-xl border border-[#e6dbde] bg-white p-3.5 min-w-0 shadow-sm">
+              <span className="text-xs text-[#ec1349] font-bold shrink-0 uppercase tracking-wider">Nha gai</span>
+              <span className="min-w-0 flex-1 truncate text-sm text-[#181113] select-all font-medium">
                 {brideUrl}
               </span>
-              <Button
-                variant="ghost"
-                size="icon-sm"
+              <button
+                className="flex items-center justify-center size-8 rounded-lg hover:bg-gray-100 transition-colors text-gray-500 hover:text-[#181113] shrink-0"
                 onClick={() => handleCopyUrl(brideUrl)}
               >
                 <Copy className="size-4" />
-              </Button>
+              </button>
             </div>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCelebrationDialog(false)}>
+          <DialogFooter className="mt-3">
+            <Button
+              variant="outline"
+              onClick={() => setShowCelebrationDialog(false)}
+              className="border-gray-200"
+            >
               Dong
             </Button>
-            <Button
-              className="bg-rose-500 text-white hover:bg-rose-600"
+            <button
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-red-600 transition-all text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md hover:shadow-lg gap-2"
               onClick={() => handleCopyUrl(groomUrl)}
             >
               <Share2 className="size-3.5" />
               Chia se ngay
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Unpublish confirmation dialog */}
+      {/* Unpublish confirmation dialog — Stitch-inspired styling */}
       <Dialog
         open={showUnpublishDialog}
         onOpenChange={setShowUnpublishDialog}
       >
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{isSaveTheDate ? 'Huy Save the Date' : 'Huy xuat ban'}</DialogTitle>
-            <DialogDescription>
-              {isSaveTheDate
-                ? 'Ban muon huy Save the Date? Khach moi se khong the truy cap trang Save the Date cho den khi ban gui lai.'
-                : 'Ban muon huy xuat ban thiep cuoi? Khach moi se khong the truy cap thiep cuoi cua ban cho den khi ban xuat ban lai.'}
-            </DialogDescription>
+            <div className="flex flex-col items-center text-center">
+              <div className="size-14 rounded-full bg-red-50 flex items-center justify-center mb-3 text-red-500">
+                <EyeOff className="size-7" />
+              </div>
+              <DialogTitle className="text-xl font-bold text-[#181113] tracking-tight">
+                {isSaveTheDate ? 'Huy Save the Date' : 'Huy xuat ban'}
+              </DialogTitle>
+              <DialogDescription className="mt-2 text-gray-600 text-sm leading-relaxed">
+                {isSaveTheDate
+                  ? 'Ban muon huy Save the Date? Khach moi se khong the truy cap trang Save the Date cho den khi ban gui lai.'
+                  : 'Ban muon huy xuat ban thiep cuoi? Khach moi se khong the truy cap thiep cuoi cua ban cho den khi ban xuat ban lai.'}
+              </DialogDescription>
+            </div>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="mt-2">
             <Button
               variant="outline"
               onClick={() => setShowUnpublishDialog(false)}
               disabled={unpublishing}
+              className="border-gray-200"
             >
-              Huy
+              Huy bo
             </Button>
             <Button
               variant="destructive"
