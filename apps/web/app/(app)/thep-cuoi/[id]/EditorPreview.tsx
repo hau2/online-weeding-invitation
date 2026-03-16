@@ -11,72 +11,65 @@ interface EditorPreviewProps {
 }
 
 export function EditorPreview({ invitation, mode = 'both' }: EditorPreviewProps) {
-  return (
-    <div className="w-full">
-      {/* "Live Preview" label */}
-      <p className="text-xs text-gray-400 text-center mb-3 hidden lg:block">Live Preview</p>
+  const showPhone = mode === 'phone' || mode === 'both'
 
-      {/* Desktop layout (lg and above): mode-aware mockup display */}
-      <div className="hidden lg:flex items-start gap-8 justify-center">
-        {/* Phone mockup — shown when mode is 'phone' or 'both' */}
-        {(mode === 'phone' || mode === 'both') && (
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-muted-foreground font-medium">
-              Mobile
-            </span>
-            <div className="relative w-[280px] h-[560px] rounded-[2.5rem] border-4 border-gray-800 bg-gray-800 shadow-xl overflow-hidden">
-              {/* Notch */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-gray-800 rounded-b-2xl z-10" />
-              {/* Screen */}
-              <div
-                className={cn(
-                  'w-full h-full overflow-y-auto bg-white rounded-[2rem] pt-5',
-                  plusJakartaSans.variable,
-                  'font-[family-name:var(--font-display)]',
-                )}
-              >
-                <TemplateRenderer invitation={invitation} />
-              </div>
+  return (
+    <>
+      {/* Preview Info Badge — floating pill */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur shadow-sm border border-gray-200 px-4 py-2 rounded-full flex items-center gap-2 z-10">
+        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+        <span className="text-xs font-semibold text-gray-600">Live Preview</span>
+      </div>
+
+      {/* Desktop layout (md and above) */}
+      <div className="hidden md:flex items-center justify-center">
+        {showPhone ? (
+          /* Phone Device Frame — Stitch exact specs */
+          <div className="relative w-[375px] h-[750px] bg-white rounded-[40px] shadow-[0_20px_60px_-10px_rgba(0,0,0,0.15),0_0_0_12px_#181113] overflow-hidden border-8 border-[#181113] shrink-0 transform scale-[0.85] md:scale-100 transition-transform duration-300">
+            {/* Notch */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-6 bg-[#181113] rounded-b-2xl z-20" />
+            {/* Screen */}
+            <div
+              className={cn(
+                'w-full h-full overflow-y-auto bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
+                plusJakartaSans.variable,
+                'font-[family-name:var(--font-display)]',
+              )}
+            >
+              <TemplateRenderer invitation={invitation} />
             </div>
           </div>
-        )}
-
-        {/* Desktop mockup — shown when mode is 'desktop' or 'both' */}
-        {(mode === 'desktop' || mode === 'both') && (
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-muted-foreground font-medium">
-              Desktop
-            </span>
-            <div className="relative w-[580px] h-[400px] rounded-lg border-2 border-gray-300 bg-gray-100 shadow-lg overflow-hidden">
-              {/* Browser chrome bar */}
-              <div className="h-8 bg-gray-200 border-b border-gray-300 flex items-center px-3 gap-2">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                </div>
-                <div className="flex-1 mx-4 h-4 bg-white rounded-sm border border-gray-300" />
+        ) : (
+          /* Desktop Device Frame */
+          <div className="relative w-[680px] h-[480px] rounded-lg border-2 border-gray-300 bg-gray-100 shadow-lg overflow-hidden">
+            {/* Browser chrome bar */}
+            <div className="h-8 bg-gray-200 border-b border-gray-300 flex items-center px-3 gap-2">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
               </div>
-              {/* Content area */}
-              <div
-                className={cn(
-                  'w-full h-[calc(100%-2rem)] overflow-y-auto bg-white',
-                  plusJakartaSans.variable,
-                  'font-[family-name:var(--font-display)]',
-                )}
-              >
-                <TemplateRenderer invitation={invitation} />
-              </div>
+              <div className="flex-1 mx-4 h-4 bg-white rounded-sm border border-gray-300" />
+            </div>
+            {/* Content area */}
+            <div
+              className={cn(
+                'w-full h-[calc(100%-2rem)] overflow-y-auto bg-white',
+                plusJakartaSans.variable,
+                'font-[family-name:var(--font-display)]',
+              )}
+            >
+              <TemplateRenderer invitation={invitation} />
             </div>
           </div>
         )}
       </div>
 
-      {/* Tablet/mobile layout (below lg): simple bordered preview */}
-      <div className="lg:hidden w-full">
+      {/* Mobile/tablet layout (below md): simple bordered preview */}
+      <div className="md:hidden w-full px-4">
         <div
           className={cn(
-            'border border-gray-200 rounded-lg overflow-hidden bg-white',
+            'border border-[#e6dbde] rounded-xl overflow-hidden bg-white shadow-sm',
             plusJakartaSans.variable,
             'font-[family-name:var(--font-display)]',
           )}
@@ -84,6 +77,6 @@ export function EditorPreview({ invitation, mode = 'both' }: EditorPreviewProps)
           <TemplateRenderer invitation={invitation} />
         </div>
       </div>
-    </div>
+    </>
   )
 }
