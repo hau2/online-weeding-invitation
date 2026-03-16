@@ -179,13 +179,14 @@ Plans:
   3. Admin can view any invitation and disable it for violations — the public page becomes inaccessible — or re-enable it; admin cannot edit invitation content
   4. Admin can manage the system music library: upload new MP3 files, enable/disable tracks; disabled tracks remain audible on existing invitations that already selected them
   5. Admin can configure service plan permissions (photo limits, template access, watermark) and update payment transaction records with refund status and notes
-**Plans**: 4 plans
+**Plans**: 5 plans
 
 Plans:
 - [ ] 08-01-PLAN.md — DB migration (system_settings, is_locked, is_disabled, usage_count, admin_notes), shared types (admin.ts), NestJS AdminModule with all admin endpoints, payments enhancement API
 - [ ] 08-02-PLAN.md — Dashboard overview page (real stats + 30-day line chart), Users management page (search, filter, lock/unlock, delete, role change, detail view)
 - [ ] 08-03-PLAN.md — Invitations management page (search, filter, read-only view, disable/enable), Music library page (upload MP3, toggle, delete, usage count)
 - [ ] 08-04-PLAN.md — Themes page (enable/disable), Service plans page (limit config), System settings page (bank QR, watermark, expiry, upload limits), Payments enhancement (refund, notes, CSV)
+- [ ] 08-05-PLAN.md — Gap closure: add revenue stat to dashboard (ADMN-02), fix music track live usage count (ADMN-06)
 
 ### Phase 9: Polish and Performance
 **Goal**: The platform loads fast on 3G/4G Vietnamese mobile networks, the envelope animation runs smoothly on low-end Android devices, the auto-expiry cron runs reliably, and the experience is accessible for elderly guests
@@ -224,7 +225,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 | 5.1 Dual-Family Ceremony | 4/4 | Complete | 2026-03-16 |
 | 6. Save-the-Date | 2/2 | Complete   | 2026-03-15 |
 | 7. Monetization | 0/3 | Not started | - |
-| 8. Admin Panel | 3/4 | In Progress|  |
+| 8. Admin Panel | 4/5 | In Progress|  |
 | 9. Polish and Performance | 0/7 | Not started | - |
 
 ### Phase 10: Agent Tier and Storage Management — monthly subscription for printing vendors, 20 invitations/month quota, draft auto-delete, published link expiration, admin Clear Storage button
