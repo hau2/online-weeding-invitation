@@ -224,7 +224,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 7. Monetization | 0/3 | Not started | - |
 | 8. Admin Panel | 4/5 | In Progress|  |
 | 9. Polish and Performance | 3/3 | Complete | 2013-03-16 |
-| 9.1 Public Page Redesign | 1/5 | In Progress|  |
+| 9.1 Public Page Redesign | 2/5 | In Progress|  |
 | 10. Agent Tier and Storage | 0/0 | Not started | - |
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |

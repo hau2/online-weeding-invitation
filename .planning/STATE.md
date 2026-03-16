@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 09.1-01-PLAN.md
-last_updated: "2026-03-16T09:58:43.958Z"
-last_activity: "2026-03-16 — Plan 09.1-01 complete: ThemeConfig type system, 6 theme configs, legacy ID mapping, Plus Jakarta Sans font, Wave 0 test stubs"
+stopped_at: Completed 09.1-02-PLAN.md
+last_updated: "2026-03-16T10:05:20.628Z"
+last_activity: "2026-03-16 — Plan 09.1-02 complete: SharedTemplate layout with 8 section components consuming ThemeConfig"
 progress:
   total_phases: 14
   completed_phases: 10
   total_plans: 47
-  completed_plans: 43
-  percent: 91
+  completed_plans: 44
+  percent: 94
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 9.1 (Public Page Redesign - Modern Full-Width Templates)
-Plan: 1 of 5 in phase 9.1 (09.1-01 complete)
+Plan: 2 of 5 in phase 9.1 (09.1-02 complete)
 Status: In Progress
-Last activity: 2026-03-16 — Plan 09.1-01 complete: ThemeConfig type system, 6 theme configs, legacy ID mapping, Plus Jakarta Sans font, Wave 0 test stubs
+Last activity: 2026-03-16 — Plan 09.1-02 complete: SharedTemplate layout with 8 section components consuming ThemeConfig
 
-Progress: [█████████░] 91%
+Progress: [█████████░] 94%
 
 ## Performance Metrics
 
@@ -95,6 +95,7 @@ Progress: [█████████░] 91%
 | Phase 09 P01 | 8min | 2 tasks | 7 files |
 | Phase 09 P03 | 5min | 3 tasks | 3 files |
 | Phase 09.1 P01 | 3 | 2 tasks | 12 files |
+| Phase 09.1 P02 | 3 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -231,6 +232,9 @@ Recent decisions affecting current work:
 - [Phase 09]: Performance gate uses rAF timestamps for frame measurement; static envelope during gate; bank QR container widened to max-w-[280px]
 - [Phase 09]: FallingPetals runs during both envelope and revealed stages per user request (overrides original plan to stop after reveal)
 - [Phase 09.1]: ThemeConfig uses Tailwind class strings for direct className composition; getTheme() falls back to modern-red
+- [Phase 09.1]: CountdownSection handles both card-box style (default themes) and bare numbers style (B&W Minimalist) via navStyle check
+- [Phase 09.1]: SectionProps interface: { invitation: Invitation, theme: ThemeConfig } is the shared contract for all section components
+- [Phase 09.1]: BankQrSection checks both bankQrUrl and bankAccountNumber for card visibility; wraps QR in BankQrLock for free tier
 
 ### Roadmap Evolution
 
@@ -251,6 +255,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T09:58:43.956Z
-Stopped at: Completed 09.1-01-PLAN.md
+Last session: 2026-03-16T10:05:20.625Z
+Stopped at: Completed 09.1-02-PLAN.md
 Resume file: None
