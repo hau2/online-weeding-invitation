@@ -45,9 +45,11 @@ interface InvitationRow {
   bank_qr_url: string | null
   bank_name: string
   bank_account_holder: string
+  bank_account_number: string
   bride_bank_qr_url: string | null
   bride_bank_name: string
   bride_bank_account_holder: string
+  bride_bank_account_number: string
   teaser_message: string
   plan: string
   payment_status: string
@@ -101,8 +103,10 @@ const FIELD_MAP: Record<string, string> = {
   musicTrackId: 'music_track_id',
   bankName: 'bank_name',
   bankAccountHolder: 'bank_account_holder',
+  bankAccountNumber: 'bank_account_number',
   brideBankName: 'bride_bank_name',
   brideBankAccountHolder: 'bride_bank_account_holder',
+  brideBankAccountNumber: 'bride_bank_account_number',
   teaserMessage: 'teaser_message',
 }
 
@@ -138,9 +142,11 @@ function mapRow(row: InvitationRow): Invitation {
     bankQrUrl: row.bank_qr_url,
     bankName: row.bank_name,
     bankAccountHolder: row.bank_account_holder,
+    bankAccountNumber: row.bank_account_number,
     brideBankQrUrl: row.bride_bank_qr_url,
     brideBankName: row.bride_bank_name,
     brideBankAccountHolder: row.bride_bank_account_holder,
+    brideBankAccountNumber: row.bride_bank_account_number,
     plan: row.plan as Invitation['plan'],
     paymentStatus: row.payment_status as Invitation['paymentStatus'],
     adminNotes: row.admin_notes,

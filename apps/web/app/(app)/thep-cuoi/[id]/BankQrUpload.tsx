@@ -14,9 +14,11 @@ interface BankQrUploadProps {
   bankQrUrl: string | null
   bankName: string
   bankAccountHolder: string
+  bankAccountNumber: string
   brideBankQrUrl: string | null
   brideBankName: string
   brideBankAccountHolder: string
+  brideBankAccountNumber: string
   onChange: (changes: Partial<Invitation>) => void
 }
 
@@ -30,6 +32,8 @@ function QrSide({
   bankNameKey,
   bankAccountValue,
   bankAccountKey,
+  bankAccountNumberValue,
+  bankAccountNumberKey,
   onChange,
 }: {
   label: string
@@ -41,6 +45,8 @@ function QrSide({
   bankNameKey: keyof Invitation
   bankAccountValue: string
   bankAccountKey: keyof Invitation
+  bankAccountNumberValue: string
+  bankAccountNumberKey: keyof Invitation
   onChange: (changes: Partial<Invitation>) => void
 }) {
   const [isUploading, setIsUploading] = useState(false)
@@ -147,6 +153,15 @@ function QrSide({
             onChange={(e) => onChange({ [bankAccountKey]: e.target.value } as Partial<Invitation>)}
           />
         </div>
+        <div className="space-y-1">
+          <Label className="text-rose-700 text-xs">So tai khoan</Label>
+          <Input
+            placeholder="VD: 0123456789"
+            className="border-rose-200 focus-visible:border-rose-400 focus-visible:ring-rose-200 text-sm h-8"
+            value={bankAccountNumberValue}
+            onChange={(e) => onChange({ [bankAccountNumberKey]: e.target.value } as Partial<Invitation>)}
+          />
+        </div>
       </div>
     </div>
   )
@@ -157,9 +172,11 @@ export function BankQrUpload({
   bankQrUrl,
   bankName,
   bankAccountHolder,
+  bankAccountNumber,
   brideBankQrUrl,
   brideBankName,
   brideBankAccountHolder,
+  brideBankAccountNumber,
   onChange,
 }: BankQrUploadProps) {
   return (
@@ -174,6 +191,8 @@ export function BankQrUpload({
         bankNameKey="bankName"
         bankAccountValue={bankAccountHolder}
         bankAccountKey="bankAccountHolder"
+        bankAccountNumberValue={bankAccountNumber}
+        bankAccountNumberKey="bankAccountNumber"
         onChange={onChange}
       />
       <div className="w-px bg-rose-100" />
@@ -187,6 +206,8 @@ export function BankQrUpload({
         bankNameKey="brideBankName"
         bankAccountValue={brideBankAccountHolder}
         bankAccountKey="brideBankAccountHolder"
+        bankAccountNumberValue={brideBankAccountNumber}
+        bankAccountNumberKey="brideBankAccountNumber"
         onChange={onChange}
       />
     </div>

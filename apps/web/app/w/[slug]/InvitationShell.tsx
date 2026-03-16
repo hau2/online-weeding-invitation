@@ -75,7 +75,7 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
         // Hide bride-side ceremony + bank QR (parents stay visible)
         brideCeremonyDate: null, brideCeremonyTime: null,
         brideVenueName: '', brideVenueAddress: '',
-        brideBankQrUrl: null, brideBankName: '', brideBankAccountHolder: '',
+        brideBankQrUrl: null, brideBankName: '', brideBankAccountHolder: '', brideBankAccountNumber: '',
       }
     } else {
       return {
@@ -83,7 +83,7 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
         // Hide groom-side ceremony + bank QR (parents stay visible)
         groomCeremonyDate: null, groomCeremonyTime: null,
         groomVenueName: '', groomVenueAddress: '',
-        bankQrUrl: null, bankName: '', bankAccountHolder: '',
+        bankQrUrl: null, bankName: '', bankAccountHolder: '', bankAccountNumber: '',
       }
     }
   }, [invitation, side])

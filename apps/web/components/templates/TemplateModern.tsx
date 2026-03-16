@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import type { TemplateProps } from './types'
 import type { LoveStoryMilestone } from '@repo/types'
 import { BankQrLock } from '@/app/w/[slug]/BankQrLock'
+import { CopyAccountNumber } from './CopyAccountNumber'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Chua chon ngay'
@@ -264,6 +265,7 @@ export function TemplateModern({ invitation, className }: TemplateProps) {
                   <p className="mt-2 text-center text-sm text-gray-500">Mo ung dung ngan hang va quet ma QR</p>
                   {invitation.bankName && <p className="mt-2 text-xs font-medium text-gray-700">{invitation.bankName}</p>}
                   {invitation.bankAccountHolder && <p className="text-xs text-gray-500">{invitation.bankAccountHolder}</p>}
+                  {invitation.bankAccountNumber && <CopyAccountNumber accountNumber={invitation.bankAccountNumber} className="mt-2 text-sky-600" />}
                 </div>
               )}
               {invitation.brideBankQrUrl && (
@@ -279,6 +281,7 @@ export function TemplateModern({ invitation, className }: TemplateProps) {
                   <p className="mt-2 text-center text-sm text-gray-500">Mo ung dung ngan hang va quet ma QR</p>
                   {invitation.brideBankName && <p className="mt-2 text-xs font-medium text-gray-700">{invitation.brideBankName}</p>}
                   {invitation.brideBankAccountHolder && <p className="text-xs text-gray-500">{invitation.brideBankAccountHolder}</p>}
+                  {invitation.brideBankAccountNumber && <CopyAccountNumber accountNumber={invitation.brideBankAccountNumber} className="mt-2 text-sky-600" />}
                 </div>
               )}
             </div>

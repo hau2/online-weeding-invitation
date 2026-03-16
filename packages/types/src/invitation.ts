@@ -39,9 +39,11 @@ export interface Invitation {
   bankQrUrl: string | null
   bankName: string
   bankAccountHolder: string
+  bankAccountNumber: string
   brideBankQrUrl: string | null
   brideBankName: string
   brideBankAccountHolder: string
+  brideBankAccountNumber: string
   plan: InvitationPlan
   paymentStatus: PaymentStatus
   createdAt: string
