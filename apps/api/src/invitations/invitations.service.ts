@@ -10,7 +10,7 @@ import { randomBytes } from 'crypto'
 import * as QRCode from 'qrcode'
 import * as sharp from 'sharp'
 import { filetypemime } from 'magic-bytes.js'
-import type { Invitation, LoveStoryMilestone, SystemMusicTrack } from '@repo/types'
+import type { CeremonyProgramEvent, Invitation, LoveStoryMilestone, SystemMusicTrack } from '@repo/types'
 import { SupabaseAdminService } from '../supabase/supabase.service'
 import { CreateInvitationDto } from './dto/create-invitation.dto'
 import { UpdateInvitationDto } from './dto/update-invitation.dto'
@@ -50,7 +50,12 @@ interface InvitationRow {
   bride_bank_name: string
   bride_bank_account_holder: string
   bride_bank_account_number: string
+  ceremony_program: unknown[]
   teaser_message: string
+  groom_avatar_url: string | null
+  bride_avatar_url: string | null
+  groom_nickname: string
+  bride_nickname: string
   plan: string
   payment_status: string
   admin_notes: string
@@ -108,6 +113,9 @@ const FIELD_MAP: Record<string, string> = {
   brideBankAccountHolder: 'bride_bank_account_holder',
   brideBankAccountNumber: 'bride_bank_account_number',
   teaserMessage: 'teaser_message',
+  ceremonyProgram: 'ceremony_program',
+  groomNickname: 'groom_nickname',
+  brideNickname: 'bride_nickname',
 }
 
 /** Map a snake_case DB row to camelCase for the frontend */
@@ -132,8 +140,13 @@ function mapRow(row: InvitationRow): Invitation {
     brideCeremonyTime: row.bride_ceremony_time,
     brideVenueName: row.bride_venue_name,
     brideVenueAddress: row.bride_venue_address,
+    ceremonyProgram: row.ceremony_program as CeremonyProgramEvent[],
     loveStory: row.love_story as LoveStoryMilestone[],
     venueMapUrl: row.venue_map_url,
+    groomAvatarUrl: row.groom_avatar_url,
+    brideAvatarUrl: row.bride_avatar_url,
+    groomNickname: row.groom_nickname,
+    brideNickname: row.bride_nickname,
     invitationMessage: row.invitation_message,
     thankYouText: row.thank_you_text,
     teaserMessage: row.teaser_message,
@@ -180,10 +193,11 @@ const SELECT_ALL =
   'groom_venue_name, groom_venue_address, ' +
   'bride_father, bride_mother, bride_ceremony_date, bride_ceremony_time, ' +
   'bride_venue_name, bride_venue_address, ' +
-  'love_story, venue_map_url, ' +
+  'ceremony_program, love_story, venue_map_url, ' +
+  'groom_avatar_url, bride_avatar_url, groom_nickname, bride_nickname, ' +
   'invitation_message, thank_you_text, teaser_message, photo_urls, music_track_id, ' +
-  'bank_qr_url, bank_name, bank_account_holder, ' +
-  'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
+  'bank_qr_url, bank_name, bank_account_holder, bank_account_number, ' +
+  'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, bride_bank_account_number, ' +
   'plan, payment_status, admin_notes, is_disabled, ' +
   'qr_code_url, created_at, updated_at, deleted_at'
 

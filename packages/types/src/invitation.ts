@@ -20,6 +20,12 @@ export interface LoveStoryMilestone {
   description: string
 }
 
+export interface CeremonyProgramEvent {
+  time: string
+  title: string
+  description: string
+}
+
 export interface Invitation {
   id: string
   userId: string
@@ -40,8 +46,13 @@ export interface Invitation {
   brideCeremonyTime: string | null
   brideVenueName: string
   brideVenueAddress: string
+  ceremonyProgram: CeremonyProgramEvent[]
   loveStory: LoveStoryMilestone[]
   venueMapUrl: string
+  groomAvatarUrl: string | null
+  brideAvatarUrl: string | null
+  groomNickname: string
+  brideNickname: string
   invitationMessage: string
   thankYouText: string
   teaserMessage: string

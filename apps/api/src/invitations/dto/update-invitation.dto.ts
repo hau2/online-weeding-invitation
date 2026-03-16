@@ -13,6 +13,20 @@ import {
 import { Type } from 'class-transformer'
 import { PartialType } from '@nestjs/mapped-types'
 
+/** Nested DTO for a single ceremony program event */
+class CeremonyProgramEventDto {
+  @IsString({ message: 'Thoi gian su kien phai la chuoi ky tu' })
+  time: string
+
+  @IsString({ message: 'Tieu de su kien phai la chuoi ky tu' })
+  @MaxLength(100, { message: 'Tieu de su kien khong qua 100 ky tu' })
+  title: string
+
+  @IsString({ message: 'Mo ta su kien phai la chuoi ky tu' })
+  @MaxLength(300, { message: 'Mo ta su kien khong qua 300 ky tu' })
+  description: string
+}
+
 /** Nested DTO for a single love story milestone */
 class LoveStoryMilestoneDto {
   @IsString({ message: 'Ngay cau chuyen phai la chuoi ky tu' })
@@ -119,6 +133,21 @@ class InvitationFieldsDto {
   @IsOptional()
   @IsString({ message: 'Loi nhan save the date phai la chuoi ky tu' })
   teaserMessage: string
+
+  @IsOptional()
+  @IsArray({ message: 'Chuong trinh le cuoi phai la mang' })
+  @ArrayMaxSize(10, { message: 'Toi da 10 su kien trong chuong trinh' })
+  @ValidateNested({ each: true })
+  @Type(() => CeremonyProgramEventDto)
+  ceremonyProgram: CeremonyProgramEventDto[]
+
+  @IsString({ message: 'Biet danh chu re phai la chuoi ky tu' })
+  @MaxLength(50, { message: 'Biet danh chu re khong qua 50 ky tu' })
+  groomNickname: string
+
+  @IsString({ message: 'Biet danh co dau phai la chuoi ky tu' })
+  @MaxLength(50, { message: 'Biet danh co dau khong qua 50 ky tu' })
+  brideNickname: string
 }
 
 /**
