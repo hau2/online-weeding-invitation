@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 09.1-04-PLAN.md
-last_updated: "2026-03-16T10:10:07.659Z"
-last_activity: "2026-03-16 — Plan 09.1-04 complete: Editor components updated for 6-theme system with dual preview mockups"
+stopped_at: Completed 09.1-03-PLAN.md
+last_updated: "2026-03-16T10:15:39.000Z"
+last_activity: "2026-03-16 — Plan 09.1-03 complete: InvitationShell rewired to SharedTemplate + StickyNav, FallingPetals/ThankYouPage/SaveTheDatePage migrated to theme system"
 progress:
   total_phases: 14
   completed_phases: 10
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 9.1 (Public Page Redesign - Modern Full-Width Templates)
-Plan: 4 of 5 in phase 9.1 (09.1-04 complete)
+Plan: 4 of 5 in phase 9.1 (09.1-03 complete, 09.1-05 remaining)
 Status: In Progress
-Last activity: 2026-03-16 — Plan 09.1-04 complete: Editor components updated for 6-theme system with dual preview mockups
+Last activity: 2026-03-16 — Plan 09.1-03 complete: InvitationShell rewired to SharedTemplate + StickyNav, FallingPetals/ThankYouPage/SaveTheDatePage migrated to theme system
 
 Progress: [██████████] 96%
 
@@ -97,6 +97,7 @@ Progress: [██████████] 96%
 | Phase 09.1 P01 | 3 | 2 tasks | 12 files |
 | Phase 09.1 P02 | 3 | 2 tasks | 9 files |
 | Phase 09.1 P04 | 2 | 2 tasks | 6 files |
+| Phase 09.1 P03 | 4min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -238,6 +239,10 @@ Recent decisions affecting current work:
 - [Phase 09.1]: BankQrSection checks both bankQrUrl and bankAccountNumber for card visibility; wraps QR in BankQrLock for free tier
 - [Phase 09.1]: TemplateRenderer is thin wrapper: getTheme() + SharedTemplate, no more 3-component lookup table
 - [Phase 09.1]: EditorPreview dual mockups: phone (280px) + desktop (580px with browser chrome) side by side on lg; simple bordered preview on mobile/tablet
+- [Phase 09.1]: FallingPetals z-index 30 (below StickyNav z-40), petalColors/petalEnabled props replace templateId lookup
+- [Phase 09.1]: InvitationShell envelope stage uses theme.backgroundColor; revealed stage is full-width with Plus Jakarta Sans
+- [Phase 09.1]: ThankYouPage/SaveTheDatePage use inline styles with theme hex colors instead of Tailwind class TEMPLATE_COLORS records
+- [Phase 09.1]: CountdownTimer dynamic import removed from InvitationShell -- countdown now inside SharedTemplate via CountdownSection
 
 ### Roadmap Evolution
 
@@ -258,6 +263,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T10:10:07.656Z
-Stopped at: Completed 09.1-04-PLAN.md
+Last session: 2026-03-16T10:15:39.000Z
+Stopped at: Completed 09.1-03-PLAN.md
 Resume file: None
