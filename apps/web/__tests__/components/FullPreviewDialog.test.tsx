@@ -1,7 +1,29 @@
-import { describe, it } from 'vitest'
+import { describe, it, expect } from 'vitest'
+import { existsSync } from 'fs'
+import { join } from 'path'
 
 describe('FullPreviewDialog', () => {
-  it.todo('renders TemplateRenderer when open is true')
-  it.todo('does not render content when open is false')
-  it.todo('calls onOpenChange when close button is clicked')
+  it('has been replaced by dedicated preview page route', () => {
+    const oldPath = join(
+      __dirname,
+      '../../app/(app)/thep-cuoi/[id]/FullPreviewDialog.tsx',
+    )
+    expect(existsSync(oldPath)).toBe(false)
+  })
+
+  it('preview page.tsx exists as replacement', () => {
+    const newPath = join(
+      __dirname,
+      '../../app/(app)/thep-cuoi/[id]/preview/page.tsx',
+    )
+    expect(existsSync(newPath)).toBe(true)
+  })
+
+  it('PreviewShell.tsx exists as replacement', () => {
+    const shellPath = join(
+      __dirname,
+      '../../app/(app)/thep-cuoi/[id]/preview/PreviewShell.tsx',
+    )
+    expect(existsSync(shellPath)).toBe(true)
+  })
 })
