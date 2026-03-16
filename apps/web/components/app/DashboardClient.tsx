@@ -1,8 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { type Invitation } from '@repo/types'
 import { InvitationGrid } from './InvitationGrid'
-import { CreateWizard } from './CreateWizard'
 import { Plus, Award, Globe, Timer } from 'lucide-react'
 
 interface DashboardClientProps {
@@ -10,11 +9,13 @@ interface DashboardClientProps {
 }
 
 export function DashboardClient({ invitations }: DashboardClientProps) {
-  const [wizardOpen, setWizardOpen] = useState(false)
+  const router = useRouter()
 
   const publishedCount = invitations.filter(
     (i) => i.status === 'published' || i.status === 'save_the_date'
   ).length
+
+  const handleCreateClick = () => router.push('/tao-thiep')
 
   return (
     <div className="max-w-[1200px] mx-auto space-y-8">
@@ -29,7 +30,7 @@ export function DashboardClient({ invitations }: DashboardClientProps) {
           </p>
         </div>
         <button
-          onClick={() => setWizardOpen(true)}
+          onClick={handleCreateClick}
           className="flex items-center gap-2 bg-[#ec1349] hover:bg-[#d01140] text-white px-5 py-2.5 rounded-lg font-bold shadow-lg shadow-[#ec1349]/20 transition-all active:scale-95"
         >
           <Plus className="size-5" />
@@ -82,7 +83,7 @@ export function DashboardClient({ invitations }: DashboardClientProps) {
 
         <InvitationGrid
           invitations={invitations}
-          onCreateClick={() => setWizardOpen(true)}
+          onCreateClick={handleCreateClick}
         />
       </div>
 
@@ -106,7 +107,6 @@ export function DashboardClient({ invitations }: DashboardClientProps) {
         </div>
       </div>
 
-      <CreateWizard open={wizardOpen} onOpenChange={setWizardOpen} />
     </div>
   )
 }
