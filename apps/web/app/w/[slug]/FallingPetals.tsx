@@ -1,18 +1,11 @@
 'use client'
 
-import { useMemo } from 'react'
-import type { TemplateId } from '@repo/types'
-
 interface FallingPetalsProps {
-  templateId: TemplateId
+  petalColors?: string[]
   enabled?: boolean
 }
 
-const PETAL_COLORS: Record<TemplateId, string[]> = {
-  traditional: ['#FFB7C5', '#FF69B4', '#FF1493', '#DC143C'], // cherry blossom pink/red
-  modern: ['#FFD1DC', '#FFC0CB', '#FFE4E1', '#FFFFFF'],       // soft pink/white rose
-  minimalist: ['#F5F0E1', '#EDE8D5', '#E8E0CC', '#DDD5C0'],   // subtle cream/beige
-}
+const DEFAULT_PETAL_COLORS = ['#FFD1DC', '#FFC0CB', '#FFE4E1', '#FFFFFF']
 
 const KEYFRAMES_CSS = `
 @keyframes petal-fall {
@@ -83,15 +76,16 @@ function buildPetals(): PetalData[] {
 
 const PETALS = buildPetals()
 
-export function FallingPetals({ templateId, enabled = true }: FallingPetalsProps) {
+export function FallingPetals({ petalColors, enabled = true }: FallingPetalsProps) {
   if (!enabled) return null
+  if (petalColors && petalColors.length === 0) return null
 
-  const colors = PETAL_COLORS[templateId]
+  const colors = petalColors ?? DEFAULT_PETAL_COLORS
 
   return (
     <div
       className="pointer-events-none fixed inset-0"
-      style={{ zIndex: 40 }}
+      style={{ zIndex: 30 }}
       aria-hidden="true"
     >
       <style dangerouslySetInnerHTML={{ __html: KEYFRAMES_CSS }} />
