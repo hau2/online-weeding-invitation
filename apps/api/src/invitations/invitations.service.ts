@@ -49,6 +49,8 @@ interface InvitationRow {
   bride_bank_name: string
   bride_bank_account_holder: string
   teaser_message: string
+  plan: string
+  payment_status: string
   qr_code_url: string | null
   created_at: string
   updated_at: string
@@ -137,6 +139,8 @@ function mapRow(row: InvitationRow): Invitation {
     brideBankQrUrl: row.bride_bank_qr_url,
     brideBankName: row.bride_bank_name,
     brideBankAccountHolder: row.bride_bank_account_holder,
+    plan: row.plan as Invitation['plan'],
+    paymentStatus: row.payment_status as Invitation['paymentStatus'],
     qrCodeUrl: row.qr_code_url,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -170,6 +174,7 @@ const SELECT_ALL =
   'invitation_message, thank_you_text, teaser_message, photo_urls, music_track_id, ' +
   'bank_qr_url, bank_name, bank_account_holder, ' +
   'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
+  'plan, payment_status, ' +
   'qr_code_url, created_at, updated_at, deleted_at'
 
 /** Allowed image MIME types for upload validation */
@@ -351,6 +356,8 @@ export class InvitationsService {
         groom_name: dto.groomName,
         template_id: dto.templateId,
         status: 'draft',
+        plan: 'free',
+        payment_status: 'none',
         invitation_message: '',
         thank_you_text: '',
       })
@@ -725,9 +732,34 @@ export class InvitationsService {
   }
 
   /**
+   * Check if a free-tier user already has a live invitation.
+   * Throws BadRequestException if the limit is reached.
+   */
+  private async enforceFreeTierLimit(userId: string, currentInvitationId: string, plan: string): Promise<void> {
+    if (plan !== 'free') return
+
+    const { count, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .in('status', ['published', 'save_the_date'])
+      .is('deleted_at', null)
+      .neq('id', currentInvitationId)
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    if ((count ?? 0) >= 1) {
+      throw new BadRequestException(
+        'Ban chi co the xuat ban 1 thiep mien phi. Vui long nang cap len Premium de xuat ban them.',
+      )
+    }
+  }
+
+  /**
    * Publish as save-the-date teaser.
    * - Only transitions from 'draft' status.
    * - Validates minimum fields: groomName, brideName, and at least one ceremony date.
+   * - Free tier: enforces max 1 live invitation.
    * - First time: generates slug + QR code.
    * - Re-publish (slug exists): just updates status.
    */
@@ -757,6 +789,9 @@ export class InvitationsService {
         'Can chon it nhat mot ngay le truoc khi xuat ban Save the Date',
       )
     }
+
+    // Free tier: max 1 live invitation
+    await this.enforceFreeTierLimit(userId, id, invitation.plan)
 
     // If slug already exists (previously published), just update status
     if (invitation.slug) {
@@ -808,12 +843,16 @@ export class InvitationsService {
   /**
    * Publish an invitation.
    * - Allows transition from both 'draft' and 'save_the_date' statuses.
+   * - Free tier: enforces max 1 live invitation.
    * - First publish: generates slug via admin client (bypasses RLS for slug write)
    * - Re-publish: just sets status, preserves existing slug
    * - Slug collision: retries up to 3 times with new random suffix
    */
   async publish(userId: string, id: string) {
     const invitation = await this.findOne(userId, id)
+
+    // Free tier: max 1 live invitation
+    await this.enforceFreeTierLimit(userId, id, invitation.plan)
 
     // If slug already exists, just update status (use user client, no slug change)
     if (invitation.slug) {
@@ -884,5 +923,122 @@ export class InvitationsService {
     }
 
     return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * User requests an upgrade for a specific invitation.
+   * Sets paymentStatus to 'pending'.
+   */
+  async requestUpgrade(userId: string, invitationId: string) {
+    const invitation = await this.findOne(userId, invitationId)
+
+    if (invitation.plan === 'premium') {
+      throw new BadRequestException('Thiep nay da la Premium')
+    }
+
+    if (invitation.paymentStatus === 'pending') {
+      throw new BadRequestException('Yeu cau nang cap dang cho xu ly')
+    }
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ payment_status: 'pending' })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Admin approves an upgrade request.
+   * Sets plan to 'premium' and clears paymentStatus.
+   * Triggers ISR revalidation if slug exists.
+   */
+  async adminApproveUpgrade(invitationId: string) {
+    const { data: row, error: fetchError } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select(SELECT_ALL)
+      .eq('id', invitationId)
+      .is('deleted_at', null)
+      .single()
+
+    if (fetchError || !row) {
+      throw new NotFoundException('Khong tim thay thiep cuoi')
+    }
+
+    const invitation = row as unknown as InvitationRow
+
+    if (invitation.payment_status !== 'pending') {
+      throw new BadRequestException('Khong co yeu cau nang cap cho xu ly')
+    }
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ plan: 'premium', payment_status: 'none' })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    if (invitation.slug) {
+      await this.triggerRevalidation(invitation.slug)
+    }
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Admin rejects an upgrade request.
+   * Sets paymentStatus to 'rejected'.
+   */
+  async adminRejectUpgrade(invitationId: string) {
+    const { data: row, error: fetchError } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select(SELECT_ALL)
+      .eq('id', invitationId)
+      .is('deleted_at', null)
+      .single()
+
+    if (fetchError || !row) {
+      throw new NotFoundException('Khong tim thay thiep cuoi')
+    }
+
+    const invitation = row as unknown as InvitationRow
+
+    if (invitation.payment_status !== 'pending') {
+      throw new BadRequestException('Khong co yeu cau nang cap cho xu ly')
+    }
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ payment_status: 'rejected' })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Admin lists all invitations with pending upgrade requests.
+   * Ordered by updated_at ascending (oldest first).
+   */
+  async adminListPendingUpgrades() {
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select(SELECT_ALL)
+      .eq('payment_status', 'pending')
+      .is('deleted_at', null)
+      .order('updated_at', { ascending: true })
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return ((data as unknown as InvitationRow[]) ?? []).map(mapRow)
   }
 }

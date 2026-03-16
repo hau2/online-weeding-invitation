@@ -22,6 +22,7 @@ import { InvitationsService } from './invitations.service'
 import { CreateInvitationDto } from './dto/create-invitation.dto'
 import { UpdateInvitationDto } from './dto/update-invitation.dto'
 import { JwtGuard } from '../common/guards/jwt.guard'
+import { AdminGuard } from '../auth/guards/admin.guard'
 import {
   CurrentUser,
   JwtPayload,
@@ -50,6 +51,38 @@ export class InvitationsController {
   @Get('music-tracks')
   listMusicTracks() {
     return this.invitationsService.listMusicTracks()
+  }
+
+  /**
+   * Admin: list all invitations with pending upgrade requests.
+   * MUST be defined BEFORE the :id param route to avoid 'admin' being parsed as UUID.
+   */
+  @Get('admin/pending-upgrades')
+  @UseGuards(AdminGuard)
+  adminListPendingUpgrades() {
+    return this.invitationsService.adminListPendingUpgrades()
+  }
+
+  /**
+   * Admin: approve an upgrade request.
+   * Sets plan to 'premium' and clears paymentStatus.
+   */
+  @Post('admin/:id/approve-upgrade')
+  @UseGuards(AdminGuard)
+  @HttpCode(HttpStatus.OK)
+  adminApproveUpgrade(@Param('id', ParseUUIDPipe) id: string) {
+    return this.invitationsService.adminApproveUpgrade(id)
+  }
+
+  /**
+   * Admin: reject an upgrade request.
+   * Sets paymentStatus to 'rejected'.
+   */
+  @Post('admin/:id/reject-upgrade')
+  @UseGuards(AdminGuard)
+  @HttpCode(HttpStatus.OK)
+  adminRejectUpgrade(@Param('id', ParseUUIDPipe) id: string) {
+    return this.invitationsService.adminRejectUpgrade(id)
   }
 
   @Get(':id')
@@ -157,6 +190,18 @@ export class InvitationsController {
       id,
       body.photoUrls,
     )
+  }
+
+  /**
+   * User requests an upgrade for a specific invitation.
+   */
+  @Post(':id/request-upgrade')
+  @HttpCode(HttpStatus.OK)
+  requestUpgrade(
+    @CurrentUser() user: JwtPayload,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.invitationsService.requestUpgrade(user.sub, id)
   }
 
   @Post(':id/publish-save-the-date')
