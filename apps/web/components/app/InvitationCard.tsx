@@ -2,7 +2,7 @@
 import { type Invitation } from '@repo/types'
 import { StatusBadge } from './StatusBadge'
 import { toast } from 'sonner'
-import { Edit2, Copy, Eye } from 'lucide-react'
+import { Edit2, Copy, Eye, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
@@ -71,7 +71,24 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
           <h3 className="text-sm font-semibold text-rose-900 leading-tight">
             {invitation.brideName} &amp; {invitation.groomName}
           </h3>
-          <StatusBadge status={invitation.status} />
+          <div className="flex items-center gap-1.5 shrink-0">
+            <StatusBadge status={invitation.status} />
+            {invitation.plan === 'premium' && (
+              <span className="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
+                Premium
+              </span>
+            )}
+            {invitation.paymentStatus === 'pending' && (
+              <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                Cho xac nhan
+              </span>
+            )}
+            {invitation.paymentStatus === 'rejected' && (
+              <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600">
+                Tu choi
+              </span>
+            )}
+          </div>
         </div>
 
         <p className="text-xs text-gray-500">{formattedDate}</p>
@@ -88,6 +105,19 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
             <Edit2 className="size-3.5" />
             {"\u0043h\u1ec9nh s\u1eeda"}
           </Button>
+
+          {invitation.plan !== 'premium' && invitation.paymentStatus !== 'pending' && (
+            <Button
+              render={<Link href={`/nang-cap/${invitation.id}`} />}
+              nativeButton={false}
+              variant="ghost"
+              size="sm"
+              className="text-amber-600 hover:bg-amber-50 gap-1 text-xs"
+            >
+              <Sparkles className="size-3" />
+              Nang cap
+            </Button>
+          )}
 
           {canViewPublic ? (
             <>

@@ -13,6 +13,7 @@ import { EditorPreview } from './EditorPreview'
 import { TemplateSelector } from './TemplateSelector'
 import { PublishButton } from './PublishButton'
 import { FullPreviewDialog } from './FullPreviewDialog'
+import { UpgradeButton } from './UpgradeButton'
 
 function SaveIndicator({ status }: { status: SaveStatus }) {
   switch (status) {
@@ -73,6 +74,11 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
         <h1 className="text-sm font-medium text-rose-800 truncate">{title}</h1>
         <SaveIndicator status={status} />
         <div className="flex-1" />
+        <UpgradeButton
+          invitationId={invitation.id}
+          plan={invitation.plan ?? 'free'}
+          paymentStatus={invitation.paymentStatus ?? 'none'}
+        />
         <Button
           variant="ghost"
           size="sm"
