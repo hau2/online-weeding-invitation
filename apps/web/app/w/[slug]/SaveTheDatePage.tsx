@@ -61,33 +61,24 @@ export function SaveTheDatePage({ invitation }: SaveTheDatePageProps) {
       >
         {/* Guest greeting */}
         {guestName && (
-          <p
-            className="text-base"
-            style={{ fontFamily: "'Dancing Script', cursive", color: theme.primaryColor }}
-          >
+          <p className="text-base text-[#ec1349]">
             Kinh gui {guestName}
           </p>
         )}
 
         {/* Save the Date heading */}
-        <h1
-          className="text-2xl sm:text-3xl font-bold"
-          style={{ fontFamily: "'Playfair Display', serif", color: theme.primaryColor }}
-        >
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#181113]">
           Save the Date
         </h1>
 
         {/* Couple names */}
-        <h2
-          className="text-3xl sm:text-4xl font-bold"
-          style={{ fontFamily: "'Playfair Display', serif", color: theme.textColor }}
-        >
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#181113]">
           {invitation.groomName} &amp; {invitation.brideName}
         </h2>
 
         {/* Wedding date */}
         {formattedDate && (
-          <p style={{ color: theme.textColor }} className="text-lg">
+          <p className="text-lg text-[#181113]">
             {formattedDate}
           </p>
         )}
@@ -98,18 +89,14 @@ export function SaveTheDatePage({ invitation }: SaveTheDatePageProps) {
             <img
               src={firstPhoto}
               alt={`${invitation.groomName} va ${invitation.brideName}`}
-              className="w-full rounded-xl shadow-lg border-2 object-cover aspect-[3/4]"
-              style={{ borderColor: theme.primaryColor }}
+              className="w-full rounded-xl shadow-sm border border-[#e6dbde] object-cover aspect-[3/4]"
             />
           </div>
         )}
 
         {/* Teaser message */}
         {invitation.teaserMessage && (
-          <p
-            className="text-base leading-relaxed max-w-sm whitespace-pre-line"
-            style={{ color: theme.textColor }}
-          >
+          <p className="text-base leading-relaxed max-w-sm whitespace-pre-line text-[#5e4d52]">
             {invitation.teaserMessage}
           </p>
         )}
@@ -123,7 +110,7 @@ export function SaveTheDatePage({ invitation }: SaveTheDatePageProps) {
         )}
 
         {/* Footer */}
-        <p className="text-sm mt-4" style={{ color: theme.mutedTextColor }}>
+        <p className="text-xs mt-4 text-[#89616b]">
           Thiep cuoi chinh thuc se duoc gui sau
         </p>
       </motion.div>

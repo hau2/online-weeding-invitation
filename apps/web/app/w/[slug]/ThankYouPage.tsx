@@ -32,30 +32,21 @@ export function ThankYouPage({ invitation }: ThankYouPageProps) {
     >
       <div className="w-full max-w-md text-center">
         {/* Sub-heading */}
-        <p
-          className="mb-2 text-sm tracking-widest uppercase"
-          style={{ color: theme.mutedTextColor }}
-        >
+        <p className="mb-2 text-sm tracking-widest uppercase text-[#89616b]">
           Cam on quy khach
         </p>
 
         {/* Couple names */}
-        <h1
-          className="mb-6 font-serif text-3xl font-bold"
-          style={{ color: theme.primaryColor }}
-        >
+        <h1 className="mb-6 text-3xl font-bold text-[#181113]">
           {invitation.groomName} & {invitation.brideName}
         </h1>
 
         {/* Decorative divider */}
-        <div
-          className="mx-auto mb-6 w-16 border-t-2"
-          style={{ borderColor: theme.primaryColor }}
-        />
+        <div className="mx-auto mb-6 w-16 border-t-2 border-[#ec1349]" />
 
         {/* First photo */}
         {firstPhoto && (
-          <div className="mx-auto mb-6 w-64 overflow-hidden rounded-2xl shadow-lg">
+          <div className="mx-auto mb-6 w-64 overflow-hidden rounded-xl border border-[#e6dbde] shadow-sm">
             <img
               src={firstPhoto}
               alt={`${invitation.groomName} & ${invitation.brideName}`}
@@ -65,11 +56,13 @@ export function ThankYouPage({ invitation }: ThankYouPageProps) {
         )}
 
         {/* Thank you text */}
-        <p
-          className="mx-auto max-w-sm text-base leading-relaxed"
-          style={{ color: theme.textColor }}
-        >
+        <p className="mx-auto max-w-sm text-base leading-relaxed text-[#5e4d52]">
           {invitation.thankYouText || DEFAULT_THANK_YOU}
+        </p>
+
+        {/* Footer */}
+        <p className="mt-8 text-xs text-[#89616b]">
+          Thiep Cuoi Online
         </p>
       </div>
     </div>

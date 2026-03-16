@@ -20,6 +20,14 @@ function pad(n: number): string {
   return n.toString().padStart(2, '0')
 }
 
+// Default Stitch-styled countdown
+const DEFAULT_STYLE = {
+  card: 'bg-[#181113] text-white',
+  text: 'text-white',
+  label: 'text-[#89616b]',
+  separator: 'text-white',
+}
+
 // Template-specific styling
 const TEMPLATE_STYLES: Record<TemplateId, { card: string; text: string; label: string; separator: string }> = {
   traditional: {
@@ -39,6 +47,37 @@ const TEMPLATE_STYLES: Record<TemplateId, { card: string; text: string; label: s
     text: 'text-gray-800',
     label: 'text-gray-500',
     separator: 'text-gray-800',
+  },
+  'modern-red': DEFAULT_STYLE,
+  'soft-pink': {
+    card: 'bg-pink-900 text-pink-200',
+    text: 'text-pink-200',
+    label: 'text-pink-400',
+    separator: 'text-pink-200',
+  },
+  'brown-gold': {
+    card: 'bg-gray-900 text-amber-400',
+    text: 'text-amber-400',
+    label: 'text-amber-600',
+    separator: 'text-amber-400',
+  },
+  'olive-green': {
+    card: 'bg-gray-900 text-emerald-400',
+    text: 'text-emerald-400',
+    label: 'text-emerald-600',
+    separator: 'text-emerald-400',
+  },
+  'minimalist-bw': {
+    card: 'bg-gray-100 text-gray-800',
+    text: 'text-gray-800',
+    label: 'text-gray-500',
+    separator: 'text-gray-800',
+  },
+  'classic-red-gold': {
+    card: 'bg-gray-900 text-red-400',
+    text: 'text-red-400',
+    label: 'text-red-600',
+    separator: 'text-red-400',
   },
 }
 
