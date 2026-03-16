@@ -1026,6 +1026,25 @@ export class InvitationsService {
   }
 
   /**
+   * Admin lists upgrade history (approved or rejected).
+   * Returns invitations where plan='premium' OR payment_status='rejected',
+   * ordered by updated_at descending, limited to 20.
+   */
+  async adminListUpgradeHistory() {
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select(SELECT_ALL)
+      .is('deleted_at', null)
+      .or('plan.eq.premium,payment_status.eq.rejected')
+      .order('updated_at', { ascending: false })
+      .limit(20)
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return ((data as unknown as InvitationRow[]) ?? []).map(mapRow)
+  }
+
+  /**
    * Admin lists all invitations with pending upgrade requests.
    * Ordered by updated_at ascending (oldest first).
    */

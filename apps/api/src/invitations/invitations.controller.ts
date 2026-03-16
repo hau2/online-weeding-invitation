@@ -64,6 +64,15 @@ export class InvitationsController {
   }
 
   /**
+   * Admin: list upgrade history (approved and rejected).
+   */
+  @Get('admin/upgrade-history')
+  @UseGuards(AdminGuard)
+  adminListUpgradeHistory() {
+    return this.invitationsService.adminListUpgradeHistory()
+  }
+
+  /**
    * Admin: approve an upgrade request.
    * Sets plan to 'premium' and clears paymentStatus.
    */

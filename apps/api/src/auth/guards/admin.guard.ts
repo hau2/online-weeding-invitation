@@ -4,9 +4,9 @@ import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@
 export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest()
-    const user = request.user as { role?: string } | undefined
+    const user = request.user as { app_role?: string } | undefined
 
-    if (!user || user.role !== 'admin') {
+    if (!user || user.app_role !== 'admin') {
       throw new ForbiddenException('Bạn không có quyền truy cập trang này')
     }
 
