@@ -1,0 +1,26 @@
+import type { ThemeConfig } from './index'
+
+export const softPink: ThemeConfig = {
+  id: 'soft-pink',
+  name: 'Nhe nhang - Hong',
+  primaryColor: '#E88D8D',
+  backgroundColor: '#FFF0F0',
+  surfaceColor: '#ffffff',
+  textColor: '#2D1F1F',
+  mutedTextColor: '#8C7373',
+  headingWeight: 'font-bold',
+  bodyWeight: 'font-medium',
+  letterSpacing: 'tracking-[-0.01em]',
+  textTransform: 'normal-case',
+  borderRadius: 'rounded-xl',
+  cardBorderRadius: 'rounded-2xl',
+  heroOverlay: 'linear-gradient(rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%)',
+  heroMinHeight: 'min-h-[560px]',
+  galleryEffect: '',
+  galleryGap: 'gap-3 md:gap-6',
+  petalColors: ['#FFD1DC', '#FECDD3', '#FFF0F5', '#FFFFFF'],
+  petalEnabled: true,
+  navStyle: 'colored',
+  footerBg: 'bg-rose-50',
+  footerTextColor: '#2D1F1F',
+}

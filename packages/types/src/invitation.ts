@@ -1,5 +1,16 @@
 export type InvitationStatus = 'draft' | 'published' | 'save_the_date' | 'expired'
-export type TemplateId = 'traditional' | 'modern' | 'minimalist'
+export type TemplateId =
+  // Legacy IDs (backward compatibility -- auto-mapped to new themes)
+  | 'traditional'
+  | 'modern'
+  | 'minimalist'
+  // New theme IDs
+  | 'modern-red'
+  | 'soft-pink'
+  | 'brown-gold'
+  | 'olive-green'
+  | 'minimalist-bw'
+  | 'classic-red-gold'
 export type InvitationPlan = 'free' | 'premium'
 export type PaymentStatus = 'none' | 'pending' | 'rejected' | 'refunded'
 

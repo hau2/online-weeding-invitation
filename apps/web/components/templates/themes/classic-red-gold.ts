@@ -1,0 +1,26 @@
+import type { ThemeConfig } from './index'
+
+export const classicRedGold: ThemeConfig = {
+  id: 'classic-red-gold',
+  name: 'Co dien - Do vang',
+  primaryColor: '#8B1A1A',
+  backgroundColor: '#FFF8F0',
+  surfaceColor: '#ffffff',
+  textColor: '#3D1A1A',
+  mutedTextColor: '#8C6B5A',
+  headingWeight: 'font-bold',
+  bodyWeight: 'font-medium',
+  letterSpacing: 'tracking-normal',
+  textTransform: 'normal-case',
+  borderRadius: 'rounded-lg',
+  cardBorderRadius: 'rounded-xl',
+  heroOverlay: 'linear-gradient(rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
+  heroMinHeight: 'min-h-[560px]',
+  galleryEffect: '',
+  galleryGap: 'gap-3 md:gap-6',
+  petalColors: ['#FFB7C5', '#FF69B4', '#FF1493', '#DC143C'],
+  petalEnabled: true,
+  navStyle: 'colored',
+  footerBg: 'bg-amber-50',
+  footerTextColor: '#3D1A1A',
+}

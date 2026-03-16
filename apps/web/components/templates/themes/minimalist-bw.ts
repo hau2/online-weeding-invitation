@@ -1,0 +1,26 @@
+import type { ThemeConfig } from './index'
+
+export const minimalistBw: ThemeConfig = {
+  id: 'minimalist-bw',
+  name: 'Toi gian - Trang den',
+  primaryColor: '#171717',
+  backgroundColor: '#ffffff',
+  surfaceColor: '#f5f5f5',
+  textColor: '#171717',
+  mutedTextColor: '#737373',
+  headingWeight: 'font-light',
+  bodyWeight: 'font-light',
+  letterSpacing: 'tracking-[0.2em]',
+  textTransform: 'uppercase',
+  borderRadius: 'rounded-none',
+  cardBorderRadius: 'rounded-none',
+  heroOverlay: 'rgba(0,0,0,0.5)',
+  heroMinHeight: 'min-h-[600px]',
+  galleryEffect: 'grayscale hover:grayscale-0',
+  galleryGap: 'gap-2 md:gap-4',
+  petalColors: [],
+  petalEnabled: false,
+  navStyle: 'mono',
+  footerBg: 'bg-neutral-900',
+  footerTextColor: '#ffffff',
+}

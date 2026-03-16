@@ -1,0 +1,26 @@
+import type { ThemeConfig } from './index'
+
+export const modernRed: ThemeConfig = {
+  id: 'modern-red',
+  name: 'Hien dai - Do',
+  primaryColor: '#ec1349',
+  backgroundColor: '#f8f6f6',
+  surfaceColor: '#ffffff',
+  textColor: '#181113',
+  mutedTextColor: '#737373',
+  headingWeight: 'font-black',
+  bodyWeight: 'font-medium',
+  letterSpacing: 'tracking-[-0.015em]',
+  textTransform: 'normal-case',
+  borderRadius: 'rounded-xl',
+  cardBorderRadius: 'rounded-2xl',
+  heroOverlay: 'linear-gradient(rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
+  heroMinHeight: 'min-h-[560px]',
+  galleryEffect: '',
+  galleryGap: 'gap-3 md:gap-6 lg:gap-8',
+  petalColors: ['#FFD1DC', '#FFC0CB', '#FFE4E1', '#FFFFFF'],
+  petalEnabled: true,
+  navStyle: 'colored',
+  footerBg: 'bg-white',
+  footerTextColor: '#181113',
+}

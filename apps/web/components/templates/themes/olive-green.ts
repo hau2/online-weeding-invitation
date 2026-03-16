@@ -1,0 +1,26 @@
+import type { ThemeConfig } from './index'
+
+export const oliveGreen: ThemeConfig = {
+  id: 'olive-green',
+  name: 'Tu nhien - Xanh o liu',
+  primaryColor: '#6B7A3C',
+  backgroundColor: '#F7F5EF',
+  surfaceColor: '#ffffff',
+  textColor: '#2D331F',
+  mutedTextColor: '#6B7355',
+  headingWeight: 'font-bold',
+  bodyWeight: 'font-medium',
+  letterSpacing: 'tracking-normal',
+  textTransform: 'normal-case',
+  borderRadius: 'rounded-lg',
+  cardBorderRadius: 'rounded-xl',
+  heroOverlay: 'linear-gradient(rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.5) 100%)',
+  heroMinHeight: 'min-h-[560px]',
+  galleryEffect: '',
+  galleryGap: 'gap-3 md:gap-6',
+  petalColors: ['#D4E2B6', '#C7D9A0', '#B8CF8A', '#E8F0D8'],
+  petalEnabled: true,
+  navStyle: 'colored',
+  footerBg: 'bg-green-50',
+  footerTextColor: '#2D331F',
+}

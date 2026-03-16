@@ -1,0 +1,26 @@
+import type { ThemeConfig } from './index'
+
+export const brownGold: ThemeConfig = {
+  id: 'brown-gold',
+  name: 'Am ap - Nau vang',
+  primaryColor: '#8B6F47',
+  backgroundColor: '#FAF5EF',
+  surfaceColor: '#ffffff',
+  textColor: '#3D2E1C',
+  mutedTextColor: '#8C7A63',
+  headingWeight: 'font-bold',
+  bodyWeight: 'font-medium',
+  letterSpacing: 'tracking-normal',
+  textTransform: 'normal-case',
+  borderRadius: 'rounded-lg',
+  cardBorderRadius: 'rounded-xl',
+  heroOverlay: 'linear-gradient(rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%)',
+  heroMinHeight: 'min-h-[560px]',
+  galleryEffect: '',
+  galleryGap: 'gap-3 md:gap-6',
+  petalColors: ['#F5E6D3', '#E8D5BD', '#DFC8A8', '#FAF5EF'],
+  petalEnabled: true,
+  navStyle: 'colored',
+  footerBg: 'bg-amber-50',
+  footerTextColor: '#3D2E1C',
+}

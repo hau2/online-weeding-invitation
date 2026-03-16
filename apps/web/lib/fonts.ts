@@ -1,4 +1,4 @@
-import { Be_Vietnam_Pro, Playfair_Display, Dancing_Script } from 'next/font/google'
+import { Be_Vietnam_Pro, Playfair_Display, Dancing_Script, Plus_Jakarta_Sans } from 'next/font/google'
 
 /**
  * Be Vietnam Pro — primary body font, Vietnamese-optimized sans-serif.
@@ -32,5 +32,17 @@ export const dancingScript = Dancing_Script({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-script',
+  display: 'swap',
+})
+
+/**
+ * Plus Jakarta Sans — display font for public invitation pages (Stitch design system).
+ * Used for all text on the full-width public invitation template.
+ * Supports Vietnamese via latin-ext subset.
+ */
+export const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-display',
   display: 'swap',
 })
