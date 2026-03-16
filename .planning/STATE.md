@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 13 (Editor UI Redesign - Modern Stitch AI Design)
-Plan: 1 of 5 in phase 13
+Plan: 2 of 5 in phase 13
 Status: In Progress
-Last activity: 2026-03-16 — Plan 13-01 complete: 5 new DB columns, CeremonyProgramEvent type, API DTO/service sync, Wave 0 test stubs
+Last activity: 2026-03-16 — Plan 13-02 complete: CeremonyProgramEditor + AvatarUpload components, groom/bride avatar API endpoints with 400x400 WebP crop
 
 Progress: [██████████] 100%
 
@@ -100,6 +100,7 @@ Progress: [██████████] 100%
 | Phase 09.1 P03 | 4min | 2 tasks | 6 files |
 | Phase 09.1 P05 | 2min | 2 tasks | 5 files |
 | Phase 13 P01 | 4min | 2 tasks | 12 files |
+| Phase 13 P02 | 2min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -250,6 +251,9 @@ Recent decisions affecting current work:
 - [Phase 13 P01]: Avatar URLs excluded from FIELD_MAP and useAutoSave -- managed by dedicated upload endpoints (same pattern as bankQrUrl)
 - [Phase 13 P01]: CeremonyProgramEvent placed before loveStory in Invitation interface for logical grouping with ceremony data
 - [Phase 13 P01]: bank_account_number and bride_bank_account_number added to SELECT_ALL (were missing)
+- [Phase 13 P02]: processAvatarImage separate from processImage -- 400x400 cover crop vs 1200-wide resize
+- [Phase 13 P02]: Avatar storage reuses invitation-photos bucket at {id}/groom-avatar.webp -- no new bucket policy needed
+- [Phase 13 P02]: AvatarUpload uses regular img tag (not next/image) to avoid Supabase domain config issues
 
 ### Roadmap Evolution
 
@@ -273,6 +277,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T14:44:52Z
-Stopped at: Completed 13-01-PLAN.md
-Resume file: .planning/phases/13-editor-ui-redesign-modern-stitch-ai-design/13-02-PLAN.md
+Last session: 2026-03-16T14:51:10Z
+Stopped at: Completed 13-02-PLAN.md
+Resume file: .planning/phases/13-editor-ui-redesign-modern-stitch-ai-design/13-03-PLAN.md

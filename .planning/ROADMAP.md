@@ -228,7 +228,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 10. Agent Tier and Storage | 0/0 | Not started | - |
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
-| 13. Editor UI Redesign | 1/5 | In Progress | - |
+| 13. Editor UI Redesign | 2/5 | In Progress|  |
 | 14. Dashboard & Auth Redesign | 0/0 | Not started | - |
 | 15. Admin Panel Redesign | 0/0 | Not started | - |
 
@@ -312,7 +312,7 @@ Plans:
   4. Dedicated preview page at /thep-cuoi/[id]/preview with Phone/Desktop/Share Link tabs
   5. Ceremony program events render on public invitation page alongside love story timeline
   6. All existing editor functionality preserved (auto-save, template selection, photo/music/QR upload)
-**Plans:** 5 plans
+**Plans:** 2/5 plans executed
 
 Plans:
 - [ ] 13-01-PLAN.md — DB migration (5 new columns), types + API DTO/service update, Wave 0 test stubs
