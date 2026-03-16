@@ -241,7 +241,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
   4. Legacy templateId values (traditional/modern/minimalist) auto-map to new themes without DB migration
   5. Editor shows 6 themes in visual grid with accurate preview
   6. Plus Jakarta Sans font renders on public pages with Vietnamese diacritics support
-**Plans:** 5 plans
+**Plans:** 5/5 plans complete
 
 Plans:
 - [ ] 09.1-01-PLAN.md — ThemeConfig type system, 6 theme configs, TemplateId extension, Plus Jakarta Sans font, Wave 0 test stubs
