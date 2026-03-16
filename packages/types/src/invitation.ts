@@ -1,5 +1,7 @@
 export type InvitationStatus = 'draft' | 'published' | 'save_the_date' | 'expired'
 export type TemplateId = 'traditional' | 'modern' | 'minimalist'
+export type InvitationPlan = 'free' | 'premium'
+export type PaymentStatus = 'none' | 'pending' | 'rejected'
 
 export interface LoveStoryMilestone {
   date: string
@@ -40,6 +42,8 @@ export interface Invitation {
   brideBankQrUrl: string | null
   brideBankName: string
   brideBankAccountHolder: string
+  plan: InvitationPlan
+  paymentStatus: PaymentStatus
   createdAt: string
   updatedAt: string
   deletedAt: string | null
