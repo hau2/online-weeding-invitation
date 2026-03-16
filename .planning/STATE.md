@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 7 context gathered
-last_updated: "2026-03-16T03:21:38.046Z"
-last_activity: "2026-03-15 — Plan 06-02 complete: save-the-date frontend with teaser page, editor button, dashboard badge"
+status: executing
+stopped_at: Completed 07-03-PLAN.md
+last_updated: "2026-03-16T04:14:13.157Z"
+last_activity: "2026-03-16 — Plan 07-03 complete: upgrade flow UI with UpgradeButton, upgrade page, admin payments page"
 progress:
   total_phases: 10
-  completed_phases: 7
-  total_plans: 31
-  completed_plans: 31
+  completed_phases: 8
+  total_plans: 34
+  completed_plans: 34
   percent: 100
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 7 of 9 (Monetization)
-Plan: 2 of 3 in phase 7 (07-02 complete)
+Plan: 3 of 3 in phase 7 (07-03 complete)
 Status: In Progress
-Last activity: 2026-03-16 — Plan 07-02 complete: watermark overlay and bank QR lock for free-tier monetization UI
+Last activity: 2026-03-16 — Plan 07-03 complete: upgrade flow UI with UpgradeButton, upgrade page, admin payments page
 
 Progress: [██████████] 100%
 
@@ -85,6 +85,7 @@ Progress: [██████████] 100%
 | Phase 06 P02 | 3min | 2 tasks | 6 files |
 | Phase 07 P01 | 7min | 2 tasks | 5 files |
 | Phase 07 P02 | 5min | 2 tasks | 6 files |
+| Phase 07 P03 | 7min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -197,6 +198,11 @@ Recent decisions affecting current work:
 - [Phase 07 P02]: (invitation.plan ?? 'free') === 'free' pattern handles undefined plan for backwards compatibility
 - [Phase 07 P02]: Footer branding text removed entirely for premium tier (not just made subtle)
 - [Phase 07 P02]: Watermark rendered during both envelope and revealed stages to prevent screenshot bypass
+- [Phase 07]: UpgradeButton uses gradient amber-to-rose styling for visual prominence, amber badge for pending state
+- [Phase 07]: Plan badges inline in InvitationCard header, not extending StatusBadge (separate concerns)
+- [Phase 07]: Upgrade page uses NEXT_PUBLIC_ADMIN_BANK_QR/NAME/HOLDER env vars for admin bank info (Phase 8 adds UI)
+- [Phase 07]: AdminGuard fixed: checks app_role (admin) instead of role (authenticated) to match JWT payload
+- [Phase 07]: Admin upgrade-history endpoint added for complete admin payments UI with history section
 
 ### Roadmap Evolution
 
@@ -214,6 +220,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T04:10:01Z
-Stopped at: Completed 07-02-PLAN.md
-Resume file: .planning/phases/07-monetization/07-03-PLAN.md
+Last session: 2026-03-16T04:14:13.155Z
+Stopped at: Completed 07-03-PLAN.md
+Resume file: None
