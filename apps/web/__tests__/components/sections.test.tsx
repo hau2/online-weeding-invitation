@@ -52,5 +52,8 @@ describe('FooterSection', () => {
 
 describe('TimelineSection', () => {
   it.todo('renders love story milestones in timeline format')
-  it.todo('returns null when loveStory is empty')
+  it.todo('returns null when both loveStory and ceremonyProgram are empty')
+  it.todo('renders ceremony program events with Clock icons')
+  it.todo('renders both love story and ceremony program when both have items')
+  it.todo('shows Lich Trinh Le Cuoi heading for ceremony program')
 })

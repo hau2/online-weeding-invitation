@@ -69,6 +69,30 @@ export function HeroSection({ invitation, theme }: SectionProps) {
           >
             Le Thanh Hon
           </h1>
+          {/* Couple avatars */}
+          {(invitation.groomAvatarUrl || invitation.brideAvatarUrl) && (
+            <div className="flex items-center gap-4 mt-2">
+              {invitation.groomAvatarUrl && (
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/60 shadow-lg">
+                  <img
+                    src={invitation.groomAvatarUrl}
+                    alt={invitation.groomName || 'Chu re'}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              {invitation.brideAvatarUrl && (
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/60 shadow-lg">
+                  <img
+                    src={invitation.brideAvatarUrl}
+                    alt={invitation.brideName || 'Co dau'}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
           <h2 className="text-xl font-normal leading-normal text-white md:text-2xl mt-2">
             {invitation.groomName || 'Chu re'}{' '}
             <span style={{ color: theme.primaryColor }} className="mx-2">
