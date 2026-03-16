@@ -10,10 +10,10 @@ export class CreateInvitationDto {
   groomName: string
 
   @IsString()
-  @IsIn(['traditional', 'modern', 'minimalist'], {
+  @IsIn(['traditional', 'modern', 'minimalist', 'modern-red', 'soft-pink', 'brown-gold', 'olive-green', 'minimalist-bw', 'classic-red-gold'], {
     message: 'Giao dien khong hop le',
   })
-  templateId: 'traditional' | 'modern' | 'minimalist'
+  templateId: string
 
   // NOTE: No userId field -- NEVER accept userId from the client body.
   // Ownership is always derived from @CurrentUser() which reads the verified JWT payload.
