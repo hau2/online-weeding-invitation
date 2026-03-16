@@ -98,97 +98,112 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
   const transferContent = `THIEP ${invitation.slug ?? invitation.id.slice(-8).toUpperCase()}`
 
   return (
-    <div className="min-h-screen bg-[#f8f6f6] px-4 py-8">
-      <div className="max-w-lg mx-auto">
-        <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-[#ec1349] hover:text-[#d01140] mb-6">
+    <div className="min-h-[calc(100vh-2rem)] bg-[#f8f6f6] px-4 py-8">
+      <div className="max-w-2xl mx-auto">
+        <Link href="/dashboard" className="inline-flex items-center gap-2 text-sm font-medium text-[#89616b] hover:text-[#181113] mb-8 transition-colors">
           <ArrowLeft className="size-4" />
-          Quay lai
+          Quay lai trang chu
         </Link>
 
-        <div className="bg-white rounded-xl shadow-sm border border-[#e6dbde] overflow-hidden">
-          {/* Header */}
-          <div className="bg-[#ec1349] px-6 py-5 text-white">
-            <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="size-5" />
-              <h1 className="text-lg font-semibold">Nang cap len Premium</h1>
+        {/* Hero header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center size-16 rounded-full bg-[#ec1349]/10 mb-4">
+            <Sparkles className="size-8 text-[#ec1349]" />
+          </div>
+          <h1 className="text-2xl font-bold text-[#181113] tracking-tight mb-2">Nang cap len Premium</h1>
+          <p className="text-[#89616b]">Mo khoa toan bo tinh nang de thiep cuoi cua ban tro nen hoan hao</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Left — Benefits card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-[#e6dbde] overflow-hidden">
+            <div className="bg-gradient-to-br from-[#ec1349] to-[#d01140] px-6 py-6 text-white">
+              <p className="text-sm font-medium opacity-80 mb-1">Premium</p>
+              <p className="text-4xl font-bold tracking-tight">{new Intl.NumberFormat('vi-VN').format(paymentConfig?.pricePerInvitation ?? 99000)}<span className="text-lg font-normal opacity-70 ml-1">VND</span></p>
+              <p className="text-sm opacity-70 mt-1">cho moi thiep cuoi</p>
             </div>
-            <p className="text-3xl font-bold">{new Intl.NumberFormat('vi-VN').format(paymentConfig?.pricePerInvitation ?? 99000)} VND <span className="text-base font-normal opacity-80">/ thiep</span></p>
+            <div className="px-6 py-6">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-[#89616b] mb-4">Quyen loi bao gom</h2>
+              <ul className="space-y-3">
+                {BENEFITS.map((benefit) => (
+                  <li key={benefit} className="flex items-start gap-3 text-sm text-[#181113]">
+                    <div className="flex items-center justify-center size-5 rounded-full bg-[#ec1349]/10 shrink-0 mt-0.5">
+                      <Check className="size-3 text-[#ec1349]" />
+                    </div>
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          {/* Benefits */}
-          <div className="px-6 py-5 border-b border-[#e6dbde]">
-            <h2 className="text-sm font-bold text-[#181113] mb-3">Quyen loi Premium:</h2>
-            <ul className="space-y-2.5">
-              {BENEFITS.map((benefit) => (
-                <li key={benefit} className="flex items-start gap-2 text-sm text-[#5e4d52]">
-                  <Check className="size-4 text-[#ec1349] shrink-0 mt-0.5" />
-                  {benefit}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Right — Payment card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-[#e6dbde] overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#e6dbde]">
+              <h2 className="text-sm font-bold text-[#181113]">Thong tin chuyen khoan</h2>
+              <p className="text-xs text-[#89616b] mt-1">Quet ma QR hoac chuyen khoan thu cong</p>
+            </div>
 
-          {/* Payment section */}
-          <div className="px-6 py-5 border-b border-[#e6dbde]">
-            <h2 className="text-sm font-bold text-[#181113] mb-3">Chuyen khoan theo thong tin ben duoi:</h2>
-
-            {/* Admin QR */}
-            <div className="flex flex-col items-center mb-4">
+            {/* QR Code */}
+            <div className="px-6 py-5 flex flex-col items-center border-b border-[#e6dbde]">
               {paymentConfig?.bankQrUrl ? (
                 <img
                   src={paymentConfig.bankQrUrl}
                   alt="QR thanh toan"
-                  className="w-48 h-48 object-contain rounded-xl border border-[#e6dbde]"
+                  className="w-44 h-44 object-contain rounded-xl border border-[#e6dbde] shadow-sm"
                 />
               ) : (
-                <div className="w-48 h-48 bg-[#f8f6f6] rounded-xl border border-[#e6dbde] flex items-center justify-center text-sm text-[#89616b]">
-                  QR thanh toan se duoc cap nhat
+                <div className="w-44 h-44 bg-[#f8f6f6] rounded-xl border border-[#e6dbde] flex items-center justify-center text-sm text-[#89616b]">
+                  Chua co QR
                 </div>
               )}
             </div>
 
-            {/* Bank info */}
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-[#89616b]">Ngan hang:</span>
-                <span className="font-medium text-[#181113]">{paymentConfig?.bankName || 'Dang cap nhat'}</span>
+            {/* Bank details */}
+            <div className="px-6 py-4 space-y-3 text-sm border-b border-[#e6dbde]">
+              <div className="flex justify-between items-center">
+                <span className="text-[#89616b]">Ngan hang</span>
+                <span className="font-semibold text-[#181113]">{paymentConfig?.bankName || '---'}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-[#89616b]">Chu tai khoan:</span>
-                <span className="font-medium text-[#181113]">{paymentConfig?.bankAccountHolder || 'Dang cap nhat'}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-[#89616b]">Chu TK</span>
+                <span className="font-semibold text-[#181113]">{paymentConfig?.bankAccountHolder || '---'}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-[#89616b]">Noi dung CK:</span>
-                <span className="font-bold text-[#ec1349]">{transferContent}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-[#89616b]">Noi dung CK</span>
+                <span className="font-bold text-[#ec1349] bg-[#ec1349]/5 px-2 py-0.5 rounded">{transferContent}</span>
               </div>
             </div>
-          </div>
 
-          {/* Action */}
-          <div className="px-6 py-5">
-            {isPending ? (
-              <div className="text-center">
-                <p className="text-sm text-[#ec1349] font-medium mb-2">Yeu cau nang cap dang cho xu ly</p>
-                <Button disabled className="w-full bg-[#ec1349]/10 text-[#ec1349] cursor-not-allowed">
-                  Da gui yeu cau
-                </Button>
-              </div>
-            ) : (
-              <Button
-                onClick={handleRequestUpgrade}
-                disabled={submitting}
-                className="w-full bg-[#ec1349] hover:bg-[#d01140] text-white rounded-lg h-11 font-bold shadow-lg shadow-[#ec1349]/20"
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" />
-                    Dang gui...
-                  </>
-                ) : (
-                  'Toi da thanh toan'
-                )}
-              </Button>
-            )}
+            {/* Action */}
+            <div className="px-6 py-5">
+              {isPending ? (
+                <div className="text-center">
+                  <div className="inline-flex items-center gap-2 text-sm text-[#ec1349] font-medium bg-[#ec1349]/5 rounded-lg px-4 py-2 mb-3">
+                    <Loader2 className="size-3.5 animate-spin" />
+                    Dang cho admin xac nhan
+                  </div>
+                  <button disabled className="w-full bg-[#e6dbde] text-[#89616b] rounded-lg h-11 font-bold cursor-not-allowed">
+                    Da gui yeu cau
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleRequestUpgrade}
+                  disabled={submitting}
+                  className="w-full bg-[#ec1349] hover:bg-[#d01140] text-white rounded-lg h-12 font-bold text-base shadow-lg shadow-[#ec1349]/20 transition-all hover:shadow-xl hover:shadow-[#ec1349]/30 disabled:opacity-50"
+                >
+                  {submitting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="size-4 animate-spin" />
+                      Dang gui...
+                    </span>
+                  ) : (
+                    'Toi da thanh toan'
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

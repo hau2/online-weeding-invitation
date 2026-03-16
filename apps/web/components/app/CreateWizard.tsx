@@ -10,11 +10,15 @@ import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import type { TemplateId } from '@repo/types'
+import { THEMES, type ThemeId } from '@/components/templates/themes'
 
-const TEMPLATES: Array<{ id: TemplateId; label: string; description: string }> = [
-  { id: 'traditional', label: 'Truy\u1ec1n th\u1ed1ng', description: 'Hoa v\u0103n c\u1ed5 \u0111i\u1ec3n, \u1ea5m \u00e1p' },
-  { id: 'modern', label: 'Hi\u1ec7n \u0111\u1ea1i', description: 'T\u1ed1i gi\u1ea3n, thanh l\u1ecbch' },
-  { id: 'minimalist', label: 'T\u1ed1i gi\u1ea3n', description: '\u0110\u01a1n gi\u1ea3n, tinh t\u1ebf' },
+const THEME_OPTIONS: Array<{ id: ThemeId; label: string; description: string; color: string }> = [
+  { id: 'modern-red', label: 'Hien dai Do', description: 'Nang dong, tre trung', color: '#ec1349' },
+  { id: 'soft-pink', label: 'Hong Dao', description: 'Ngot ngao, lang man', color: '#e8917a' },
+  { id: 'brown-gold', label: 'Nau Vang', description: 'Sang trong, co dien', color: '#8B6914' },
+  { id: 'olive-green', label: 'Xanh Olive', description: 'Tu nhien, thanh lich', color: '#5a6b50' },
+  { id: 'minimalist-bw', label: 'Toi gian', description: 'Don gian, tinh te', color: '#171717' },
+  { id: 'classic-red-gold', label: 'Do Vang', description: 'Truyen thong, am ap', color: '#8B0000' },
 ]
 
 interface CreateWizardProps {
@@ -25,7 +29,7 @@ interface CreateWizardProps {
 export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
   const router = useRouter()
   const [step, setStep] = useState<1 | 2>(1)
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId | null>(null)
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [brideName, setBrideName] = useState('')
   const [groomName, setGroomName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -70,33 +74,42 @@ export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           {/* Step indicator */}
-          <p className="text-xs font-semibold text-[#89616b] mb-1">
-            Buoc {step}/2
-          </p>
-          <DialogTitle className="text-[#181113]">
-            {step === 1 ? 'Ch\u1ecdn giao di\u1ec7n thi\u1ec7p' : 'Th\u00f4ng tin c\u1eb7p \u0111\u00f4i'}
+          <div className="flex items-center gap-3 mb-2">
+            <div className={cn('flex items-center justify-center size-7 rounded-full text-xs font-bold', step === 1 ? 'bg-[#ec1349] text-white' : 'bg-[#e6dbde] text-[#89616b]')}>1</div>
+            <div className="h-px flex-1 bg-[#e6dbde]" />
+            <div className={cn('flex items-center justify-center size-7 rounded-full text-xs font-bold', step === 2 ? 'bg-[#ec1349] text-white' : 'bg-[#e6dbde] text-[#89616b]')}>2</div>
+          </div>
+          <DialogTitle className="text-lg font-bold text-[#181113]">
+            {step === 1 ? 'Chon giao dien thiep' : 'Thong tin cap doi'}
           </DialogTitle>
+          <p className="text-sm text-[#89616b]">
+            {step === 1 ? 'Chon mot giao dien phu hop voi phong cach cua ban' : 'Nhap ten co dau va chu re'}
+          </p>
         </DialogHeader>
 
         {step === 1 ? (
           <div className="grid grid-cols-3 gap-3 py-4">
-            {TEMPLATES.map((tpl) => (
+            {THEME_OPTIONS.map((tpl) => (
               <button
                 key={tpl.id}
                 onClick={() => setSelectedTemplate(tpl.id)}
                 className={cn(
-                  'rounded-xl border-2 p-3 text-left transition-all',
+                  'rounded-xl border-2 p-4 text-center transition-all group',
                   selectedTemplate === tpl.id
-                    ? 'border-[#ec1349] bg-[#ec1349]/5'
-                    : 'border-gray-200 hover:border-[#ec1349]/30'
+                    ? 'border-[#ec1349] bg-[#ec1349]/5 shadow-md'
+                    : 'border-[#e6dbde] hover:border-[#ec1349]/40 hover:shadow-sm'
                 )}
               >
-                <div className="aspect-[4/3] bg-gray-50 rounded-lg mb-2" />
-                <p className="text-xs font-medium text-[#181113]">{tpl.label}</p>
-                <p className="text-xs text-[#89616b] mt-0.5">{tpl.description}</p>
+                <div className="aspect-square w-12 mx-auto rounded-full mb-3 transition-transform group-hover:scale-110" style={{ backgroundColor: tpl.color + '20', border: `2px solid ${tpl.color}` }}>
+                  <div className="size-full rounded-full flex items-center justify-center">
+                    <div className="size-4 rounded-full" style={{ backgroundColor: tpl.color }} />
+                  </div>
+                </div>
+                <p className="text-sm font-bold text-[#181113]">{tpl.label}</p>
+                <p className="text-xs text-[#89616b] mt-1">{tpl.description}</p>
               </button>
             ))}
           </div>
