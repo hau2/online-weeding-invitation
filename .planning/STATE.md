@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 09.1-02-PLAN.md
-last_updated: "2026-03-16T10:05:20.628Z"
-last_activity: "2026-03-16 — Plan 09.1-02 complete: SharedTemplate layout with 8 section components consuming ThemeConfig"
+stopped_at: Completed 09.1-04-PLAN.md
+last_updated: "2026-03-16T10:10:07.659Z"
+last_activity: "2026-03-16 — Plan 09.1-04 complete: Editor components updated for 6-theme system with dual preview mockups"
 progress:
   total_phases: 14
   completed_phases: 10
   total_plans: 47
-  completed_plans: 44
-  percent: 94
+  completed_plans: 46
+  percent: 96
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 9.1 (Public Page Redesign - Modern Full-Width Templates)
-Plan: 2 of 5 in phase 9.1 (09.1-02 complete)
+Plan: 4 of 5 in phase 9.1 (09.1-04 complete)
 Status: In Progress
-Last activity: 2026-03-16 — Plan 09.1-02 complete: SharedTemplate layout with 8 section components consuming ThemeConfig
+Last activity: 2026-03-16 — Plan 09.1-04 complete: Editor components updated for 6-theme system with dual preview mockups
 
-Progress: [█████████░] 94%
+Progress: [██████████] 96%
 
 ## Performance Metrics
 
@@ -96,6 +96,7 @@ Progress: [█████████░] 94%
 | Phase 09 P03 | 5min | 3 tasks | 3 files |
 | Phase 09.1 P01 | 3 | 2 tasks | 12 files |
 | Phase 09.1 P02 | 3 | 2 tasks | 9 files |
+| Phase 09.1 P04 | 2 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -235,6 +236,8 @@ Recent decisions affecting current work:
 - [Phase 09.1]: CountdownSection handles both card-box style (default themes) and bare numbers style (B&W Minimalist) via navStyle check
 - [Phase 09.1]: SectionProps interface: { invitation: Invitation, theme: ThemeConfig } is the shared contract for all section components
 - [Phase 09.1]: BankQrSection checks both bankQrUrl and bankAccountNumber for card visibility; wraps QR in BankQrLock for free tier
+- [Phase 09.1]: TemplateRenderer is thin wrapper: getTheme() + SharedTemplate, no more 3-component lookup table
+- [Phase 09.1]: EditorPreview dual mockups: phone (280px) + desktop (580px with browser chrome) side by side on lg; simple bordered preview on mobile/tablet
 
 ### Roadmap Evolution
 
@@ -255,6 +258,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T10:05:20.625Z
-Stopped at: Completed 09.1-02-PLAN.md
+Last session: 2026-03-16T10:10:07.656Z
+Stopped at: Completed 09.1-04-PLAN.md
 Resume file: None
