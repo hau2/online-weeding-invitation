@@ -229,7 +229,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
 | 13. Editor UI Redesign | 5/5 | Complete    | 2026-03-16 |
-| 14. Dashboard & Auth Redesign | 0/0 | Not started | - |
+| 14. Dashboard & Auth Redesign | 0/2 | Not started | - |
 | 15. Admin Panel Redesign | 0/0 | Not started | - |
 
 ### Phase 09.1: Public Page Redesign - Modern Full-Width Templates (INSERTED)
@@ -323,13 +323,20 @@ Plans:
 
 ### Phase 14: Dashboard and Auth Redesign - Modern Stitch AI Design
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Complete the Stitch AI design system across all remaining user-facing pages outside the editor and public invitation -- restyle ThankYouPage, SaveTheDatePage, UpgradePage, CreateWizard, and UpgradeButton to use the established Stitch palette (#ec1349, #181113, #e6dbde) consistently with the dashboard, sidebar, and auth pages already styled in Phase 13
+**Requirements**: STITCH-THANKYOU, STITCH-PAYMENT, STITCH-WIZARD, STITCH-VERIFY
 **Depends on:** Phase 13
-**Plans:** 0 plans
+**Success Criteria** (what must be TRUE):
+  1. ThankYouPage (expired invitation) uses Stitch colors and Plus Jakarta Sans instead of theme-only styling
+  2. SaveTheDatePage uses Stitch design language consistently
+  3. UpgradePage uses Stitch card pattern with solid #ec1349 header (no amber-to-rose gradient)
+  4. CreateWizard uses Stitch colors for buttons, inputs, and template selection
+  5. All user-facing pages visually match one unified Stitch AI design system
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 14 to break down)
+- [ ] 14-01-PLAN.md — Restyle ThankYouPage, SaveTheDatePage, UpgradePage, UpgradeButton, and CreateWizard to Stitch design system
+- [ ] 14-02-PLAN.md — Build verification and visual checkpoint for all restyled pages
 
 ### Phase 15: Admin Panel Redesign - Modern Stitch AI Design
 
