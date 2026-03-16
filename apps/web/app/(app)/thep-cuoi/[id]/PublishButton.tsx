@@ -41,6 +41,7 @@ export function PublishButton({
   const [unpublishing, setUnpublishing] = useState(false)
   const [groomUrl, setGroomUrl] = useState('')
   const [brideUrl, setBrideUrl] = useState('')
+  const [celebrationType, setCelebrationType] = useState<'save_the_date' | 'published'>('published')
 
   const isPublished = invitation.status === 'published'
   const isSaveTheDate = invitation.status === 'save_the_date'
@@ -98,6 +99,7 @@ export function PublishButton({
       onPublished(data)
 
       if (wasFirstPublish || isSaveTheDate) {
+        setCelebrationType('published')
         setShowCelebrationDialog(true)
         // Fire confetti after a short delay to let the dialog open
         setTimeout(async () => {
@@ -148,6 +150,7 @@ export function PublishButton({
       onPublished(data)
 
       if (wasFirstPublish) {
+        setCelebrationType('save_the_date')
         setShowCelebrationDialog(true)
         setTimeout(async () => {
           try {
@@ -403,10 +406,10 @@ export function PublishButton({
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center text-lg">
-              Thiep cuoi da duoc xuat ban!
+              {celebrationType === 'save_the_date' ? 'Save the Date da duoc xuat ban!' : 'Thiep cuoi da duoc xuat ban!'}
             </DialogTitle>
             <DialogDescription className="text-center">
-              Chia se duong link nay voi khach moi cua ban
+              {celebrationType === 'save_the_date' ? 'Chia se link nay de thong bao ngay cuoi' : 'Chia se duong link nay voi khach moi cua ban'}
             </DialogDescription>
           </DialogHeader>
 
