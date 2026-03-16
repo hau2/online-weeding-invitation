@@ -119,36 +119,36 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
         </div>
 
         {/* Action buttons — Stitch style */}
-        <div className="mt-5 pt-4 border-t border-[#e6dbde] flex gap-2">
+        <div className="mt-5 pt-4 border-t border-[#e6dbde] flex flex-col gap-2">
           <Button
             render={<Link href={`/thep-cuoi/${invitation.id}`} />}
             nativeButton={false}
             variant="ghost"
-            size="sm"
-            className="flex-1 py-2 px-3 text-sm font-bold text-[#ec1349] bg-[#ec1349]/5 hover:bg-[#ec1349]/10 rounded-lg transition-colors"
+            size="lg"
+            className="w-full h-11 py-2.5 px-4 text-base font-bold text-[#ec1349] bg-[#ec1349]/5 hover:bg-[#ec1349]/10 rounded-lg transition-colors justify-center"
           >
-            <Edit2 className="size-3.5 mr-1.5" />
+            <Edit2 className="size-4 mr-2" />
             Chỉnh sửa
           </Button>
 
           {canViewPublic ? (
-            <div className="flex gap-1">
+            <div className="flex gap-2 w-full">
               <Button
                 variant="ghost"
-                size="sm"
-                className="py-2 px-3 text-sm font-bold text-[#5e4d52] bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                size="lg"
+                className="flex-1 h-11 py-2.5 px-4 text-base font-bold text-[#5e4d52] bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors justify-center"
                 onClick={() => copyUrl('groom')}
               >
-                <Copy className="size-3.5 mr-1" />
+                <Copy className="size-4 mr-1.5" />
                 Nhà trai
               </Button>
               <Button
                 variant="ghost"
-                size="sm"
-                className="py-2 px-3 text-sm font-bold text-[#5e4d52] bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                size="lg"
+                className="flex-1 h-11 py-2.5 px-4 text-base font-bold text-[#5e4d52] bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors justify-center"
                 onClick={() => copyUrl('bride')}
               >
-                <Copy className="size-3.5 mr-1" />
+                <Copy className="size-4 mr-1.5" />
                 Nhà gái
               </Button>
             </div>
@@ -157,19 +157,19 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
               render={<Link href={`/nang-cap/${invitation.id}`} />}
               nativeButton={false}
               variant="ghost"
-              size="sm"
-              className="flex-1 py-2 px-3 text-sm font-bold text-white bg-[#ec1349] hover:bg-[#d01140] rounded-lg transition-colors shadow-md shadow-[#ec1349]/20"
+              size="lg"
+              className="w-full h-11 py-2.5 px-4 text-base font-bold text-white bg-[#ec1349] hover:bg-[#d01140] rounded-lg transition-colors shadow-md shadow-[#ec1349]/20 justify-center"
             >
               Thanh toán & Publish
             </Button>
           ) : (
             <Button
               variant="ghost"
-              size="sm"
-              className="flex-1 py-2 px-3 text-sm font-bold text-[#5e4d52] bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+              size="lg"
+              className="w-full h-11 py-2.5 px-4 text-base font-bold text-[#5e4d52] bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors justify-center"
               disabled
             >
-              <Eye className="size-3.5 mr-1.5" />
+              <Eye className="size-4 mr-2" />
               Xem
             </Button>
           )}

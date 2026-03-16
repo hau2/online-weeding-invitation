@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Smartphone, Monitor } from 'lucide-react'
-import { useSidebar } from '@/components/ui/sidebar'
 import { cn } from '@/lib/utils'
 import type { Invitation } from '@repo/types'
 import { useAutoSave } from './useAutoSave'
@@ -30,12 +29,6 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
   const [invitation, setInvitation] = useState<Invitation>(initial)
   const [previewMode, setPreviewMode] = useState<'phone' | 'desktop'>('phone')
   const { save, status } = useAutoSave(initial.id)
-  const { setOpen } = useSidebar()
-
-  // Auto-collapse sidebar on mount
-  useEffect(() => {
-    setOpen(false)
-  }, [setOpen])
 
   const handleChange = useCallback(
     (changes: Partial<Invitation>) => {
@@ -61,7 +54,7 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
   )
 
   return (
-    <div className="flex flex-col h-[calc(100vh-3.5rem)]">
+    <div className="flex flex-col h-[calc(100svh-3rem)] md:h-svh -m-8 bg-white overflow-hidden">
       {/* Editor topbar — Stitch design */}
       <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e6dbde] bg-white px-6 py-3 shrink-0 z-20 shadow-sm h-16">
         {/* Left: Back & Title */}
