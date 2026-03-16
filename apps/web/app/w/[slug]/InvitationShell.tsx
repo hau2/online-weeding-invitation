@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Invitation, TemplateId } from '@repo/types'
 import { TemplateRenderer } from '@/components/templates/TemplateRenderer'
+import { Watermark } from './Watermark'
 
 type PublicInvitation = Invitation & {
   expired: boolean
@@ -102,6 +103,7 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
           guestName={guestName}
           onOpen={() => setEnvelopeOpened(true)}
         />
+        {(invitation.plan ?? 'free') === 'free' && <Watermark />}
       </div>
     )
   }
@@ -159,15 +161,20 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
               </div>
             )}
 
-            {/* 4. Footer / watermark */}
+            {/* 4. Footer */}
             <footer className="pb-8 pt-4 text-center">
-              <p className="text-xs text-gray-400">
-                Thiep cuoi duoc tao boi ThiepCuoiOnline.vn
-              </p>
+              {(invitation.plan ?? 'free') === 'free' ? (
+                <p className="text-xs text-gray-400">
+                  Thiep cuoi duoc tao boi ThiepCuoiOnline.vn
+                </p>
+              ) : null}
             </footer>
           </div>
         </motion.div>
       </AnimatePresence>
+
+      {/* Watermark overlay for free tier */}
+      {(invitation.plan ?? 'free') === 'free' && <Watermark />}
     </div>
   )
 }

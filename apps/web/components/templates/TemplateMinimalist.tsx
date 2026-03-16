@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils'
 import type { TemplateProps } from './types'
 import type { LoveStoryMilestone } from '@repo/types'
+import { BankQrLock } from '@/app/w/[slug]/BankQrLock'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Chua chon ngay'
@@ -246,7 +247,13 @@ export function TemplateMinimalist({ invitation, className }: TemplateProps) {
               {invitation.bankQrUrl && (
                 <div className="flex-1 max-w-[200px] rounded border border-gray-200 p-3 text-center">
                   <p className="mb-2 text-xs font-light text-gray-500">Nha trai</p>
-                  <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                  {(invitation.plan ?? 'free') === 'free' ? (
+                    <BankQrLock>
+                      <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                    </BankQrLock>
+                  ) : (
+                    <img src={invitation.bankQrUrl} alt="QR Nha trai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                  )}
                   {invitation.bankName && <p className="mt-2 text-xs font-light text-gray-600">{invitation.bankName}</p>}
                   {invitation.bankAccountHolder && <p className="text-xs font-light text-gray-400">{invitation.bankAccountHolder}</p>}
                 </div>
@@ -254,7 +261,13 @@ export function TemplateMinimalist({ invitation, className }: TemplateProps) {
               {invitation.brideBankQrUrl && (
                 <div className="flex-1 max-w-[200px] rounded border border-gray-200 p-3 text-center">
                   <p className="mb-2 text-xs font-light text-gray-500">Nha gai</p>
-                  <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                  {(invitation.plan ?? 'free') === 'free' ? (
+                    <BankQrLock>
+                      <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                    </BankQrLock>
+                  ) : (
+                    <img src={invitation.brideBankQrUrl} alt="QR Nha gai" className="mx-auto max-w-[140px] rounded" loading="lazy" />
+                  )}
                   {invitation.brideBankName && <p className="mt-2 text-xs font-light text-gray-600">{invitation.brideBankName}</p>}
                   {invitation.brideBankAccountHolder && <p className="text-xs font-light text-gray-400">{invitation.brideBankAccountHolder}</p>}
                 </div>
