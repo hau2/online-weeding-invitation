@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 13-04-PLAN.md
-last_updated: "2026-03-16T14:59:26Z"
-last_activity: "2026-03-16 — Plan 13-04 complete: Preview page with phone/desktop/share tabs, ceremony program timeline, HeroSection avatars"
+stopped_at: Completed 13-03-PLAN.md
+last_updated: "2026-03-16T15:05:55Z"
+last_activity: "2026-03-16 — Plan 13-03 complete: Stitch-style top bar with mobile/desktop toggle and 9 icon-based accordion form sections"
 progress:
   total_phases: 17
   completed_phases: 11
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 Phase: 13 (Editor UI Redesign - Modern Stitch AI Design)
 Plan: 4 of 5 in phase 13
 Status: In Progress
-Last activity: 2026-03-16 — Plan 13-04 complete: Preview page with phone/desktop/share tabs, ceremony program timeline, HeroSection avatars
+Last activity: 2026-03-16 — Plan 13-03 complete: Stitch-style top bar with mobile/desktop toggle and 9 icon-based accordion form sections
 
 Progress: [██████████] 100%
 
@@ -102,6 +102,7 @@ Progress: [██████████] 100%
 | Phase 13 P01 | 4min | 2 tasks | 12 files |
 | Phase 13 P02 | 2min | 2 tasks | 4 files |
 | Phase 13 P04 | 4min | 2 tasks | 7 files |
+| Phase 13 P03 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -258,6 +259,9 @@ Recent decisions affecting current work:
 - [Phase 13 P04]: EditorShell updated to link to preview page (FullPreviewDialog deleted) -- Rule 3 auto-fix to prevent broken import
 - [Phase 13 P04]: PreviewShell manages own invitation state for publish/unpublish callbacks from embedded PublishButton
 - [Phase 13 P04]: Avatar display in HeroSection (circular images above couple names, not separate section)
+- [Phase 13 P03]: TemplateSelector moved from preview panel into EditorForm section 7 -- single scrollable form contains all settings
+- [Phase 13 P03]: EditorPreview mode prop defaults to 'both' for backward compat with PreviewShell
+- [Phase 13 P03]: onAvatarUploaded callback bypasses onChange/auto-save since avatars are upload-managed
 
 ### Roadmap Evolution
 
@@ -281,6 +285,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T14:59:26Z
-Stopped at: Completed 13-04-PLAN.md
+Last session: 2026-03-16T15:05:55Z
+Stopped at: Completed 13-03-PLAN.md
 Resume file: .planning/phases/13-editor-ui-redesign-modern-stitch-ai-design/13-05-PLAN.md
