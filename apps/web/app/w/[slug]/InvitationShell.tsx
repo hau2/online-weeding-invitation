@@ -100,7 +100,7 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
           className="min-h-screen"
           style={{ backgroundColor: ENVELOPE_BG[invitation.templateId] }}
         >
-          {/* Falling petals during envelope stage only -- unmounts after reveal */}
+          {/* Falling petals during envelope stage */}
           <FallingPetals templateId={invitation.templateId} enabled={true} />
           <EnvelopeAnimation
             templateId={invitation.templateId}
@@ -119,6 +119,9 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
   return (
     <DesktopFrame templateId={invitation.templateId}>
       <div className="relative min-h-screen text-base">
+        {/* Falling petals continue throughout the invitation */}
+        <FallingPetals templateId={invitation.templateId} enabled={true} />
+
         {/* Music player (auto-starts after envelope opens) */}
         {invitation.musicUrl && (
           <MusicPlayer musicUrl={invitation.musicUrl} autoStart={true} />
