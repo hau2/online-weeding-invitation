@@ -51,6 +51,8 @@ interface InvitationRow {
   teaser_message: string
   plan: string
   payment_status: string
+  admin_notes: string
+  is_disabled: boolean
   qr_code_url: string | null
   created_at: string
   updated_at: string
@@ -141,6 +143,8 @@ function mapRow(row: InvitationRow): Invitation {
     brideBankAccountHolder: row.bride_bank_account_holder,
     plan: row.plan as Invitation['plan'],
     paymentStatus: row.payment_status as Invitation['paymentStatus'],
+    adminNotes: row.admin_notes,
+    isDisabled: row.is_disabled,
     qrCodeUrl: row.qr_code_url,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -174,7 +178,7 @@ const SELECT_ALL =
   'invitation_message, thank_you_text, teaser_message, photo_urls, music_track_id, ' +
   'bank_qr_url, bank_name, bank_account_holder, ' +
   'bride_bank_qr_url, bride_bank_name, bride_bank_account_holder, ' +
-  'plan, payment_status, ' +
+  'plan, payment_status, admin_notes, is_disabled, ' +
   'qr_code_url, created_at, updated_at, deleted_at'
 
 /** Allowed image MIME types for upload validation */
@@ -408,6 +412,12 @@ export class InvitationsService {
     }
 
     const row = data as unknown as InvitationRow
+
+    // Disabled invitations return 404 on public page
+    if (row.is_disabled) {
+      throw new NotFoundException('Khong tim thay thiep cuoi')
+    }
+
     const mapped = mapRow(row)
     const isSaveTheDate = row.status === 'save_the_date'
 
@@ -1097,5 +1107,66 @@ export class InvitationsService {
     if (error) throw new InternalServerErrorException(error.message)
 
     return ((data as unknown as InvitationRow[]) ?? []).map(mapRow)
+  }
+
+  /**
+   * Admin marks an invitation as refunded.
+   * Sets payment_status to 'refunded' and plan back to 'free'.
+   * Only valid if current plan is 'premium'.
+   * Triggers ISR revalidation if slug exists.
+   */
+  async adminMarkRefund(invitationId: string) {
+    const { data: row, error: fetchError } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select(SELECT_ALL)
+      .eq('id', invitationId)
+      .is('deleted_at', null)
+      .single()
+
+    if (fetchError || !row) {
+      throw new NotFoundException('Khong tim thay thiep cuoi')
+    }
+
+    const invitation = row as unknown as InvitationRow
+
+    if (invitation.plan !== 'premium') {
+      throw new BadRequestException(
+        'Chi co the hoan tien cho thiep Premium',
+      )
+    }
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ payment_status: 'refunded', plan: 'free' })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    if (invitation.slug) {
+      await this.triggerRevalidation(invitation.slug)
+    }
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Admin updates notes for an invitation.
+   */
+  async adminUpdateNotes(invitationId: string, notes: string) {
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ admin_notes: notes })
+      .eq('id', invitationId)
+      .is('deleted_at', null)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error || !data) {
+      throw new NotFoundException('Khong tim thay thiep cuoi')
+    }
+
+    return mapRow(data as unknown as InvitationRow)
   }
 }

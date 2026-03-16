@@ -105,6 +105,29 @@ export class InvitationsController {
     return this.invitationsService.adminRevokePremium(id)
   }
 
+  /**
+   * Admin: mark an invitation as refunded.
+   * Sets payment_status to 'refunded' and plan back to 'free'.
+   */
+  @Post('admin/:id/mark-refund')
+  @UseGuards(AdminGuard)
+  @HttpCode(HttpStatus.OK)
+  adminMarkRefund(@Param('id', ParseUUIDPipe) id: string) {
+    return this.invitationsService.adminMarkRefund(id)
+  }
+
+  /**
+   * Admin: update notes for an invitation.
+   */
+  @Patch('admin/:id/notes')
+  @UseGuards(AdminGuard)
+  adminUpdateNotes(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() body: { notes: string },
+  ) {
+    return this.invitationsService.adminUpdateNotes(id, body.notes)
+  }
+
   @Get(':id')
   findOne(
     @CurrentUser() user: JwtPayload,
