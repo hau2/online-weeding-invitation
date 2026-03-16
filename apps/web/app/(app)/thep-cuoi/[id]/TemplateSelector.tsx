@@ -8,21 +8,36 @@ interface TemplateSelectorProps {
   onSelect: (id: TemplateId) => void
 }
 
-const templates: { id: TemplateId; label: string; gradient: string }[] = [
+const themes: { id: TemplateId; label: string; gradient: string }[] = [
   {
-    id: 'traditional',
-    label: 'Truyen thong',
-    gradient: 'bg-gradient-to-br from-red-700 to-yellow-600',
+    id: 'modern-red',
+    label: 'Hien dai - Do',
+    gradient: 'bg-gradient-to-br from-red-500 to-rose-300',
   },
   {
-    id: 'modern',
-    label: 'Hien dai',
-    gradient: 'bg-gradient-to-br from-white to-rose-200',
+    id: 'soft-pink',
+    label: 'Hong dao',
+    gradient: 'bg-gradient-to-br from-pink-300 to-rose-200',
   },
   {
-    id: 'minimalist',
+    id: 'brown-gold',
+    label: 'Nau vang',
+    gradient: 'bg-gradient-to-br from-amber-700 to-yellow-400',
+  },
+  {
+    id: 'olive-green',
+    label: 'Xanh olive',
+    gradient: 'bg-gradient-to-br from-green-700 to-lime-300',
+  },
+  {
+    id: 'minimalist-bw',
     label: 'Toi gian',
-    gradient: 'bg-gradient-to-br from-amber-50 to-gray-200',
+    gradient: 'bg-gradient-to-br from-neutral-900 to-gray-400',
+  },
+  {
+    id: 'classic-red-gold',
+    label: 'Co dien',
+    gradient: 'bg-gradient-to-br from-red-900 to-amber-500',
   },
 ]
 
@@ -31,8 +46,8 @@ export function TemplateSelector({
   onSelect,
 }: TemplateSelectorProps) {
   return (
-    <div className="flex gap-3 justify-center">
-      {templates.map((t) => {
+    <div className="grid grid-cols-3 gap-3">
+      {themes.map((t) => {
         const isSelected = currentTemplate === t.id
         return (
           <button
@@ -45,7 +60,7 @@ export function TemplateSelector({
           >
             <div
               className={cn(
-                'w-14 aspect-[3/4] rounded-md border-2 transition-all',
+                'w-full aspect-[3/4] rounded-md border-2 transition-all',
                 t.gradient,
                 isSelected
                   ? 'border-rose-500 ring-2 ring-rose-300'
