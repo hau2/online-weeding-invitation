@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 08-04-PLAN.md
-last_updated: "2026-03-16T05:42:48Z"
-last_activity: "2026-03-16 — Plan 08-04 complete: themes, service plans, settings, enhanced payments pages"
+status: completed
+stopped_at: Completed 08-05-PLAN.md
+last_updated: "2026-03-16T06:26:47.551Z"
+last_activity: "2026-03-16 — Plan 08-05 complete: revenue stat card and live music usage counts (gap closure)"
 progress:
   total_phases: 11
   completed_phases: 9
-  total_plans: 38
-  completed_plans: 38
+  total_plans: 39
+  completed_plans: 39
   percent: 100
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 8 of 9 (Admin Panel)
-Plan: 4 of 4 in phase 8 (08-04 complete)
+Plan: 5 of 5 in phase 8 (08-05 complete)
 Status: Phase 8 Complete
-Last activity: 2026-03-16 — Plan 08-04 complete: themes, service plans, settings, enhanced payments pages
+Last activity: 2026-03-16 — Plan 08-05 complete: revenue stat card and live music usage counts (gap closure)
 
 Progress: [██████████] 100%
 
@@ -90,6 +90,7 @@ Progress: [██████████] 100%
 | Phase 08 P02 | 2min | 2 tasks | 4 files |
 | Phase 08 P03 | 3 | 2 tasks | 2 files |
 | Phase 08 P04 | 4min | 3 tasks | 6 files |
+| Phase 08 P05 | 2min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -218,6 +219,8 @@ Recent decisions affecting current work:
 - [Phase 08 P04]: CSV export uses BOM prefix for Excel UTF-8 compatibility with Vietnamese characters
 - [Phase 08 P04]: Notes section uses expandable per-row pattern with Set<string> tracking expanded IDs
 - [Phase 08 P04]: Theme placeholder colors match template identity (rose/sky/gray for traditional/modern/minimalist)
+- [Phase 08]: Revenue computed as premiumCount * pricePerInvitation from system_settings (not stored separately)
+- [Phase 08]: Music track usage counts fetched as single batched query from invitations + JS Map grouping (same pattern as deleteMusicTrack)
 
 ### Roadmap Evolution
 
@@ -236,6 +239,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T05:42:48Z
-Stopped at: Completed 08-04-PLAN.md (Phase 8 complete)
+Last session: 2026-03-16T06:26:47.548Z
+Stopped at: Completed 08-05-PLAN.md
 Resume file: None
