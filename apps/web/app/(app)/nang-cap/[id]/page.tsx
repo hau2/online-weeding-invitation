@@ -65,8 +65,8 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-rose-50/50 flex items-center justify-center">
-        <Loader2 className="size-6 animate-spin text-rose-400" />
+      <div className="min-h-screen bg-[#f8f6f6] flex items-center justify-center">
+        <Loader2 className="size-6 animate-spin text-[#ec1349]" />
       </div>
     )
   }
@@ -76,18 +76,18 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
   // Already premium
   if (invitation.plan === 'premium') {
     return (
-      <div className="min-h-screen bg-rose-50/50 px-4 py-8">
+      <div className="min-h-screen bg-[#f8f6f6] px-4 py-8">
         <div className="max-w-lg mx-auto">
-          <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-rose-500 hover:text-rose-700 mb-6">
+          <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-[#ec1349] hover:text-[#d01140] mb-6">
             <ArrowLeft className="size-4" />
             Quay lai
           </Link>
-          <div className="bg-white rounded-2xl shadow-sm border border-rose-100 p-8 text-center">
-            <div className="inline-flex items-center justify-center size-16 rounded-full bg-purple-100 mb-4">
-              <Sparkles className="size-8 text-purple-600" />
+          <div className="bg-white rounded-xl shadow-sm border border-[#e6dbde] p-8 text-center">
+            <div className="inline-flex items-center justify-center size-16 rounded-full bg-[#ec1349]/10 mb-4">
+              <Sparkles className="size-8 text-[#ec1349]" />
             </div>
-            <h1 className="text-xl font-semibold text-rose-900 mb-2">Thiep nay da la Premium</h1>
-            <p className="text-sm text-gray-500">Ban da co the su dung day du tinh nang.</p>
+            <h1 className="text-xl font-semibold text-[#181113] mb-2">Thiep nay da la Premium</h1>
+            <p className="text-sm text-[#5e4d52]">Ban da co the su dung day du tinh nang.</p>
           </div>
         </div>
       </div>
@@ -98,16 +98,16 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
   const transferContent = `THIEP ${invitation.slug ?? invitation.id.slice(-8).toUpperCase()}`
 
   return (
-    <div className="min-h-screen bg-rose-50/50 px-4 py-8">
+    <div className="min-h-screen bg-[#f8f6f6] px-4 py-8">
       <div className="max-w-lg mx-auto">
-        <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-rose-500 hover:text-rose-700 mb-6">
+        <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-[#ec1349] hover:text-[#d01140] mb-6">
           <ArrowLeft className="size-4" />
           Quay lai
         </Link>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-rose-100 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm border border-[#e6dbde] overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-amber-500 to-rose-500 px-6 py-5 text-white">
+          <div className="bg-[#ec1349] px-6 py-5 text-white">
             <div className="flex items-center gap-2 mb-1">
               <Sparkles className="size-5" />
               <h1 className="text-lg font-semibold">Nang cap len Premium</h1>
@@ -116,12 +116,12 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
           </div>
 
           {/* Benefits */}
-          <div className="px-6 py-5 border-b border-gray-100">
-            <h2 className="text-sm font-medium text-gray-700 mb-3">Quyen loi Premium:</h2>
+          <div className="px-6 py-5 border-b border-[#e6dbde]">
+            <h2 className="text-sm font-bold text-[#181113] mb-3">Quyen loi Premium:</h2>
             <ul className="space-y-2.5">
               {BENEFITS.map((benefit) => (
-                <li key={benefit} className="flex items-start gap-2 text-sm text-gray-600">
-                  <Check className="size-4 text-green-500 shrink-0 mt-0.5" />
+                <li key={benefit} className="flex items-start gap-2 text-sm text-[#5e4d52]">
+                  <Check className="size-4 text-[#ec1349] shrink-0 mt-0.5" />
                   {benefit}
                 </li>
               ))}
@@ -129,8 +129,8 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
           </div>
 
           {/* Payment section */}
-          <div className="px-6 py-5 border-b border-gray-100">
-            <h2 className="text-sm font-medium text-gray-700 mb-3">Chuyen khoan theo thong tin ben duoi:</h2>
+          <div className="px-6 py-5 border-b border-[#e6dbde]">
+            <h2 className="text-sm font-bold text-[#181113] mb-3">Chuyen khoan theo thong tin ben duoi:</h2>
 
             {/* Admin QR */}
             <div className="flex flex-col items-center mb-4">
@@ -138,10 +138,10 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
                 <img
                   src={paymentConfig.bankQrUrl}
                   alt="QR thanh toan"
-                  className="w-48 h-48 object-contain rounded-lg border border-gray-200"
+                  className="w-48 h-48 object-contain rounded-xl border border-[#e6dbde]"
                 />
               ) : (
-                <div className="w-48 h-48 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center text-sm text-gray-400">
+                <div className="w-48 h-48 bg-[#f8f6f6] rounded-xl border border-[#e6dbde] flex items-center justify-center text-sm text-[#89616b]">
                   QR thanh toan se duoc cap nhat
                 </div>
               )}
@@ -150,16 +150,16 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
             {/* Bank info */}
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500">Ngan hang:</span>
-                <span className="font-medium text-gray-800">{paymentConfig?.bankName || 'Dang cap nhat'}</span>
+                <span className="text-[#89616b]">Ngan hang:</span>
+                <span className="font-medium text-[#181113]">{paymentConfig?.bankName || 'Dang cap nhat'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Chu tai khoan:</span>
-                <span className="font-medium text-gray-800">{paymentConfig?.bankAccountHolder || 'Dang cap nhat'}</span>
+                <span className="text-[#89616b]">Chu tai khoan:</span>
+                <span className="font-medium text-[#181113]">{paymentConfig?.bankAccountHolder || 'Dang cap nhat'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Noi dung CK:</span>
-                <span className="font-medium text-rose-600">{transferContent}</span>
+                <span className="text-[#89616b]">Noi dung CK:</span>
+                <span className="font-bold text-[#ec1349]">{transferContent}</span>
               </div>
             </div>
           </div>
@@ -168,8 +168,8 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
           <div className="px-6 py-5">
             {isPending ? (
               <div className="text-center">
-                <p className="text-sm text-amber-600 font-medium mb-2">Yeu cau nang cap dang cho xu ly</p>
-                <Button disabled className="w-full bg-amber-100 text-amber-700 cursor-not-allowed">
+                <p className="text-sm text-[#ec1349] font-medium mb-2">Yeu cau nang cap dang cho xu ly</p>
+                <Button disabled className="w-full bg-[#ec1349]/10 text-[#ec1349] cursor-not-allowed">
                   Da gui yeu cau
                 </Button>
               </div>
@@ -177,7 +177,7 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
               <Button
                 onClick={handleRequestUpgrade}
                 disabled={submitting}
-                className="w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white hover:from-amber-600 hover:to-rose-600"
+                className="w-full bg-[#ec1349] hover:bg-[#d01140] text-white rounded-lg h-11 font-bold shadow-lg shadow-[#ec1349]/20"
               >
                 {submitting ? (
                   <>

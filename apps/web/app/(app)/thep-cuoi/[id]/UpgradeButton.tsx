@@ -16,7 +16,7 @@ export function UpgradeButton({ invitationId, plan, paymentStatus }: UpgradeButt
 
   if (paymentStatus === 'pending') {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">
+      <span className="inline-flex items-center gap-1 rounded-full bg-[#ec1349]/10 px-2.5 py-0.5 text-xs font-medium text-[#ec1349]">
         <Clock className="size-3" />
         Cho xac nhan
       </span>
@@ -29,7 +29,7 @@ export function UpgradeButton({ invitationId, plan, paymentStatus }: UpgradeButt
       nativeButton={false}
       variant="ghost"
       size="sm"
-      className="bg-gradient-to-r from-amber-500 to-rose-500 text-white hover:from-amber-600 hover:to-rose-600 gap-1 text-xs"
+      className="bg-[#ec1349] hover:bg-[#d01140] text-white gap-1 text-xs"
     >
       <Sparkles className="size-3" />
       Nang cap

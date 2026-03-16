@@ -72,7 +72,11 @@ export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-rose-800">
+          {/* Step indicator */}
+          <p className="text-xs font-semibold text-[#89616b] mb-1">
+            Buoc {step}/2
+          </p>
+          <DialogTitle className="text-[#181113]">
             {step === 1 ? 'Ch\u1ecdn giao di\u1ec7n thi\u1ec7p' : 'Th\u00f4ng tin c\u1eb7p \u0111\u00f4i'}
           </DialogTitle>
         </DialogHeader>
@@ -86,36 +90,36 @@ export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
                 className={cn(
                   'rounded-xl border-2 p-3 text-left transition-all',
                   selectedTemplate === tpl.id
-                    ? 'border-rose-500 bg-rose-50'
-                    : 'border-gray-200 hover:border-rose-200'
+                    ? 'border-[#ec1349] bg-[#ec1349]/5'
+                    : 'border-gray-200 hover:border-[#ec1349]/30'
                 )}
               >
                 <div className="aspect-[4/3] bg-gray-50 rounded-lg mb-2" />
-                <p className="text-xs font-medium text-gray-800">{tpl.label}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{tpl.description}</p>
+                <p className="text-xs font-medium text-[#181113]">{tpl.label}</p>
+                <p className="text-xs text-[#89616b] mt-0.5">{tpl.description}</p>
               </button>
             ))}
           </div>
         ) : (
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="brideName" className="text-rose-700">{"T\u00ean c\u00f4 d\u00e2u"}</Label>
+              <Label htmlFor="brideName" className="text-[#181113] font-semibold">{"T\u00ean c\u00f4 d\u00e2u"}</Label>
               <Input
                 id="brideName"
                 value={brideName}
                 onChange={(e) => setBrideName(e.target.value)}
                 placeholder="Nguy\u1ec5n Th\u1ecb Minh"
-                className="border-rose-200 focus:ring-rose-300"
+                className="border-[#e6dbde] focus:border-[#ec1349] focus:ring-[#ec1349]/20"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="groomName" className="text-rose-700">{"T\u00ean ch\u00fa r\u1ec3"}</Label>
+              <Label htmlFor="groomName" className="text-[#181113] font-semibold">{"T\u00ean ch\u00fa r\u1ec3"}</Label>
               <Input
                 id="groomName"
                 value={groomName}
                 onChange={(e) => setGroomName(e.target.value)}
                 placeholder="Tr\u1ea7n V\u0103n Th\u1ea3o"
-                className="border-rose-200 focus:ring-rose-300"
+                className="border-[#e6dbde] focus:border-[#ec1349] focus:ring-[#ec1349]/20"
               />
             </div>
           </div>
@@ -123,7 +127,7 @@ export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
 
         <DialogFooter>
           {step === 2 && (
-            <Button variant="ghost" onClick={() => setStep(1)} disabled={loading}>
+            <Button variant="ghost" onClick={() => setStep(1)} disabled={loading} className="text-[#5e4d52] hover:bg-gray-50">
               Quay l\u1ea1i
             </Button>
           )}
@@ -131,7 +135,7 @@ export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
             <Button
               onClick={() => setStep(2)}
               disabled={!selectedTemplate}
-              className="bg-rose-500 hover:bg-rose-600 text-white"
+              className="bg-[#ec1349] hover:bg-[#d01140] text-white font-bold"
             >
               {"Ti\u1ebfp theo"}
             </Button>
@@ -139,7 +143,7 @@ export function CreateWizard({ open, onOpenChange }: CreateWizardProps) {
             <Button
               onClick={handleSubmit}
               disabled={!brideName.trim() || !groomName.trim() || loading}
-              className="bg-rose-500 hover:bg-rose-600 text-white"
+              className="bg-[#ec1349] hover:bg-[#d01140] text-white font-bold"
             >
               {loading ? '\u0110ang t\u1ea1o...' : 'T\u1ea1o thi\u1ec7p'}
             </Button>
