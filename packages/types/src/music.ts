@@ -5,6 +5,7 @@ export interface SystemMusicTrack {
   url: string
   duration: number
   isActive: boolean
+  usageCount?: number
   sortOrder: number
   createdAt: string
   updatedAt: string
