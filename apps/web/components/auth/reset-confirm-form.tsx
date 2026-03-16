@@ -4,9 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { apiFetch } from '@/lib/api'
 import type { MessageResponse } from '@repo/types'
 
@@ -52,20 +49,38 @@ export function ResetConfirmForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <div className="space-y-1.5">
-        <Label htmlFor="newPassword">Mật khẩu mới</Label>
-        <Input id="newPassword" type="password" placeholder="Ít nhất 8 ký tự" {...register('newPassword')} />
-        {errors.newPassword && <p className="text-sm text-rose-600">{errors.newPassword.message}</p>}
-      </div>
-      <div className="space-y-1.5">
-        <Label htmlFor="confirmPassword">Xác nhận mật khẩu mới</Label>
-        <Input id="confirmPassword" type="password" placeholder="Nhập lại mật khẩu mới" {...register('confirmPassword')} />
-        {errors.confirmPassword && <p className="text-sm text-rose-600">{errors.confirmPassword.message}</p>}
-      </div>
-      <Button type="submit" className="w-full bg-rose-500 hover:bg-rose-600 text-white" disabled={isSubmitting}>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      <label className="flex flex-col gap-2">
+        <span className="text-sm font-medium text-[#181113]">Mật khẩu mới</span>
+        <input
+          type="password"
+          placeholder="Tối thiểu 8 ký tự"
+          className="w-full h-12 rounded-lg border border-[#e6dbde] bg-white px-4 text-base text-[#181113] placeholder:text-[#89616b]/60 focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349] focus:outline-none transition-shadow"
+          {...register('newPassword')}
+        />
+        {errors.newPassword && (
+          <p className="text-sm text-[#ec1349]">{errors.newPassword.message}</p>
+        )}
+      </label>
+      <label className="flex flex-col gap-2">
+        <span className="text-sm font-medium text-[#181113]">Xác nhận mật khẩu mới</span>
+        <input
+          type="password"
+          placeholder="Nhập lại mật khẩu mới"
+          className="w-full h-12 rounded-lg border border-[#e6dbde] bg-white px-4 text-base text-[#181113] placeholder:text-[#89616b]/60 focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349] focus:outline-none transition-shadow"
+          {...register('confirmPassword')}
+        />
+        {errors.confirmPassword && (
+          <p className="text-sm text-[#ec1349]">{errors.confirmPassword.message}</p>
+        )}
+      </label>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full h-12 bg-[#ec1349] hover:bg-[#c90e3c] active:scale-[0.99] text-white font-bold rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      >
         {isSubmitting ? 'Đang cập nhật...' : 'Cập nhật mật khẩu'}
-      </Button>
+      </button>
     </form>
   )
 }

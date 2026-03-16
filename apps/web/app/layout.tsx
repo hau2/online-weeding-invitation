@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { beVietnamPro, playfairDisplay, dancingScript } from '@/lib/fonts'
+import { beVietnamPro, playfairDisplay, dancingScript, plusJakartaSans } from '@/lib/fonts'
 import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 import { Geist } from "next/font/google";
@@ -24,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           ${beVietnamPro.variable}
           ${playfairDisplay.variable}
           ${dancingScript.variable}
+          ${plusJakartaSans.variable}
           font-sans antialiased
         `}
       >

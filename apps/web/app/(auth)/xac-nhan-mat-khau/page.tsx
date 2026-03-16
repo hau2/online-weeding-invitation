@@ -5,12 +5,12 @@ export const metadata = { title: 'Xác nhận mật khẩu mới — Thiệp Cư
 
 export default function XacNhanMatKhauPage() {
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-1">
-        <h1 className="text-2xl font-bold text-gray-900">Đặt mật khẩu mới</h1>
-        <p className="text-sm text-gray-500">Nhập mật khẩu mới cho tài khoản của bạn</p>
+    <div className="flex flex-col gap-5">
+      <div className="text-center mb-2">
+        <h3 className="text-2xl font-bold text-[#181113]">Đặt mật khẩu mới</h3>
+        <p className="text-[#89616b] text-sm mt-1">Nhập mật khẩu mới cho tài khoản của bạn</p>
       </div>
-      <Suspense fallback={<div className="text-center text-gray-500 py-4">Đang tải...</div>}>
+      <Suspense fallback={<div className="text-center text-[#89616b] py-4">Đang tải...</div>}>
         <ResetConfirmForm />
       </Suspense>
     </div>

@@ -5,14 +5,14 @@ export const metadata = { title: 'Đặt lại mật khẩu — Thiệp Cưới 
 
 export default function DatLaiMatKhauPage() {
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-1">
-        <h1 className="text-2xl font-bold text-gray-900">Đặt lại mật khẩu</h1>
-        <p className="text-sm text-gray-500">Nhập email để nhận liên kết đặt lại mật khẩu</p>
+    <div className="flex flex-col gap-5">
+      <div className="text-center mb-2">
+        <h3 className="text-2xl font-bold text-[#181113]">Đặt lại mật khẩu</h3>
+        <p className="text-[#89616b] text-sm mt-1">Nhập email để nhận liên kết đặt lại mật khẩu</p>
       </div>
       <ResetRequestForm />
-      <p className="text-center text-sm text-gray-500">
-        <Link href="/dang-nhap" className="text-rose-600 hover:underline">
+      <p className="text-center text-sm text-[#89616b]">
+        <Link href="/dang-nhap" className="text-[#ec1349] font-semibold hover:text-[#c90e3c] hover:underline">
           ← Quay lại đăng nhập
         </Link>
       </p>
