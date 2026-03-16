@@ -10,12 +10,12 @@ This roadmap builds a self-service SaaS platform for Vietnamese couples to creat
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [x] **Phase 1: Foundation** - Monorepo, Supabase schema with RLS, NestJS auth module, and shared TypeScript types (completed 2026-03-14)
-- [x] **Phase 2: App Shell** - Next.js route groups, auth middleware, dashboard UI, and admin layout skeleton (completed 2026-03-14)
+- [x] **Phase 1: Foundation** - Monorepo, Supabase schema with RLS, NestJS auth module, and shared TypeScript types (completed 2013-03-14)
+- [x] **Phase 2: App Shell** - Next.js route groups, auth middleware, dashboard UI, and admin layout skeleton (completed 2013-03-14)
 - [ ] **Phase 3: Invitation Editor Core** - Invitation CRUD, real-time preview, 3 templates, auto-save, and publish control
 - [ ] **Phase 4: Media Upload Pipeline** - Photo gallery with drag-drop reordering, music selection/upload, bank QR upload, and server-side compression
 - [ ] **Phase 5: Public Invitation Page** - Public `/w/{slug}` page, QR generation, envelope animation, guest personalization, OG tags, and auto-expiry
-- [x] **Phase 6: Save-the-Date** - Teaser page feature for publishing couple names and date before the full invitation is ready (completed 2026-03-15)
+- [x] **Phase 6: Save-the-Date** - Teaser page feature for publishing couple names and date before the full invitation is ready (completed 2013-03-15)
 - [ ] **Phase 7: Monetization** - Free/Premium tiers, watermark enforcement, admin payment QR, and manual Premium grant workflow
 - [ ] **Phase 8: Admin Panel** - All 8 admin sections: users, invitations, themes, music library, plans, payments, system settings
 - [ ] **Phase 9: Polish and Performance** - 3G optimization, auto-expiry cron, elderly UX, animation fallbacks, and production hardening
@@ -214,13 +214,13 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 5/5 | Complete   | 2026-03-14 |
-| 2. App Shell | 4/4 | Complete   | 2026-03-14 |
-| 3. Invitation Editor Core | 5/5 | Complete | 2026-03-14 |
+| 1. Foundation | 5/5 | Complete   | 2013-03-14 |
+| 2. App Shell | 4/4 | Complete   | 2013-03-14 |
+| 3. Invitation Editor Core | 5/5 | Complete | 2013-03-14 |
 | 4. Media Upload Pipeline | 0/4 | Not started | - |
-| 5. Public Invitation Page | 7/7 | Complete | 2026-03-16 |
-| 5.1 Dual-Family Ceremony | 4/4 | Complete | 2026-03-16 |
-| 6. Save-the-Date | 2/2 | Complete   | 2026-03-15 |
+| 5. Public Invitation Page | 7/7 | Complete | 2013-03-16 |
+| 5.1 Dual-Family Ceremony | 4/4 | Complete | 2013-03-16 |
+| 6. Save-the-Date | 2/2 | Complete   | 2013-03-15 |
 | 7. Monetization | 0/3 | Not started | - |
 | 8. Admin Panel | 4/5 | In Progress|  |
 | 9. Polish and Performance | 0/3 | Not started | - |
