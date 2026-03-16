@@ -63,15 +63,15 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Admin
 
 - [x] **ADMN-01**: Admin panel at `/admin` with separate layout (not shared with user UI)
-- [ ] **ADMN-02**: Admin dashboard with read-only stats (total users, invitations, revenue, charts)
-- [ ] **ADMN-03**: Admin can view/search users, lock/unlock accounts, reset quota, assign/change plans
-- [ ] **ADMN-04**: Admin can view invitations list, view public link, disable/enable for violations (never edit content)
-- [ ] **ADMN-05**: Admin can manage theme metadata (enable/disable, name, tag, thumbnail)
-- [ ] **ADMN-06**: Admin can manage system music library (upload mp3, enable/disable, view usage count)
-- [ ] **ADMN-07**: Inactive system music hidden from editor but still plays on existing invitations
-- [ ] **ADMN-08**: Admin can configure service plans (Basic/Pro/Promax) with permission settings
-- [ ] **ADMN-09**: Admin can view payment transactions, mark refunds, add internal notes
-- [ ] **ADMN-10**: Admin can configure system settings (expiry durations, bank list, system fonts, upload limits)
+- [x] **ADMN-02**: Admin dashboard with read-only stats (total users, invitations, revenue, charts)
+- [x] **ADMN-03**: Admin can view/search users, lock/unlock accounts, reset quota, assign/change plans
+- [x] **ADMN-04**: Admin can view invitations list, view public link, disable/enable for violations (never edit content)
+- [x] **ADMN-05**: Admin can manage theme metadata (enable/disable, name, tag, thumbnail)
+- [x] **ADMN-06**: Admin can manage system music library (upload mp3, enable/disable, view usage count)
+- [x] **ADMN-07**: Inactive system music hidden from editor but still plays on existing invitations
+- [x] **ADMN-08**: Admin can configure service plans (Basic/Pro/Promax) with permission settings
+- [x] **ADMN-09**: Admin can view payment transactions, mark refunds, add internal notes
+- [x] **ADMN-10**: Admin can configure system settings (expiry durations, bank list, system fonts, upload limits)
 
 ### System
 
@@ -157,15 +157,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PLAN-02 | Phase 7 | Complete |
 | PLAN-03 | Phase 7 | Complete |
 | PLAN-04 | Phase 7 | Complete |
-| ADMN-02 | Phase 8 | Pending |
-| ADMN-03 | Phase 8 | Pending |
-| ADMN-04 | Phase 8 | Pending |
-| ADMN-05 | Phase 8 | Pending |
-| ADMN-06 | Phase 8 | Pending |
-| ADMN-07 | Phase 8 | Pending |
-| ADMN-08 | Phase 8 | Pending |
-| ADMN-09 | Phase 8 | Pending |
-| ADMN-10 | Phase 8 | Pending |
+| ADMN-02 | Phase 8 | Complete |
+| ADMN-03 | Phase 8 | Complete |
+| ADMN-04 | Phase 8 | Complete |
+| ADMN-05 | Phase 8 | Complete |
+| ADMN-06 | Phase 8 | Complete |
+| ADMN-07 | Phase 8 | Complete |
+| ADMN-08 | Phase 8 | Complete |
+| ADMN-09 | Phase 8 | Complete |
+| ADMN-10 | Phase 8 | Complete |
 
 **Coverage:**
 - v1 requirements: 49 total
