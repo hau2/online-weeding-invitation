@@ -253,6 +253,9 @@ Recent decisions affecting current work:
 - Phase 10 added: Agent Tier and Storage Management — monthly subscription for printing vendors, 20 invitations/month quota, draft auto-delete, published link expiration, admin Clear Storage button
 - Phase 13 added then removed: Public Page Redesign (moved to 9.1)
 - Phase 9.1 inserted after Phase 9: Public Page Redesign - Modern Full-Width Templates — replace narrow 420px card templates with 6 modern full-width designs (Stitch AI reference), shared layout + theme config system, hero sections, sticky nav, photo grids, venue/map cards, micro-interactions, extensible for admin-created themes (URGENT)
+- Phase 13 added: Editor UI Redesign - Modern Stitch AI Design — editor pages, creation steps, template selection, editor form, dual preview, publish flow, payment page (stitch-editor-page.md reference)
+- Phase 14 added: Dashboard and Auth Redesign - Modern Stitch AI Design — dashboard overview, login/register, invitation cards, payment, expired page (full-stitch-design.md reference)
+- Phase 15 added: Admin Panel Redesign - Modern Stitch AI Design — all 15 admin screens: dashboard, users, invitations, themes, music, payments, settings (full-stitch-design.md reference)
 
 ### Pending Todos
 
