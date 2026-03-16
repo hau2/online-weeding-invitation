@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 
 ## Current Position
 
-Phase: 8 of 9 (Admin Panel)
-Plan: 5 of 5 in phase 8 (08-05 complete)
-Status: Phase 8 Complete
-Last activity: 2026-03-16 — Plan 08-05 complete: revenue stat card and live music usage counts (gap closure)
+Phase: 9 of 9 (Polish and Performance)
+Plan: 2 of 3 in phase 9 (09-02 complete)
+Status: In Progress
+Last activity: 2026-03-16 — Plan 09-02 complete: auto-expiry cron with daily midnight UTC+7 schedule
 
 Progress: [██████████] 100%
 
@@ -91,6 +91,7 @@ Progress: [██████████] 100%
 | Phase 08 P03 | 3 | 2 tasks | 2 files |
 | Phase 08 P04 | 4min | 3 tasks | 6 files |
 | Phase 08 P05 | 2min | 2 tasks | 3 files |
+| Phase 09 P02 | 4min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -221,6 +222,9 @@ Recent decisions affecting current work:
 - [Phase 08 P04]: Theme placeholder colors match template identity (rose/sky/gray for traditional/modern/minimalist)
 - [Phase 08]: Revenue computed as premiumCount * pricePerInvitation from system_settings (not stored separately)
 - [Phase 08]: Music track usage counts fetched as single batched query from invitations + JS Map grouping (same pattern as deleteMusicTrack)
+- [Phase 09]: markExpired queries all published invitations and computes expiry in application code (not DB date comparison) for consolidated logic
+- [Phase 09]: findBySlug trusts cron-set 'expired' status directly but retains runtime date check as safety net
+- [Phase 09]: Expired invitations excluded from free-tier limit (enforceFreeTierLimit unchanged)
 
 ### Roadmap Evolution
 
@@ -239,6 +243,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T07:05:51.085Z
-Stopped at: Phase 9 context gathered
-Resume file: .planning/phases/09-polish-and-performance/09-CONTEXT.md
+Last session: 2026-03-16T07:30:40Z
+Stopped at: Completed 09-02-PLAN.md
+Resume file: .planning/phases/09-polish-and-performance/09-02-SUMMARY.md
