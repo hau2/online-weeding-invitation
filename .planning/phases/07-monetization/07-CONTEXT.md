@@ -19,17 +19,17 @@ Free/Premium tiers enforced per-invitation (pay-as-you-go model). Free invitatio
 - Admin grants Premium per invitation, not per user
 
 ### Free Tier Limits
-- 3 photos max (currently 10 for all)
-- 1 template only (Traditional) — Modern + Minimalist require Premium
+- No photo limit (same as Premium)
+- All templates available (same as Premium)
 - Diagonal watermark overlay on public page: "ThiepCuoiOnline.vn" repeated semi-transparently
 - Bank QR blurred with lock icon + "Nang cap de mo QR" text — guests can't scan
-- No limit on number of invitations created (can create multiple, all Free)
+- **Only 1 published invitation** — if user already has 1 live invitation (status = published or save_the_date), they cannot publish another. Must upgrade the next one to Premium.
+- Can create unlimited draft invitations — restriction is on publishing, not creating
 
-### Premium Tier
-- 10 photos
-- All 3 templates (Traditional + Modern + Minimalist)
+### Premium Tier (per-invitation)
 - No watermark
 - Bank QR fully visible and scannable
+- Can be published regardless of how many other invitations are live
 - Unlocked instantly when admin grants
 
 ### Watermark Design
