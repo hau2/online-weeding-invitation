@@ -210,7 +210,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 → 8 → 9 → 10 → 11 → 12
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 9 -> 9.1 -> 10 -> 11 -> 12
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -223,10 +223,32 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 | 6. Save-the-Date | 2/2 | Complete   | 2013-03-15 |
 | 7. Monetization | 0/3 | Not started | - |
 | 8. Admin Panel | 4/5 | In Progress|  |
-| 9. Polish and Performance | 0/3 | Not started | - |
+| 9. Polish and Performance | 3/3 | Complete | 2013-03-16 |
+| 9.1 Public Page Redesign | 0/5 | Not started | - |
 | 10. Agent Tier and Storage | 0/0 | Not started | - |
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
+
+### Phase 09.1: Public Page Redesign - Modern Full-Width Templates (INSERTED)
+
+**Goal:** Replace narrow 420px card-style templates with 6 modern full-width designs matching Stitch AI reference. Build shared layout + theme config system with hero sections, sticky nav, photo grids, venue/map cards, and micro-interactions. Architecture extensible for admin-created themes.
+**Requirements**: THEME-01, THEME-02, TMPL-01, TMPL-02, TMPL-03, TMPL-04, TMPL-05, TMPL-06, SHELL-01, COMPAT-01, EDITOR-01
+**Depends on:** Phase 9
+**Success Criteria** (what must be TRUE):
+  1. All 6 themes render correctly with theme-specific colors, typography, and visual effects
+  2. SharedTemplate composes 8 sections (Hero, StickyNav, Countdown, Timeline, Gallery, Venue, BankQR, Footer) with theme config
+  3. InvitationShell renders full-width template after envelope opens (no DesktopFrame)
+  4. Legacy templateId values (traditional/modern/minimalist) auto-map to new themes without DB migration
+  5. Editor shows 6 themes in visual grid with accurate preview
+  6. Plus Jakarta Sans font renders on public pages with Vietnamese diacritics support
+**Plans:** 5 plans
+
+Plans:
+- [ ] 09.1-01-PLAN.md — ThemeConfig type system, 6 theme configs, TemplateId extension, Plus Jakarta Sans font, Wave 0 test stubs
+- [ ] 09.1-02-PLAN.md — 8 section components (Hero, StickyNav, Countdown, Timeline, Gallery, Venue, BankQR, Footer) + SharedTemplate layout
+- [ ] 09.1-03-PLAN.md — InvitationShell rewire (remove DesktopFrame, full-width SharedTemplate), FallingPetals theme colors, ThankYouPage/SaveTheDatePage update
+- [ ] 09.1-04-PLAN.md — TemplateRenderer rewrite (getTheme + SharedTemplate), TemplateSelector 6 themes, EditorPreview update, test updates
+- [ ] 09.1-05-PLAN.md — Delete deprecated files (old templates, DesktopFrame), test cleanup, visual verification checkpoint
 
 ### Phase 10: Agent Tier and Storage Management — monthly subscription for printing vendors, 20 invitations/month quota, draft auto-delete, published link expiration, admin Clear Storage button
 
