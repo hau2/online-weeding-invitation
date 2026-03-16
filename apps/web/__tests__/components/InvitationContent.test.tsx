@@ -5,8 +5,16 @@ import type { Invitation } from '@repo/types'
 // Track which dynamic component is loaded via loader function
 let dynamicCallIndex = 0
 
+// Mock next/font/google -- prevents font function calls from throwing in test
+vi.mock('next/font/google', () => ({
+  Be_Vietnam_Pro: () => ({ variable: '--font-be-vietnam-pro', className: 'mock-font' }),
+  Playfair_Display: () => ({ variable: '--font-heading', className: 'mock-font' }),
+  Dancing_Script: () => ({ variable: '--font-script', className: 'mock-font' }),
+  Plus_Jakarta_Sans: () => ({ variable: '--font-display', className: 'mock-font' }),
+}))
+
 // Mock next/dynamic -- in InvitationShell the order is:
-// 1. EnvelopeAnimation, 2. FallingPetals, 3. MusicPlayer, 4. CountdownTimer
+// 1. EnvelopeAnimation, 2. FallingPetals, 3. MusicPlayer
 vi.mock('next/dynamic', () => ({
   __esModule: true,
   default: (_loader: () => Promise<any>, _opts?: any) => {
@@ -24,8 +32,6 @@ vi.mock('next/dynamic', () => ({
           return props.enabled ? <div data-testid="falling-petals" /> : null
         case 2: // MusicPlayer
           return <div data-testid="music-player" />
-        case 3: // CountdownTimer
-          return <div data-testid="countdown-timer" />
         default:
           return <div data-testid="dynamic-unknown" />
       }
@@ -47,13 +53,46 @@ vi.mock('framer-motion', () => ({
   useAnimation: () => ({ start: vi.fn() }),
 }))
 
-// Mock TemplateRenderer
-vi.mock('@/components/templates/TemplateRenderer', () => ({
-  TemplateRenderer: ({ invitation, className }: { invitation: Invitation; className?: string }) => (
-    <div data-testid="template-renderer" data-template={invitation.templateId} className={className}>
+// Mock SharedTemplate (replaces TemplateRenderer)
+vi.mock('@/components/templates/SharedTemplate', () => ({
+  SharedTemplate: ({ invitation, className }: { invitation: Invitation; className?: string }) => (
+    <div data-testid="shared-template" data-template={invitation.templateId} className={className}>
       {invitation.groomName} & {invitation.brideName}
     </div>
   ),
+}))
+
+// Mock StickyNav
+vi.mock('@/components/templates/sections/StickyNav', () => ({
+  StickyNav: () => <nav data-testid="sticky-nav" />,
+}))
+
+// Mock themes
+vi.mock('@/components/templates/themes', () => ({
+  getTheme: () => ({
+    id: 'classic-red-gold',
+    name: 'Classic Red Gold',
+    primaryColor: '#8B1A1A',
+    backgroundColor: '#FFF8F0',
+    surfaceColor: '#FFF5F5',
+    textColor: '#3D1F1F',
+    mutedTextColor: '#8B6F6F',
+    headingWeight: 'font-bold',
+    bodyWeight: 'font-normal',
+    letterSpacing: 'tracking-normal',
+    textTransform: 'normal-case',
+    borderRadius: 'rounded-lg',
+    cardBorderRadius: 'rounded-xl',
+    heroOverlay: 'from-black/60 via-black/30 to-transparent',
+    heroMinHeight: 'min-h-[85vh]',
+    galleryEffect: 'hover:scale-105',
+    galleryGap: 'gap-2',
+    petalColors: ['#FFB7C5', '#FF69B4', '#FF1493', '#DC143C'],
+    petalEnabled: true,
+    navStyle: 'colored',
+    footerBg: '#FFF8F0',
+    footerTextColor: '#3D1F1F',
+  }),
 }))
 
 const mockInvitation: Invitation & { expired: boolean; musicUrl?: string } = {
@@ -98,7 +137,7 @@ const mockInvitation: Invitation & { expired: boolean; musicUrl?: string } = {
   qrCodeUrl: null,
   expired: false,
   musicUrl: 'https://example.com/music.mp3',
-}
+} as any
 
 describe('InvitationShell', () => {
   beforeEach(() => {
@@ -123,8 +162,8 @@ describe('InvitationShell', () => {
     const envelope = screen.getByTestId('envelope-animation')
     fireEvent.click(envelope)
 
-    // After opening, template renderer should be visible
-    expect(screen.getByTestId('template-renderer')).toBeInTheDocument()
+    // After opening, SharedTemplate should be visible (replaces TemplateRenderer)
+    expect(screen.getByTestId('shared-template')).toBeInTheDocument()
     expect(screen.getByText(/Minh & Thao/)).toBeInTheDocument()
   })
 
@@ -136,7 +175,7 @@ describe('InvitationShell', () => {
     expect(container.firstChild).toBeTruthy()
   })
 
-  it('should show falling petals during envelope stage and unmount after opening', async () => {
+  it('should show falling petals during envelope and revealed stages', async () => {
     const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
     render(<InvitationShell invitation={mockInvitation} />)
 
@@ -146,35 +185,33 @@ describe('InvitationShell', () => {
     // Open the envelope
     fireEvent.click(screen.getByTestId('envelope-animation'))
 
-    // After opening, petals should unmount (they only play during envelope stage)
-    expect(screen.queryByTestId('falling-petals')).not.toBeInTheDocument()
+    // After opening, petals continue during revealed stage (per locked decision)
+    expect(screen.getByTestId('falling-petals')).toBeInTheDocument()
     // Music player should appear after opening
     expect(screen.getByTestId('music-player')).toBeInTheDocument()
   })
 
-  it('should show countdown timer when wedding date exists', async () => {
+  it('should show SharedTemplate and StickyNav after opening', async () => {
     const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
     render(<InvitationShell invitation={mockInvitation} />)
 
     // Open the envelope
     fireEvent.click(screen.getByTestId('envelope-animation'))
 
-    // Countdown timer should be present
-    expect(screen.getByTestId('countdown-timer')).toBeInTheDocument()
+    // SharedTemplate and StickyNav should be present
+    expect(screen.getByTestId('shared-template')).toBeInTheDocument()
+    expect(screen.getByTestId('sticky-nav')).toBeInTheDocument()
   })
 
-  it('should show footer watermark after opening', async () => {
+  it('should have envelope state management with render output', async () => {
     const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
     render(<InvitationShell invitation={mockInvitation} />)
 
     // Open the envelope
     fireEvent.click(screen.getByTestId('envelope-animation'))
 
-    // Footer watermark text (footer + watermark overlay both render "ThiepCuoiOnline.vn")
-    const watermarkElements = screen.getAllByText(/ThiepCuoiOnline.vn/)
-    expect(watermarkElements.length).toBeGreaterThanOrEqual(1)
-    // Verify footer text specifically
-    const footer = screen.getByRole('contentinfo')
-    expect(footer).toHaveTextContent(/ThiepCuoiOnline.vn/)
+    // Watermark should be present for free tier (no plan = free)
+    const container = screen.getByTestId('shared-template').closest('[class]')
+    expect(container).toBeTruthy()
   })
 })

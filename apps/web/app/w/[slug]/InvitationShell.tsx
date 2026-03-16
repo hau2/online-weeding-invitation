@@ -3,10 +3,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
-import type { Invitation, TemplateId } from '@repo/types'
-import { TemplateRenderer } from '@/components/templates/TemplateRenderer'
+import { cn } from '@/lib/utils'
+import type { Invitation } from '@repo/types'
+import { SharedTemplate } from '@/components/templates/SharedTemplate'
+import { StickyNav } from '@/components/templates/sections/StickyNav'
+import { getTheme } from '@/components/templates/themes'
+import { plusJakartaSans } from '@/lib/fonts'
 import { Watermark } from './Watermark'
-import { DesktopFrame } from './DesktopFrame'
 
 type PublicInvitation = Invitation & {
   expired: boolean
@@ -32,17 +35,6 @@ const MusicPlayer = dynamic(
   () => import('./MusicPlayer').then((m) => ({ default: m.MusicPlayer })),
   { ssr: false }
 )
-const CountdownTimer = dynamic(
-  () => import('./CountdownTimer').then((m) => ({ default: m.CountdownTimer })),
-  { ssr: false }
-)
-
-// Template-specific background colors for envelope stage
-const ENVELOPE_BG: Record<TemplateId, string> = {
-  traditional: '#FFF5F5',
-  modern: '#FFF0F5',
-  minimalist: '#FFFFF0',
-}
 
 function sanitizeGuestName(raw: string): string {
   // Strip HTML/script tags, max 50 characters
@@ -54,6 +46,8 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [guestName, setGuestName] = useState<string | undefined>(undefined)
   const [side, setSide] = useState<'groom' | 'bride'>('groom')
+
+  const theme = getTheme(invitation.templateId)
 
   useEffect(() => {
     // Parse ?to= and ?side= client-side only (never sent to server)
@@ -92,98 +86,60 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
   const ceremonyDate = side === 'groom' ? invitation.groomCeremonyDate : invitation.brideCeremonyDate
   const ceremonyTime = side === 'groom' ? invitation.groomCeremonyTime : invitation.brideCeremonyTime
 
-  // Envelope stage: fullscreen envelope animation
+  // Envelope stage: fullscreen envelope animation (centered ~400px, unchanged per locked decision)
   if (!envelopeOpened) {
     return (
-      <DesktopFrame templateId={invitation.templateId}>
-        <div
-          className="min-h-screen"
-          style={{ backgroundColor: ENVELOPE_BG[invitation.templateId] }}
-        >
-          {/* Falling petals during envelope stage */}
-          <FallingPetals templateId={invitation.templateId} enabled={true} />
-          <EnvelopeAnimation
-            templateId={invitation.templateId}
-            groomName={invitation.groomName}
-            brideName={invitation.brideName}
-            guestName={guestName}
-            onOpen={() => setEnvelopeOpened(true)}
-          />
-          {(invitation.plan ?? 'free') === 'free' && <Watermark text={invitation.watermarkText} opacity={invitation.watermarkOpacity} />}
-        </div>
-      </DesktopFrame>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: theme.backgroundColor }}
+      >
+        {/* Falling petals during envelope stage */}
+        <FallingPetals petalColors={theme.petalColors} enabled={theme.petalEnabled} />
+        <EnvelopeAnimation
+          templateId={invitation.templateId}
+          groomName={invitation.groomName}
+          brideName={invitation.brideName}
+          guestName={guestName}
+          onOpen={() => setEnvelopeOpened(true)}
+        />
+        {(invitation.plan ?? 'free') === 'free' && <Watermark text={invitation.watermarkText} opacity={invitation.watermarkOpacity} />}
+      </div>
     )
   }
 
-  // Revealed stage: full invitation with all interactive components
+  // Revealed stage: full-width invitation with SharedTemplate + StickyNav
   return (
-    <DesktopFrame templateId={invitation.templateId}>
-      <div className="relative min-h-screen text-base">
-        {/* Falling petals continue throughout the invitation */}
-        <FallingPetals templateId={invitation.templateId} enabled={true} />
+    <div className={cn('relative min-h-screen', plusJakartaSans.variable, 'font-[family-name:var(--font-display)]')}>
+      {/* Falling petals continue throughout the invitation (z-30) */}
+      <FallingPetals petalColors={theme.petalColors} enabled={theme.petalEnabled} />
 
-        {/* Music player (auto-starts after envelope opens) */}
-        {invitation.musicUrl && (
-          <MusicPlayer musicUrl={invitation.musicUrl} autoStart={true} />
-        )}
+      {/* Music player (auto-starts after envelope opens, z-50) */}
+      {invitation.musicUrl && (
+        <MusicPlayer musicUrl={invitation.musicUrl} autoStart={true} />
+      )}
 
-        {/* Invitation content with fade-in */}
-        <AnimatePresence>
-          <motion.div
-            key="invitation-content"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="relative z-10"
-            style={{ scrollBehavior: 'smooth' }}
-          >
-            {/* Scrollable content container */}
-            <div className="overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
-              {/* 1. Full invitation template content (side-filtered) */}
-              <TemplateRenderer invitation={filteredInvitation} />
+      {/* StickyNav -- desktop only, outside content scroll container (z-40) */}
+      <StickyNav invitation={filteredInvitation} theme={theme} />
 
-              {/* 2. Countdown timer (uses active side's ceremony date) */}
-              {ceremonyDate && (
-                <div className="px-4 pb-4">
-                  <CountdownTimer
-                    ceremonyDate={ceremonyDate}
-                    ceremonyTime={ceremonyTime}
-                    templateId={invitation.templateId}
-                  />
-                </div>
-              )}
+      {/* Invitation content with fade-in */}
+      <AnimatePresence>
+        <motion.div
+          key="invitation-content"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <SharedTemplate
+            invitation={filteredInvitation}
+            theme={theme}
+            ceremonyDate={ceremonyDate}
+            ceremonyTime={ceremonyTime}
+          />
+        </motion.div>
+      </AnimatePresence>
 
-              {/* 3. QR code (if available) */}
-              {invitation.qrCodeUrl && (
-                <div className="flex flex-col items-center px-4 pb-8">
-                  <p className="mb-3 text-sm text-gray-500">
-                    Quet ma de xem thiep cuoi
-                  </p>
-                  <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
-                    <img
-                      src={invitation.qrCodeUrl}
-                      alt="QR code thiep cuoi"
-                      className="h-40 w-40 object-contain"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* 4. Footer */}
-              <footer className="pb-8 pt-4 text-center">
-                {(invitation.plan ?? 'free') === 'free' ? (
-                  <p className="text-xs text-gray-400">
-                    Thiep cuoi duoc tao boi ThiepCuoiOnline.vn
-                  </p>
-                ) : null}
-              </footer>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Watermark overlay for free tier */}
-        {(invitation.plan ?? 'free') === 'free' && <Watermark text={invitation.watermarkText} opacity={invitation.watermarkOpacity} />}
-      </div>
-    </DesktopFrame>
+      {/* Watermark overlay for free tier (z-[60]) */}
+      {(invitation.plan ?? 'free') === 'free' && <Watermark text={invitation.watermarkText} opacity={invitation.watermarkOpacity} />}
+    </div>
   )
 }
