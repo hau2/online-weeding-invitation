@@ -179,112 +179,116 @@ export default function CreateWizardPage() {
     )
   }
 
-  /* ── Step 2: Choose template (Stitch "Buoc 2" full-width layout) ── */
+  /* ── Step 2: Choose template — same layout as Step 1 ── */
   return (
-    <div className="flex flex-1 flex-col h-full min-w-0 bg-white -m-8">
-      {/* Header with step indicator — exact Stitch step2 header */}
-      <header className="h-16 flex items-center justify-between px-6 border-b border-[#f4f0f1] bg-white sticky top-0 z-30">
-        <div className="hidden md:flex items-center gap-4">
-          {/* Step 1 — completed */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center size-6 rounded-full bg-green-500 text-white text-xs font-bold">
-              <svg className="size-[16px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+    <div className="flex-1 overflow-y-auto bg-[#f8f6f6] p-4 md:p-8 -m-8">
+      <div className="max-w-3xl mx-auto flex flex-col gap-6">
+        {/* Breadcrumb — same as step 1 */}
+        <nav className="flex flex-wrap gap-2 text-sm">
+          <Link href="/dashboard" className="text-[#89616b] hover:text-primary transition-colors">Tong quan</Link>
+          <span className="text-[#89616b]">/</span>
+          <Link href="/dashboard" className="text-[#89616b] hover:text-primary transition-colors">Thiep cuoi cua toi</Link>
+          <span className="text-[#89616b]">/</span>
+          <span className="text-[#181113] font-medium">Tao thiep moi</span>
+        </nav>
+
+        {/* Title — same as step 1 */}
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#181113]">Bat dau tao thiep cuoi cua ban</h1>
+          <p className="text-[#89616b] text-sm md:text-base">Hoan thanh cac buoc don gian ben duoi de co mot tam thiep cuoi tuyet dep.</p>
+        </div>
+
+        {/* Progress card — BUOC 2 TREN 2, 100% */}
+        <div className="bg-white rounded-xl p-5 shadow-sm border border-[#f4f0f1]">
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-primary text-xs font-bold uppercase tracking-wider mb-1">Buoc 2 tren 2</p>
+                <p className="text-[#181113] text-base font-bold">Chon giao dien</p>
+              </div>
+              <span className="text-[#89616b] text-xs font-medium bg-[#f4f0f1] px-2 py-1 rounded">100% Hoan thanh</span>
             </div>
-            <span className="text-sm font-medium text-[#181113]">Thong tin</span>
-          </div>
-          <div className="w-8 h-[1px] bg-[#f4f0f1]" />
-          {/* Step 2 — active */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center size-6 rounded-full bg-primary text-white text-xs font-bold shadow-md shadow-primary/30">2</div>
-            <span className="text-sm font-bold text-primary">Chon giao dien</span>
+            <div className="w-full bg-[#f4f0f1] rounded-full h-2 overflow-hidden">
+              <div className="bg-primary h-2 rounded-full transition-all duration-500 ease-out" style={{ width: '100%' }} />
+            </div>
+            <div className="flex justify-between text-xs text-[#89616b] hidden sm:flex">
+              <span className="text-green-600 font-bold">1. Thong tin ✓</span>
+              <span className="text-primary font-bold">2. Chon mau</span>
+            </div>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <button onClick={() => setStep(1)} className="text-sm font-bold text-[#57484b] hover:text-[#181113] transition-colors">
-            Quay lai
-          </button>
-        </div>
-      </header>
 
-      {/* Template library — exact Stitch step2 main content */}
-      <div className="flex-1 overflow-y-auto bg-[#fbf9fa] p-4 md:p-8 lg:px-12">
-        <div className="mx-auto max-w-[1200px] flex flex-col gap-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-black text-[#181113] tracking-tight mb-2">Chon giao dien</h1>
-              <p className="text-[#89616b] text-base font-medium max-w-xl">Chon mot mau thiep cuoi phu hop voi phong cach cua ban.</p>
+        {/* Content card — template grid inside white card */}
+        <div className="bg-white rounded-xl shadow-sm border border-[#f4f0f1] overflow-hidden">
+          <div className="p-6 md:p-8 flex flex-col gap-6">
+            {/* Section header */}
+            <div className="flex flex-col gap-1 border-b border-[#f4f0f1] pb-4">
+              <h3 className="text-lg font-bold text-[#181113]">Chon giao dien</h3>
+              <p className="text-sm text-[#89616b]">Chon mot mau thiep cuoi phu hop voi phong cach cua ban.</p>
             </div>
-          </div>
 
-          {/* Theme grid — exact Stitch card layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
-            {THEME_OPTIONS.map((tpl) => {
-              const isSelected = selectedTemplate === tpl.id
-              return (
-                <div
-                  key={tpl.id}
-                  className={`group flex flex-col bg-white rounded-2xl overflow-hidden border shadow-sm hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer ${
-                    isSelected ? 'border-primary ring-2 ring-primary/20' : 'border-[#f4f0f1]'
-                  }`}
-                  onClick={() => setSelectedTemplate(tpl.id)}
-                >
-                  {/* Thumbnail — exact Stitch aspect-[3/4] */}
-                  <div className="relative aspect-[3/4] w-full overflow-hidden" style={{ backgroundColor: tpl.color + '12' }}>
-                    <div className="w-full h-full flex items-center justify-center transition-transform duration-700 group-hover:scale-110">
-                      <div className="size-20 rounded-full opacity-60" style={{ backgroundColor: tpl.color }} />
-                    </div>
-                    {isSelected && (
-                      <div className="absolute top-3 right-3 px-2.5 py-1 bg-primary text-white rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
-                        <svg className="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                        Da chon
+            {/* Theme grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {THEME_OPTIONS.map((tpl) => {
+                const isSelected = selectedTemplate === tpl.id
+                return (
+                  <div
+                    key={tpl.id}
+                    className={`group flex flex-col bg-white rounded-2xl overflow-hidden border shadow-sm hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer ${
+                      isSelected ? 'border-primary ring-2 ring-primary/20' : 'border-[#f4f0f1]'
+                    }`}
+                    onClick={() => setSelectedTemplate(tpl.id)}
+                  >
+                    <div className="relative aspect-[3/4] w-full overflow-hidden" style={{ backgroundColor: tpl.color + '12' }}>
+                      <div className="w-full h-full flex items-center justify-center transition-transform duration-700 group-hover:scale-110">
+                        <div className="size-16 rounded-full opacity-60" style={{ backgroundColor: tpl.color }} />
                       </div>
-                    )}
-                    {/* Hover overlay — exact Stitch */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <span className="flex items-center gap-2 bg-white text-[#181113] px-4 py-2 rounded-full font-bold text-sm hover:bg-gray-50 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                        Xem truoc
-                      </span>
+                      {isSelected && (
+                        <div className="absolute top-2 right-2 px-2 py-0.5 bg-primary text-white rounded-full text-[10px] font-bold shadow-sm flex items-center gap-1">
+                          <svg className="size-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                          Da chon
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span className="flex items-center gap-1.5 bg-white text-[#181113] px-3 py-1.5 rounded-full font-bold text-xs transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                          Xem truoc
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-3 flex flex-col gap-2">
+                      <div>
+                        <h3 className="font-bold text-[#181113] text-sm">{tpl.label}</h3>
+                        <p className="text-[10px] text-[#89616b] font-medium mt-0.5">Phong cach: {tpl.style}</p>
+                      </div>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setSelectedTemplate(tpl.id) }}
+                        className="w-full py-2 rounded-lg bg-primary text-white font-bold text-xs shadow-lg shadow-primary/20 hover:bg-primary/90 active:scale-[0.98] transition-all"
+                      >
+                        {isSelected ? 'Da chon' : 'Chon giao dien'}
+                      </button>
                     </div>
                   </div>
-                  {/* Card info — exact Stitch p-4 */}
-                  <div className="p-4 flex flex-col gap-3">
-                    <div>
-                      <h3 className="font-bold text-[#181113] text-lg">{tpl.label}</h3>
-                      <p className="text-xs text-[#89616b] font-medium mt-1">Phong cach: {tpl.style}</p>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectedTemplate(tpl.id)
-                      }}
-                      className="w-full mt-auto py-2.5 rounded-lg bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 active:scale-[0.98] transition-all"
-                    >
-                      {isSelected ? 'Da chon' : 'Chon giao dien'}
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
 
-          {/* Bottom action — sticky */}
-          {selectedTemplate && (
-            <div className="sticky bottom-0 bg-white border-t border-[#f4f0f1] px-6 py-4 -mx-4 md:-mx-8 lg:-mx-12 flex justify-end gap-4">
-              <button
-                onClick={() => setStep(1)}
-                className="text-sm font-bold text-[#57484b] hover:text-[#181113] px-4 py-2 transition-colors"
-              >
-                Quay lai
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-[#d60b3f] text-white px-6 py-2.5 text-sm font-bold transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 active:scale-95 disabled:opacity-40"
-              >
-                <span>{loading ? 'Dang tao...' : 'Tao thiep'}</span>
-              </button>
-            </div>
-          )}
+          {/* Footer — same style as step 1 */}
+          <div className="bg-[#faf8f9] px-6 md:px-8 py-4 border-t border-[#f4f0f1] flex justify-end items-center gap-4">
+            <button
+              onClick={() => setStep(1)}
+              className="text-sm font-bold text-[#57484b] hover:text-[#181113] px-4 py-2 transition-colors"
+            >
+              Quay lai
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={!selectedTemplate || loading}
+              className="flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-[#d60b3f] text-white px-6 py-2.5 text-sm font-bold transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <span>{loading ? 'Dang tao...' : 'Tao thiep'}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
