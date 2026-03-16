@@ -1083,7 +1083,7 @@ export class InvitationsService {
       .from('invitations')
       .select(SELECT_ALL)
       .is('deleted_at', null)
-      .or('plan.eq.premium,payment_status.eq.rejected')
+      .or('plan.eq.premium,payment_status.eq.rejected,payment_status.eq.refunded')
       .order('updated_at', { ascending: false })
       .limit(20)
 
