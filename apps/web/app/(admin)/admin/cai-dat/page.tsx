@@ -1,0 +1,327 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
+import { Settings, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { apiFetch, apiUpload } from '@/lib/api'
+import type { SystemSettings } from '@repo/types'
+
+export default function AdminSettingsPage() {
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [uploadingQr, setUploadingQr] = useState(false)
+
+  // Payment config
+  const [bankQrUrl, setBankQrUrl] = useState<string | null>(null)
+  const [bankName, setBankName] = useState('')
+  const [bankAccountHolder, setBankAccountHolder] = useState('')
+  const [pricePerInvitation, setPricePerInvitation] = useState(0)
+
+  // Watermark config
+  const [watermarkText, setWatermarkText] = useState('ThiepCuoiOnline.vn')
+  const [watermarkOpacity, setWatermarkOpacity] = useState(0.15)
+
+  // Expiry config
+  const [gracePeriodDays, setGracePeriodDays] = useState(30)
+
+  // Upload limits
+  const [maxPhotoSizeMb, setMaxPhotoSizeMb] = useState(5)
+  const [maxPhotosPerInvitation, setMaxPhotosPerInvitation] = useState(10)
+  const [maxPhotosPremium, setMaxPhotosPremium] = useState(20)
+
+  useEffect(() => {
+    fetchSettings()
+  }, [])
+
+  async function fetchSettings() {
+    setLoading(true)
+    const { data, error } = await apiFetch<SystemSettings>('/admin/system-settings', {
+      credentials: 'include',
+    })
+    if (error) {
+      toast.error(error)
+      setLoading(false)
+      return
+    }
+    if (data) {
+      // Payment config
+      setBankQrUrl(data.paymentConfig.bankQrUrl)
+      setBankName(data.paymentConfig.bankName)
+      setBankAccountHolder(data.paymentConfig.bankAccountHolder)
+      setPricePerInvitation(data.paymentConfig.pricePerInvitation)
+      // Watermark config
+      setWatermarkText(data.watermarkConfig.text)
+      setWatermarkOpacity(data.watermarkConfig.opacity)
+      // Expiry config
+      setGracePeriodDays(data.expiryConfig.gracePeriodDays)
+      // Upload limits
+      setMaxPhotoSizeMb(data.uploadLimits.maxPhotoSizeMb)
+      setMaxPhotosPerInvitation(data.uploadLimits.maxPhotosPerInvitation)
+      setMaxPhotosPremium(data.uploadLimits.maxPhotosPremium)
+    }
+    setLoading(false)
+  }
+
+  async function handleUploadBankQr(file: File) {
+    setUploadingQr(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    const { data, error } = await apiUpload<{ bankQrUrl: string }>(
+      '/admin/system-settings/bank-qr',
+      formData,
+    )
+    if (error) {
+      toast.error(error)
+    } else if (data) {
+      setBankQrUrl(data.bankQrUrl)
+      toast.success('Da tai anh QR len')
+    }
+    setUploadingQr(false)
+  }
+
+  async function handleSave() {
+    setSaving(true)
+    const body: Partial<SystemSettings> = {
+      paymentConfig: {
+        bankQrUrl,
+        bankName,
+        bankAccountHolder,
+        pricePerInvitation,
+      },
+      watermarkConfig: {
+        text: watermarkText,
+        opacity: watermarkOpacity,
+      },
+      expiryConfig: {
+        gracePeriodDays,
+      },
+      uploadLimits: {
+        maxPhotoSizeMb,
+        maxPhotosPerInvitation,
+        maxPhotosPremium,
+      },
+    }
+
+    const { error } = await apiFetch<SystemSettings>('/admin/system-settings', {
+      method: 'PUT',
+      credentials: 'include',
+      body,
+    })
+    if (error) {
+      toast.error(error)
+    } else {
+      toast.success('Da luu cai dat he thong')
+    }
+    setSaving(false)
+  }
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <Settings className="size-5 text-gray-700" />
+          <h1 className="text-xl font-semibold text-gray-900">Cai dat he thong</h1>
+        </div>
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="size-6 animate-spin text-gray-400" />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="p-6 max-w-3xl">
+      <div className="flex items-center gap-2 mb-1">
+        <Settings className="size-5 text-gray-700" />
+        <h1 className="text-xl font-semibold text-gray-900">Cai dat he thong</h1>
+      </div>
+      <p className="text-sm text-gray-500 mb-6">Cau hinh toan he thong</p>
+
+      <div className="space-y-6">
+        {/* Section 1: Thanh toan */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <h3 className="text-sm font-semibold text-gray-700 mb-4">Thanh toan</h3>
+
+          {/* Bank QR image */}
+          <div className="mb-4">
+            <label className="text-xs text-gray-500 block mb-1">Anh QR ngan hang</label>
+            <div className="flex items-start gap-4">
+              {bankQrUrl ? (
+                <img
+                  src={bankQrUrl}
+                  alt="Bank QR"
+                  className="w-24 h-24 object-contain rounded border border-gray-200"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400">
+                  Chua co
+                </div>
+              )}
+              <div>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0]
+                    if (f) handleUploadBankQr(f)
+                  }}
+                  className="block text-xs text-gray-500 file:mr-2 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-gray-700 hover:file:bg-gray-200"
+                />
+                {uploadingQr && (
+                  <div className="flex items-center gap-1 mt-1 text-xs text-gray-400">
+                    <Loader2 className="size-3 animate-spin" /> Dang tai...
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">Ten ngan hang</label>
+              <input
+                type="text"
+                value={bankName}
+                onChange={(e) => setBankName(e.target.value)}
+                className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">Chu tai khoan</label>
+              <input
+                type="text"
+                value={bankAccountHolder}
+                onChange={(e) => setBankAccountHolder(e.target.value)}
+                className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <label className="text-xs text-gray-500 block mb-1">Gia moi thiep (VND)</label>
+            <input
+              type="number"
+              min={0}
+              value={pricePerInvitation}
+              onChange={(e) => setPricePerInvitation(Number(e.target.value))}
+              className="w-full max-w-xs rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+            />
+          </div>
+          <p className="mt-3 text-xs text-gray-400">
+            Thong tin nay se hien thi tren trang nang cap cua nguoi dung. Thay the cac bien moi
+            truong NEXT_PUBLIC_ADMIN_BANK_*.
+          </p>
+        </div>
+
+        {/* Section 2: Watermark */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <h3 className="text-sm font-semibold text-gray-700 mb-4">Watermark</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">Noi dung watermark</label>
+              <input
+                type="text"
+                value={watermarkText}
+                onChange={(e) => setWatermarkText(e.target.value)}
+                className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">
+                Do mo (opacity): {watermarkOpacity}
+              </label>
+              <input
+                type="range"
+                min={0.05}
+                max={0.5}
+                step={0.05}
+                value={watermarkOpacity}
+                onChange={(e) => setWatermarkOpacity(Number(e.target.value))}
+                className="w-full mt-1"
+              />
+              <div className="flex justify-between text-xs text-gray-400">
+                <span>0.05</span>
+                <span>0.5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 3: Het han thiep */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <h3 className="text-sm font-semibold text-gray-700 mb-4">Het han thiep</h3>
+          <div>
+            <label className="text-xs text-gray-500 block mb-1">
+              So ngay gia han sau ngay cuoi (ngay)
+            </label>
+            <input
+              type="number"
+              min={0}
+              value={gracePeriodDays}
+              onChange={(e) => setGracePeriodDays(Number(e.target.value))}
+              className="w-full max-w-xs rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+            />
+          </div>
+          <p className="mt-2 text-xs text-gray-400">
+            Sau ngay cuoi + so ngay gia han, thiep se chuyen sang trang cam on.
+          </p>
+        </div>
+
+        {/* Section 4: Gioi han tai len */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <h3 className="text-sm font-semibold text-gray-700 mb-4">Gioi han tai len</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">
+                Kich thuoc anh toi da (MB)
+              </label>
+              <input
+                type="number"
+                min={1}
+                value={maxPhotoSizeMb}
+                onChange={(e) => setMaxPhotoSizeMb(Number(e.target.value))}
+                className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">
+                So anh toi da (Mien phi)
+              </label>
+              <input
+                type="number"
+                min={1}
+                value={maxPhotosPerInvitation}
+                onChange={(e) => setMaxPhotosPerInvitation(Number(e.target.value))}
+                className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">
+                So anh toi da (Premium)
+              </label>
+              <input
+                type="number"
+                min={1}
+                value={maxPhotosPremium}
+                onChange={(e) => setMaxPhotosPremium(Number(e.target.value))}
+                className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Save button */}
+        <div>
+          <Button
+            className="bg-gray-900 text-white hover:bg-gray-800 gap-1"
+            onClick={handleSave}
+            disabled={saving}
+          >
+            {saving && <Loader2 className="size-3.5 animate-spin" />}
+            Luu cai dat
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
