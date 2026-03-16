@@ -403,7 +403,7 @@ export class InvitationsService {
       .from('invitations')
       .select(SELECT_ALL)
       .eq('slug', slug)
-      .in('status', ['published', 'save_the_date'])
+      .in('status', ['published', 'save_the_date', 'expired'])
       .is('deleted_at', null)
       .single()
 
@@ -421,21 +421,26 @@ export class InvitationsService {
     const mapped = mapRow(row)
     const isSaveTheDate = row.status === 'save_the_date'
 
-    // Teasers (save_the_date) don't expire
+    // Determine expiry status:
+    // - Teasers (save_the_date) never expire
+    // - If cron already marked as 'expired', trust it
+    // - Otherwise, runtime date check remains as a safety net for invitations the cron hasn't processed yet
     let expired = false
     if (!isSaveTheDate) {
-      // Determine expiry: use the LATER of groom/bride ceremony dates + 7 day grace period
-      // Using the later date ensures neither side's invitation expires prematurely
-      const dates = [row.groom_ceremony_date, row.bride_ceremony_date].filter(
-        (d): d is string => d !== null,
-      )
-      if (dates.length > 0) {
-        // Pick the latest ceremony date
-        const latestDate = dates.sort().pop()!
-        const ceremonyStr = `${latestDate}T23:59:59+07:00`
-        const ceremonyMs = new Date(ceremonyStr).getTime()
-        const gracePeriodMs = 7 * 24 * 60 * 60 * 1000
-        expired = Date.now() > ceremonyMs + gracePeriodMs
+      if (row.status === 'expired') {
+        expired = true
+      } else {
+        // Runtime safety net: compute expiry from ceremony dates + 7-day grace period
+        const dates = [row.groom_ceremony_date, row.bride_ceremony_date].filter(
+          (d): d is string => d !== null,
+        )
+        if (dates.length > 0) {
+          const latestDate = dates.sort().pop()!
+          const ceremonyStr = `${latestDate}T23:59:59+07:00`
+          const ceremonyMs = new Date(ceremonyStr).getTime()
+          const gracePeriodMs = 7 * 24 * 60 * 60 * 1000
+          expired = Date.now() > ceremonyMs + gracePeriodMs
+        }
       }
     }
 
@@ -1200,6 +1205,83 @@ export class InvitationsService {
     }
 
     return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Mark all published invitations as expired if their latest ceremony date
+   * + 7-day grace period has passed.
+   *
+   * For each expired invitation:
+   * - Updates status from 'published' to 'expired'
+   * - Triggers ISR revalidation (non-blocking) so the public URL shows ThankYouPage
+   *
+   * Returns the count of newly expired invitations.
+   */
+  async markExpired(): Promise<number> {
+    // Fetch all published, non-deleted invitations
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select('id, slug, groom_ceremony_date, bride_ceremony_date')
+      .eq('status', 'published')
+      .is('deleted_at', null)
+
+    if (error) {
+      this.logger.error(`markExpired: failed to fetch invitations: ${error.message}`)
+      return 0
+    }
+
+    if (!data || data.length === 0) return 0
+
+    const now = Date.now()
+    const gracePeriodMs = 7 * 24 * 60 * 60 * 1000
+    let expiredCount = 0
+
+    for (const row of data as Array<{
+      id: string
+      slug: string | null
+      groom_ceremony_date: string | null
+      bride_ceremony_date: string | null
+    }>) {
+      // Compute expiry using the LATER of groom/bride ceremony dates + 7-day grace
+      const dates = [row.groom_ceremony_date, row.bride_ceremony_date].filter(
+        (d): d is string => d !== null,
+      )
+
+      if (dates.length === 0) continue // No ceremony dates, cannot determine expiry
+
+      const latestDate = dates.sort().pop()!
+      const ceremonyStr = `${latestDate}T23:59:59+07:00`
+      const ceremonyMs = new Date(ceremonyStr).getTime()
+      const isExpired = now > ceremonyMs + gracePeriodMs
+
+      if (!isExpired) continue
+
+      // Mark as expired
+      const { error: updateError } = await this.supabaseAdmin.client
+        .from('invitations')
+        .update({ status: 'expired' })
+        .eq('id', row.id)
+
+      if (updateError) {
+        this.logger.warn(`markExpired: failed to update invitation ${row.id}: ${updateError.message}`)
+        continue
+      }
+
+      expiredCount++
+
+      // Trigger ISR revalidation (non-blocking)
+      if (row.slug) {
+        try {
+          await this.triggerRevalidation(row.slug)
+        } catch (err) {
+          this.logger.warn(
+            `markExpired: revalidation failed for slug "${row.slug}": ${err instanceof Error ? err.message : err}`,
+          )
+        }
+      }
+    }
+
+    return expiredCount
   }
 
   /**

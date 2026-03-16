@@ -10,6 +10,7 @@ function buildSupabaseChain(returnData: any, error: any = null) {
   const chain = {
     select: vi.fn().mockReturnThis(),
     eq: vi.fn().mockReturnThis(),
+    in: vi.fn().mockReturnThis(),
     is: vi.fn().mockReturnThis(),
     order: vi.fn().mockResolvedValue({ data: returnData, error }),
     insert: vi.fn().mockReturnThis(),
@@ -70,16 +71,18 @@ describe('Public Invitations API', () => {
     // PUBL-01: Public access by slug
     it('returns published invitation by slug without authentication', async () => {
       const mock = buildSupabaseChain(null)
+      // First single() returns invitation, second returns watermark config (null = no config)
       mock._chain.single = vi
         .fn()
-        .mockResolvedValue({ data: publishedRow, error: null })
+        .mockResolvedValueOnce({ data: publishedRow, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
       const service = makeService(mock)
 
       const result = await service.findBySlug('minh-thao-a1b2')
 
       expect(mock.from).toHaveBeenCalledWith('invitations')
       expect(mock._chain.eq).toHaveBeenCalledWith('slug', 'minh-thao-a1b2')
-      expect(mock._chain.eq).toHaveBeenCalledWith('status', 'published')
+      expect(mock._chain.in).toHaveBeenCalledWith('status', ['published', 'save_the_date', 'expired'])
       expect(mock._chain.is).toHaveBeenCalledWith('deleted_at', null)
       expect(result.groomName).toBe('Thao')
       expect(result.brideName).toBe('Minh')
@@ -125,7 +128,8 @@ describe('Public Invitations API', () => {
       const mock = buildSupabaseChain(null)
       mock._chain.single = vi
         .fn()
-        .mockResolvedValue({ data: expiredRow, error: null })
+        .mockResolvedValueOnce({ data: expiredRow, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
       const service = makeService(mock)
 
       const result = await service.findBySlug('minh-thao-a1b2')
@@ -146,7 +150,8 @@ describe('Public Invitations API', () => {
       const mock = buildSupabaseChain(null)
       mock._chain.single = vi
         .fn()
-        .mockResolvedValue({ data: recentRow, error: null })
+        .mockResolvedValueOnce({ data: recentRow, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
       const service = makeService(mock)
 
       const result = await service.findBySlug('minh-thao-a1b2')
@@ -165,7 +170,8 @@ describe('Public Invitations API', () => {
       const mock = buildSupabaseChain(null)
       mock._chain.single = vi
         .fn()
-        .mockResolvedValue({ data: futureRow, error: null })
+        .mockResolvedValueOnce({ data: futureRow, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
       const service = makeService(mock)
 
       const result = await service.findBySlug('minh-thao-a1b2')
@@ -182,7 +188,8 @@ describe('Public Invitations API', () => {
       const mock = buildSupabaseChain(null)
       mock._chain.single = vi
         .fn()
-        .mockResolvedValue({ data: noDateRow, error: null })
+        .mockResolvedValueOnce({ data: noDateRow, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
       const service = makeService(mock)
 
       const result = await service.findBySlug('minh-thao-a1b2')
@@ -211,6 +218,7 @@ describe('Public Invitations API', () => {
       const chain = {
         select: vi.fn().mockReturnThis(),
         eq: vi.fn().mockReturnThis(),
+        in: vi.fn().mockReturnThis(),
         is: vi.fn().mockReturnThis(),
         order: vi.fn().mockReturnThis(),
         insert: vi.fn().mockReturnThis(),
@@ -218,14 +226,11 @@ describe('Public Invitations API', () => {
         update: vi.fn().mockReturnThis(),
       }
 
-      let callCount = 0
-      chain.single.mockImplementation(() => {
-        callCount++
-        if (callCount === 1) {
-          return Promise.resolve({ data: rowWithMusic, error: null })
-        }
-        return Promise.resolve({ data: trackRow, error: null })
-      })
+      // 1st single() = invitation, 2nd = music track, 3rd = watermark config
+      chain.single
+        .mockResolvedValueOnce({ data: rowWithMusic, error: null })
+        .mockResolvedValueOnce({ data: trackRow, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
 
       const mock = { from: vi.fn(() => chain), _chain: chain }
       const service = makeService(mock)
@@ -243,7 +248,8 @@ describe('Public Invitations API', () => {
       const mock = buildSupabaseChain(null)
       mock._chain.single = vi
         .fn()
-        .mockResolvedValue({ data: rowWithQr, error: null })
+        .mockResolvedValueOnce({ data: rowWithQr, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
       const service = makeService(mock)
 
       const result = await service.findBySlug('minh-thao-a1b2')

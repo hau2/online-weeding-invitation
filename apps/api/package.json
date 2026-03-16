@@ -18,6 +18,7 @@
     "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/passport": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/schedule": "^6.1.1",
     "@repo/types": "workspace:*",
     "@supabase/supabase-js": "^2.99.0",
     "bcrypt": "^5.0.0",
