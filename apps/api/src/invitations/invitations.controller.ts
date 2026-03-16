@@ -227,6 +227,48 @@ export class InvitationsController {
   }
 
   /**
+   * Upload a groom avatar image (single file, 5MB max).
+   * Processed to 400x400 WebP square crop.
+   */
+  @Post(':id/groom-avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadGroomAvatar(
+    @CurrentUser() user: JwtPayload,
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.invitationsService.uploadGroomAvatar(user.sub, id, file)
+  }
+
+  /**
+   * Upload a bride avatar image (single file, 5MB max).
+   * Processed to 400x400 WebP square crop.
+   */
+  @Post(':id/bride-avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadBrideAvatar(
+    @CurrentUser() user: JwtPayload,
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.invitationsService.uploadBrideAvatar(user.sub, id, file)
+  }
+
+  /**
    * Update photo order for an invitation.
    * Dedicated endpoint because photoUrls is excluded from FIELD_MAP
    * to prevent arbitrary URL injection via generic PATCH auto-save.

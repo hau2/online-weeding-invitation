@@ -263,6 +263,27 @@ export class InvitationsService {
   }
 
   /**
+   * Process avatar image: validate MIME, resize to 400x400 square crop, convert to WebP.
+   */
+  private async processAvatarImage(buffer: Buffer): Promise<Buffer> {
+    const detectedMimes = filetypemime(buffer)
+    const isValidImage = detectedMimes.some((mime: string) =>
+      ALLOWED_IMAGE_MIMES.has(mime),
+    )
+
+    if (!isValidImage) {
+      throw new BadRequestException(
+        'Dinh dang anh khong hop le. Chi chap nhan JPEG, PNG hoac WebP.',
+      )
+    }
+
+    return sharp(buffer)
+      .resize(400, 400, { fit: 'cover' })
+      .webp({ quality: 80 })
+      .toBuffer()
+  }
+
+  /**
    * Extract the storage path from a Supabase public URL.
    * URL format: https://{host}/storage/v1/object/public/{bucket}/{path}
    */
@@ -728,6 +749,119 @@ export class InvitationsService {
     const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .update({ bride_bank_qr_url: urlData.publicUrl })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Upload a groom avatar image for an invitation.
+   * Processed to 400x400 WebP square crop (fit: cover).
+   */
+  async uploadGroomAvatar(
+    userId: string,
+    invitationId: string,
+    file: Express.Multer.File,
+  ): Promise<Invitation> {
+    const invitation = await this.findOne(userId, invitationId)
+
+    const compressed = await this.processAvatarImage(file.buffer)
+
+    // Delete old avatar if exists
+    if (invitation.groomAvatarUrl) {
+      const oldPath = this.extractStoragePath(
+        invitation.groomAvatarUrl,
+        'invitation-photos',
+      )
+      if (oldPath) {
+        await this.supabaseAdmin.client.storage
+          .from('invitation-photos')
+          .remove([oldPath])
+      }
+    }
+
+    const storagePath = `${invitationId}/groom-avatar.webp`
+
+    const { error: uploadError } = await this.supabaseAdmin.client.storage
+      .from('invitation-photos')
+      .upload(storagePath, compressed, {
+        contentType: 'image/webp',
+        upsert: true,
+      })
+
+    if (uploadError) {
+      throw new InternalServerErrorException(
+        `Khong the tai anh avatar len: ${uploadError.message}`,
+      )
+    }
+
+    const { data: urlData } = this.supabaseAdmin.client.storage
+      .from('invitation-photos')
+      .getPublicUrl(storagePath)
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ groom_avatar_url: urlData.publicUrl })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
+   * Upload a bride avatar image for an invitation.
+   * Processed to 400x400 WebP square crop (fit: cover).
+   */
+  async uploadBrideAvatar(
+    userId: string,
+    invitationId: string,
+    file: Express.Multer.File,
+  ): Promise<Invitation> {
+    const invitation = await this.findOne(userId, invitationId)
+
+    const compressed = await this.processAvatarImage(file.buffer)
+
+    if (invitation.brideAvatarUrl) {
+      const oldPath = this.extractStoragePath(
+        invitation.brideAvatarUrl,
+        'invitation-photos',
+      )
+      if (oldPath) {
+        await this.supabaseAdmin.client.storage
+          .from('invitation-photos')
+          .remove([oldPath])
+      }
+    }
+
+    const storagePath = `${invitationId}/bride-avatar.webp`
+
+    const { error: uploadError } = await this.supabaseAdmin.client.storage
+      .from('invitation-photos')
+      .upload(storagePath, compressed, {
+        contentType: 'image/webp',
+        upsert: true,
+      })
+
+    if (uploadError) {
+      throw new InternalServerErrorException(
+        `Khong the tai anh avatar len: ${uploadError.message}`,
+      )
+    }
+
+    const { data: urlData } = this.supabaseAdmin.client.storage
+      .from('invitation-photos')
+      .getPublicUrl(storagePath)
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ bride_avatar_url: urlData.publicUrl })
       .eq('id', invitationId)
       .select(SELECT_ALL)
       .single()
