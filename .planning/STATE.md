@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 7 of 9 (Monetization)
-Plan: 1 of 3 in phase 7 (07-01 complete)
+Plan: 2 of 3 in phase 7 (07-02 complete)
 Status: In Progress
-Last activity: 2026-03-16 — Plan 07-01 complete: monetization data foundation with plan/paymentStatus types, free-tier limit, admin upgrade endpoints
+Last activity: 2026-03-16 — Plan 07-02 complete: watermark overlay and bank QR lock for free-tier monetization UI
 
 Progress: [██████████] 100%
 
@@ -84,6 +84,7 @@ Progress: [██████████] 100%
 | Phase 06 P01 | 3min | 2 tasks | 5 files |
 | Phase 06 P02 | 3min | 2 tasks | 6 files |
 | Phase 07 P01 | 7min | 2 tasks | 5 files |
+| Phase 07 P02 | 5min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -192,6 +193,10 @@ Recent decisions affecting current work:
 - [Phase 07 P01]: enforceFreeTierLimit as private reusable method called by both publish() and publishSaveTheDate()
 - [Phase 07 P01]: Admin routes placed in existing InvitationsController with method-level AdminGuard (not separate controller)
 - [Phase 07 P01]: Admin route paths use 'admin/' prefix placed before ':id' routes to prevent NestJS UUID parse conflict
+- [Phase 07 P02]: Watermark uses DOM text elements (not CSS background-image or SVG data URI) for tamper resistance
+- [Phase 07 P02]: (invitation.plan ?? 'free') === 'free' pattern handles undefined plan for backwards compatibility
+- [Phase 07 P02]: Footer branding text removed entirely for premium tier (not just made subtle)
+- [Phase 07 P02]: Watermark rendered during both envelope and revealed stages to prevent screenshot bypass
 
 ### Roadmap Evolution
 
@@ -209,6 +214,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T04:01:19Z
-Stopped at: Completed 07-01-PLAN.md
-Resume file: .planning/phases/07-monetization/07-02-PLAN.md
+Last session: 2026-03-16T04:10:01Z
+Stopped at: Completed 07-02-PLAN.md
+Resume file: .planning/phases/07-monetization/07-03-PLAN.md
