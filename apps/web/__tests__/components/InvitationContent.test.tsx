@@ -79,6 +79,19 @@ const mockInvitation: Invitation & { expired: boolean; musicUrl?: string } = {
   brideBankQrUrl: null,
   brideBankName: '',
   brideBankAccountHolder: '',
+  groomCeremonyDate: '2026-06-15',
+  groomCeremonyTime: '11:00',
+  groomVenueName: 'Nha hang ABC',
+  groomVenueAddress: '123 Nguyen Hue, Q1',
+  brideCeremonyDate: '2026-06-16',
+  brideCeremonyTime: '10:00',
+  brideVenueName: 'Nha hang XYZ',
+  brideVenueAddress: '456 Le Loi, Q3',
+  groomFatherName: '',
+  groomMotherName: '',
+  brideFatherName: '',
+  brideMotherName: '',
+  loveStory: [],
   createdAt: '2026-01-01T00:00:00Z',
   updatedAt: '2026-01-01T00:00:00Z',
   deletedAt: null,
@@ -123,15 +136,19 @@ describe('InvitationShell', () => {
     expect(container.firstChild).toBeTruthy()
   })
 
-  it('should show falling petals and music player after opening', async () => {
+  it('should show falling petals during envelope stage and unmount after opening', async () => {
     const { InvitationShell } = await import('@/app/w/[slug]/InvitationShell')
     render(<InvitationShell invitation={mockInvitation} />)
+
+    // Petals should be visible during envelope stage
+    expect(screen.getByTestId('falling-petals')).toBeInTheDocument()
 
     // Open the envelope
     fireEvent.click(screen.getByTestId('envelope-animation'))
 
-    // After opening, petals and music player should appear
-    expect(screen.getByTestId('falling-petals')).toBeInTheDocument()
+    // After opening, petals should unmount (they only play during envelope stage)
+    expect(screen.queryByTestId('falling-petals')).not.toBeInTheDocument()
+    // Music player should appear after opening
     expect(screen.getByTestId('music-player')).toBeInTheDocument()
   })
 
@@ -153,7 +170,11 @@ describe('InvitationShell', () => {
     // Open the envelope
     fireEvent.click(screen.getByTestId('envelope-animation'))
 
-    // Footer watermark should be present
-    expect(screen.getByText(/ThiepCuoiOnline.vn/)).toBeInTheDocument()
+    // Footer watermark text (footer + watermark overlay both render "ThiepCuoiOnline.vn")
+    const watermarkElements = screen.getAllByText(/ThiepCuoiOnline.vn/)
+    expect(watermarkElements.length).toBeGreaterThanOrEqual(1)
+    // Verify footer text specifically
+    const footer = screen.getByRole('contentinfo')
+    expect(footer).toHaveTextContent(/ThiepCuoiOnline.vn/)
   })
 })
