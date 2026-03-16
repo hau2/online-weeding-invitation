@@ -6,6 +6,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { InvitationsModule } from './invitations/invitations.module'
+import { AdminModule } from './admin/admin.module'
 import { HttpExceptionFilter } from './common/filters/http-exception.filter'
 
 @Module({
@@ -13,6 +14,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter'
     ConfigModule.forRoot({ isGlobal: true, envFilePath: resolve(__dirname, '../../../.env') }),
     AuthModule,
     InvitationsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
