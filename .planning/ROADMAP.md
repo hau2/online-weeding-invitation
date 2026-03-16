@@ -19,6 +19,8 @@ This roadmap builds a self-service SaaS platform for Vietnamese couples to creat
 - [ ] **Phase 7: Monetization** - Free/Premium tiers, watermark enforcement, admin payment QR, and manual Premium grant workflow
 - [ ] **Phase 8: Admin Panel** - All 8 admin sections: users, invitations, themes, music library, plans, payments, system settings
 - [ ] **Phase 9: Polish and Performance** - 3G optimization, auto-expiry cron, elderly UX, animation fallbacks, and production hardening
+- [ ] **Phase 11: Custom Theme Builder** - Data-driven template system allowing admin to create new themes from the admin panel without code changes
+- [ ] **Phase 12: Security Hardening** - Rate limiting, anti-spam, storage abuse prevention, content protection, input sanitization, and API security
 
 ## Phase Details
 
@@ -213,7 +215,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 → 8 → 9
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 → 8 → 9 → 10 → 11 → 12
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -227,6 +229,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 | 7. Monetization | 0/3 | Not started | - |
 | 8. Admin Panel | 4/5 | In Progress|  |
 | 9. Polish and Performance | 0/7 | Not started | - |
+| 10. Agent Tier and Storage | 0/0 | Not started | - |
+| 11. Custom Theme Builder | 0/0 | Not started | - |
+| 12. Security Hardening | 0/0 | Not started | - |
 
 ### Phase 10: Agent Tier and Storage Management — monthly subscription for printing vendors, 20 invitations/month quota, draft auto-delete, published link expiration, admin Clear Storage button
 
@@ -237,3 +242,40 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 10 to break down)
+
+### Phase 11: Custom Theme Builder
+
+**Goal:** Admin can create, edit, and publish new invitation themes from the admin panel using a data-driven template system — configurable layouts, color palettes, fonts, and section ordering — without writing React code
+**Requirements**: TBD
+**Depends on:** Phase 9
+**Success Criteria** (what must be TRUE):
+  1. Admin can create a new theme by selecting a base layout, choosing a color palette, picking fonts, and configuring section visibility/order
+  2. New themes appear in the user's template selector immediately after admin publishes them
+  3. Existing hardcoded templates (Traditional, Modern, Minimalist) continue to work alongside data-driven themes
+  4. Admin can preview a theme with sample data before publishing it to users
+  5. Admin can edit or unpublish a theme — unpublished themes remain visible on invitations that already use them but are hidden from the selector
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 11 to break down)
+
+### Phase 12: Security Hardening
+
+**Goal:** The platform is resilient against spam, storage abuse, content theft, API abuse, and common web vulnerabilities — protecting both the business and users' personal wedding data
+**Requirements**: TBD
+**Depends on:** Phase 9
+**Success Criteria** (what must be TRUE):
+  1. API rate limiting enforced: auth endpoints (5/min), upload endpoints (10/min), publish (3/min) — excess requests return 429 with Vietnamese error
+  2. Account creation requires email verification and optionally CAPTCHA — bots cannot mass-create accounts
+  3. Supabase Storage buckets have strict policies: file type validation (images only in photo bucket, MP3 only in music bucket), max file size enforced server-side, signed URLs with expiration for private assets — direct bucket URLs cannot be used as public CDN
+  4. Public invitation page has content protection: right-click disabled, CSS user-select none on key content, obfuscated class names in production, dynamic watermark positioning that breaks naive HTML copy-paste
+  5. User-supplied text (couple names, messages, venue) is sanitized against XSS before rendering in templates and OG meta tags
+  6. Slug generation uses non-enumerable random suffixes — sequential guessing of /w/{slug} URLs is not feasible
+  7. Admin payment approval requires matching transfer amount and content code — admin sees bank transfer verification hints
+  8. Session management: JWT tokens expire after configurable duration, refresh token rotation, concurrent session awareness
+  9. Upload content moderation: NSFW/inappropriate image detection on photo uploads (basic hash-based or API-based), admin notification for flagged content
+  10. Cross-user access automated tests verify no user can read/modify another user's invitations, photos, or payment status via API
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 12 to break down)
