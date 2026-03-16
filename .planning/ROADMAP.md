@@ -210,7 +210,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 9 -> 9.1 -> 10 -> 11 -> 12
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 9 -> 9.1 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -228,6 +228,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 10. Agent Tier and Storage | 0/0 | Not started | - |
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
+| 13. Editor UI Redesign | 0/5 | Not started | - |
+| 14. Dashboard & Auth Redesign | 0/0 | Not started | - |
+| 15. Admin Panel Redesign | 0/0 | Not started | - |
 
 ### Phase 09.1: Public Page Redesign - Modern Full-Width Templates (INSERTED)
 
@@ -299,13 +302,24 @@ Plans:
 
 ### Phase 13: Editor UI Redesign - Modern Stitch AI Design
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Redesign the invitation editor to match Stitch AI reference with 9 collapsible accordion sections (icons, neutral styling), Stitch-style top bar (center preview toggle, right-side publish), new data fields (ceremony program, avatars, nicknames), dedicated full-page preview route with Phone/Desktop/Share tabs, and ceremony program rendering on public page
+**Requirements**: EDIT-UI-01, EDIT-UI-02, EDIT-UI-03, EDIT-UI-04, EDIT-UI-05, EDIT-UI-06, EDIT-UI-07, EDIT-UI-08
 **Depends on:** Phase 12
-**Plans:** 0 plans
+**Success Criteria** (what must be TRUE):
+  1. EditorForm has 9 collapsible accordion sections with icon headers in correct order (couple, schedule, venue, photos, music, gift, theme, message, save-the-date)
+  2. Top bar matches Stitch design: back + title left, Mobile/Desktop toggle center, save + preview + publish right
+  3. New data fields (ceremony program, groom/bride avatars, groom/bride nicknames) are editable and persist through auto-save
+  4. Dedicated preview page at /thep-cuoi/[id]/preview with Phone/Desktop/Share Link tabs
+  5. Ceremony program events render on public invitation page alongside love story timeline
+  6. All existing editor functionality preserved (auto-save, template selection, photo/music/QR upload)
+**Plans:** 5 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 13 to break down)
+- [ ] 13-01-PLAN.md — DB migration (5 new columns), types + API DTO/service update, Wave 0 test stubs
+- [ ] 13-02-PLAN.md — CeremonyProgramEditor + AvatarUpload components, API avatar upload endpoints
+- [ ] 13-03-PLAN.md — EditorShell top bar redesign, EditorForm 9-section accordion rewrite, EditorPreview mode prop
+- [ ] 13-04-PLAN.md — Preview page route with PreviewShell tabs, TimelineSection ceremony program rendering
+- [ ] 13-05-PLAN.md — Test cleanup, full suite verification, visual checkpoint
 
 ### Phase 14: Dashboard and Auth Redesign - Modern Stitch AI Design
 
