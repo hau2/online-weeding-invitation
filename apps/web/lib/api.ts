@@ -44,10 +44,11 @@ export async function apiFetch<T>(
 export async function apiUpload<T>(
   path: string,
   formData: FormData,
+  method: 'POST' | 'PUT' = 'POST',
 ): Promise<{ data: T | null; error: string | null }> {
   try {
     const response = await fetch(`${API_URL}${path}`, {
-      method: 'POST',
+      method,
       body: formData,
       credentials: 'include',
     })
