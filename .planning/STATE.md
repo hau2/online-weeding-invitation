@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 9.1 context gathered
-last_updated: "2026-03-16T09:14:19.443Z"
-last_activity: "2026-03-16 — Plan 09-03 complete: desktop frame, bundle analyzer, FallingPetals throughout invitation"
+status: executing
+stopped_at: Completed 09.1-01-PLAN.md
+last_updated: "2026-03-16T09:58:43.958Z"
+last_activity: "2026-03-16 — Plan 09.1-01 complete: ThemeConfig type system, 6 theme configs, legacy ID mapping, Plus Jakarta Sans font, Wave 0 test stubs"
 progress:
   total_phases: 14
   completed_phases: 10
-  total_plans: 42
-  completed_plans: 42
-  percent: 100
+  total_plans: 47
+  completed_plans: 43
+  percent: 91
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 
 ## Current Position
 
-Phase: 9 of 8 (Polish and Performance)
-Plan: 3 of 3 in phase 9 (09-03 complete)
-Status: Phase 9 Complete
-Last activity: 2026-03-16 — Plan 09-03 complete: desktop frame, bundle analyzer, FallingPetals throughout invitation
+Phase: 9.1 (Public Page Redesign - Modern Full-Width Templates)
+Plan: 1 of 5 in phase 9.1 (09.1-01 complete)
+Status: In Progress
+Last activity: 2026-03-16 — Plan 09.1-01 complete: ThemeConfig type system, 6 theme configs, legacy ID mapping, Plus Jakarta Sans font, Wave 0 test stubs
 
-Progress: [██████████] 100%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
@@ -94,6 +94,7 @@ Progress: [██████████] 100%
 | Phase 09 P02 | 4min | 2 tasks | 6 files |
 | Phase 09 P01 | 8min | 2 tasks | 7 files |
 | Phase 09 P03 | 5min | 3 tasks | 3 files |
+| Phase 09.1 P01 | 3 | 2 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -229,6 +230,7 @@ Recent decisions affecting current work:
 - [Phase 09]: Expired invitations excluded from free-tier limit (enforceFreeTierLimit unchanged)
 - [Phase 09]: Performance gate uses rAF timestamps for frame measurement; static envelope during gate; bank QR container widened to max-w-[280px]
 - [Phase 09]: FallingPetals runs during both envelope and revealed stages per user request (overrides original plan to stop after reveal)
+- [Phase 09.1]: ThemeConfig uses Tailwind class strings for direct className composition; getTheme() falls back to modern-red
 
 ### Roadmap Evolution
 
@@ -249,6 +251,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T09:14:19.434Z
-Stopped at: Phase 9.1 context gathered
-Resume file: .planning/phases/09.1-public-page-redesign-modern-full-width-templates/09.1-CONTEXT.md
+Last session: 2026-03-16T09:58:43.956Z
+Stopped at: Completed 09.1-01-PLAN.md
+Resume file: None
