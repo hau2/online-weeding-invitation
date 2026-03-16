@@ -77,6 +77,26 @@ export default function AdminPaymentsPage() {
     if (historyRes.data) setHistory(historyRes.data)
   }
 
+  async function handleRevoke(id: string) {
+    setProcessingId(id)
+    const { error } = await apiFetch<Invitation>(`/invitations/admin/${id}/revoke-premium`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+    if (error) {
+      toast.error(error)
+      setProcessingId(null)
+      return
+    }
+    toast.success('Da thu hoi Premium')
+    setProcessingId(null)
+    // Refresh history
+    const historyRes = await apiFetch<Invitation[]>('/invitations/admin/upgrade-history', {
+      credentials: 'include',
+    })
+    if (historyRes.data) setHistory(historyRes.data)
+  }
+
   function formatDate(dateStr: string) {
     return new Date(dateStr).toLocaleDateString('vi-VN', {
       day: '2-digit',
@@ -193,11 +213,27 @@ export default function AdminPaymentsPage() {
                     <span>{formatDate(inv.updatedAt)}</span>
                   </div>
                 </div>
-                <div className="shrink-0">
+                <div className="flex items-center gap-2 shrink-0">
                   {inv.plan === 'premium' ? (
-                    <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                      Da duyet
-                    </span>
+                    <>
+                      <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
+                        Da duyet
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-orange-600 hover:bg-orange-50 gap-1 text-xs"
+                        onClick={() => handleRevoke(inv.id)}
+                        disabled={processingId === inv.id}
+                      >
+                        {processingId === inv.id ? (
+                          <Loader2 className="size-3 animate-spin" />
+                        ) : (
+                          <X className="size-3" />
+                        )}
+                        Thu hoi
+                      </Button>
+                    </>
                   ) : inv.paymentStatus === 'rejected' ? (
                     <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-600">
                       Tu choi

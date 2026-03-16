@@ -1026,6 +1026,44 @@ export class InvitationsService {
   }
 
   /**
+   * Admin revokes Premium from an invitation (downgrade to free).
+   * Use for mistakes or refunds. Triggers ISR revalidation.
+   */
+  async adminRevokePremium(invitationId: string) {
+    const { data: row, error: fetchError } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select(SELECT_ALL)
+      .eq('id', invitationId)
+      .is('deleted_at', null)
+      .single()
+
+    if (fetchError || !row) {
+      throw new NotFoundException('Khong tim thay thiep cuoi')
+    }
+
+    const invitation = row as unknown as InvitationRow
+
+    if (invitation.plan !== 'premium') {
+      throw new BadRequestException('Thiep cuoi nay khong phai Premium')
+    }
+
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .update({ plan: 'free', payment_status: 'none' })
+      .eq('id', invitationId)
+      .select(SELECT_ALL)
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    if (invitation.slug) {
+      await this.triggerRevalidation(invitation.slug)
+    }
+
+    return mapRow(data as unknown as InvitationRow)
+  }
+
+  /**
    * Admin lists upgrade history (approved or rejected).
    * Returns invitations where plan='premium' OR payment_status='rejected',
    * ordered by updated_at descending, limited to 20.

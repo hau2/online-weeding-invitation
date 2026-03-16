@@ -94,6 +94,17 @@ export class InvitationsController {
     return this.invitationsService.adminRejectUpgrade(id)
   }
 
+  /**
+   * Admin: revoke Premium (downgrade to free).
+   * Use for mistakes or refunds. Triggers ISR revalidation.
+   */
+  @Post('admin/:id/revoke-premium')
+  @UseGuards(AdminGuard)
+  @HttpCode(HttpStatus.OK)
+  adminRevokePremium(@Param('id', ParseUUIDPipe) id: string) {
+    return this.invitationsService.adminRevokePremium(id)
+  }
+
   @Get(':id')
   findOne(
     @CurrentUser() user: JwtPayload,
