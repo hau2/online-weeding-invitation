@@ -120,7 +120,7 @@ export class AdminService {
   async getStats(): Promise<AdminStats> {
     const client = this.supabaseAdmin.client
 
-    const [usersRes, invitationsRes, publishedRes, premiumRes, chartRes] =
+    const [usersRes, invitationsRes, publishedRes, premiumRes, chartRes, paymentSettingsRes] =
       await Promise.all([
         client
           .from('users')
@@ -150,6 +150,12 @@ export class AdminService {
             new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
           )
           .order('created_at', { ascending: true }),
+        // Fetch pricePerInvitation from payment_config settings
+        client
+          .from('system_settings')
+          .select('value')
+          .eq('key', 'payment_config')
+          .single(),
       ])
 
     // Group chart data by date
@@ -175,12 +181,21 @@ export class AdminService {
     const invCount = invitationsRes.count ?? 0
     const storageEstimateMb = Math.round(invCount * 1.5 * 10) / 10
 
+    // Compute revenue: premiumCount * pricePerInvitation
+    const premiumCount = premiumRes.count ?? 0
+    const paymentConfig = paymentSettingsRes.data
+      ? (paymentSettingsRes.data as unknown as SettingsRow).value as { pricePerInvitation?: number }
+      : null
+    const pricePerInvitation = paymentConfig?.pricePerInvitation ?? 50000
+    const revenueTotal = premiumCount * pricePerInvitation
+
     return {
       totalUsers: usersRes.count ?? 0,
       totalInvitations: invCount,
       publishedInvitations: publishedRes.count ?? 0,
-      premiumInvitations: premiumRes.count ?? 0,
+      premiumInvitations: premiumCount,
       storageEstimateMb,
+      revenueTotal,
       chartData,
     }
   }
@@ -579,6 +594,21 @@ export class AdminService {
 
     if (error) throw new InternalServerErrorException(error.message)
 
+    // Fetch live usage counts from invitations table (not stale DB column)
+    const { data: usageData } = await client
+      .from('invitations')
+      .select('music_track_id')
+      .is('deleted_at', null)
+      .not('music_track_id', 'is', null)
+
+    // Build Map<trackId, count> from usage data
+    const usageMap = new Map<string, number>()
+    if (usageData) {
+      for (const row of usageData as unknown as { music_track_id: string }[]) {
+        usageMap.set(row.music_track_id, (usageMap.get(row.music_track_id) ?? 0) + 1)
+      }
+    }
+
     return ((data as unknown as AdminMusicTrackRow[]) ?? []).map((t) => ({
       id: t.id,
       title: t.title,
@@ -586,7 +616,7 @@ export class AdminService {
       url: t.url,
       duration: t.duration,
       isActive: t.is_active,
-      usageCount: t.usage_count,
+      usageCount: usageMap.get(t.id) ?? 0,
       sortOrder: t.sort_order,
       createdAt: t.created_at,
       updatedAt: t.updated_at,

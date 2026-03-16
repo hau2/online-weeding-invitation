@@ -4,6 +4,7 @@ export interface AdminStats {
   publishedInvitations: number
   premiumInvitations: number
   storageEstimateMb: number
+  revenueTotal: number
   chartData: { date: string; count: number }[]
 }
 
