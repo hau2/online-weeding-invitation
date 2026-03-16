@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 
 ## Current Position
 
-Phase: 9.1 (Public Page Redesign - Modern Full-Width Templates)
-Plan: 5 of 5 in phase 9.1 (all plans complete)
-Status: Phase Complete
-Last activity: 2026-03-16 — Plan 09.1-05 complete: Deleted 3 old templates + DesktopFrame (1099 lines), updated tests, user-verified visual result
+Phase: 13 (Editor UI Redesign - Modern Stitch AI Design)
+Plan: 1 of 5 in phase 13
+Status: In Progress
+Last activity: 2026-03-16 — Plan 13-01 complete: 5 new DB columns, CeremonyProgramEvent type, API DTO/service sync, Wave 0 test stubs
 
 Progress: [██████████] 100%
 
@@ -99,6 +99,7 @@ Progress: [██████████] 100%
 | Phase 09.1 P04 | 2 | 2 tasks | 6 files |
 | Phase 09.1 P03 | 4min | 2 tasks | 6 files |
 | Phase 09.1 P05 | 2min | 2 tasks | 5 files |
+| Phase 13 P01 | 4min | 2 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -246,6 +247,9 @@ Recent decisions affecting current work:
 - [Phase 09.1]: CountdownTimer dynamic import removed from InvitationShell -- countdown now inside SharedTemplate via CountdownSection
 - [Phase 09.1 P05]: CountdownTimer.tsx kept at app/w/[slug]/ -- SaveTheDatePage still imports it directly for standalone countdown
 - [Phase 09.1 P05]: Theme-based architecture is the canonical template system going forward -- old 3-component lookup table fully removed
+- [Phase 13 P01]: Avatar URLs excluded from FIELD_MAP and useAutoSave -- managed by dedicated upload endpoints (same pattern as bankQrUrl)
+- [Phase 13 P01]: CeremonyProgramEvent placed before loveStory in Invitation interface for logical grouping with ceremony data
+- [Phase 13 P01]: bank_account_number and bride_bank_account_number added to SELECT_ALL (were missing)
 
 ### Roadmap Evolution
 
@@ -269,6 +273,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T11:17:28.417Z
-Stopped at: Phase 13 context gathered
-Resume file: .planning/phases/13-editor-ui-redesign-modern-stitch-ai-design/13-CONTEXT.md
+Last session: 2026-03-16T14:44:52Z
+Stopped at: Completed 13-01-PLAN.md
+Resume file: .planning/phases/13-editor-ui-redesign-modern-stitch-ai-design/13-02-PLAN.md
