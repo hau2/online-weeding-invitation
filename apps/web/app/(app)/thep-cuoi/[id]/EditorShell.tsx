@@ -56,20 +56,20 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
   return (
     <div className="flex flex-col h-[calc(100svh-3rem)] md:h-svh -m-8 bg-white overflow-hidden">
       {/* Editor topbar — Stitch design */}
-      <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e6dbde] bg-white px-6 py-3 shrink-0 z-20 shadow-sm h-16">
+      <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e6dbde] bg-white px-4 md:px-6 shrink-0 z-20 shadow-sm h-14">
         {/* Left: Back & Title */}
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard" className="flex items-center justify-center text-[#181113] hover:text-[#ec1349] transition-colors">
+        <div className="flex items-center gap-3 min-w-0">
+          <Link href="/dashboard" className="flex items-center justify-center size-9 rounded-lg text-[#181113] hover:text-[#ec1349] hover:bg-[#f4f0f1] transition-colors shrink-0">
             <ArrowLeft className="size-5" />
           </Link>
-          <div className="h-6 w-px bg-[#e6dbde]" />
-          <h2 className="text-[#181113] text-lg font-bold leading-tight tracking-[-0.015em]">
+          <div className="h-5 w-px bg-[#e6dbde] shrink-0" />
+          <h2 className="text-[#181113] text-base font-bold leading-tight tracking-[-0.015em] truncate">
             Trinh chinh sua thiep
           </h2>
         </div>
 
         {/* Center: Device Toggle */}
-        <div className="hidden md:flex bg-[#f4f0f1] p-1 rounded-lg">
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 bg-[#f4f0f1] p-1 rounded-lg">
           <button
             type="button"
             onClick={() => setPreviewMode('phone')}
@@ -99,9 +99,9 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 shrink-0">
           <SaveIndicator status={status} />
-          <div className="flex gap-3">
+          <div className="flex items-center gap-2">
             <UpgradeButton
               invitationId={invitation.id}
               plan={invitation.plan ?? 'free'}
