@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import withBundleAnalyzer from '@next/bundle-analyzer'
 
 const nextConfig: NextConfig = {
   // Ensure OG meta tags are rendered in the initial HTML (not streamed)
@@ -16,4 +17,9 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+const analyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: false,
+})
+
+export default analyzer(nextConfig)

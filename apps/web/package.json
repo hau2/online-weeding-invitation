@@ -37,6 +37,7 @@
     "zod": "^3.0.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.1.6",
     "@playwright/test": "^1.40.0",
     "@repo/config": "workspace:*",
     "@tailwindcss/postcss": "^4.0.0",
