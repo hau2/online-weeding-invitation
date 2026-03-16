@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Smartphone, Monitor } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { useSidebar } from '@/components/ui/sidebar'
 import { cn } from '@/lib/utils'
 import type { Invitation } from '@repo/types'
@@ -17,11 +16,11 @@ import { UpgradeButton } from './UpgradeButton'
 function SaveIndicator({ status }: { status: SaveStatus }) {
   switch (status) {
     case 'saving':
-      return <span className="text-xs text-gray-500 animate-pulse">Dang luu...</span>
+      return <span className="text-[#89616b] text-sm font-medium animate-pulse hidden sm:block">Dang luu...</span>
     case 'saved':
-      return <span className="text-xs text-green-600">Da luu</span>
+      return <span className="text-[#89616b] text-sm font-medium hidden sm:block">Da luu</span>
     case 'error':
-      return <span className="text-xs text-red-600">Loi luu</span>
+      return <span className="text-red-600 text-sm font-medium hidden sm:block">Loi luu</span>
     default:
       return null
   }
@@ -64,95 +63,93 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
   return (
     <div className="flex flex-col h-[calc(100vh-3.5rem)]">
       {/* Editor topbar — Stitch design */}
-      <div className="flex items-center h-14 px-4 border-b border-gray-200 bg-white shrink-0">
-        {/* Left section */}
-        <Link href="/dashboard" className="text-gray-500 hover:text-gray-700">
-          <ArrowLeft className="size-5" />
-        </Link>
-        <h1 className="ml-3 text-sm font-semibold text-gray-800 truncate">
-          Trinh chinh sua thiep
-        </h1>
-        <div className="ml-2">
-          <SaveIndicator status={status} />
+      <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e6dbde] bg-white px-6 py-3 shrink-0 z-20 shadow-sm h-16">
+        {/* Left: Back & Title */}
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard" className="flex items-center justify-center text-[#181113] hover:text-[#ec1349] transition-colors">
+            <ArrowLeft className="size-5" />
+          </Link>
+          <div className="h-6 w-px bg-[#e6dbde]" />
+          <h2 className="text-[#181113] text-lg font-bold leading-tight tracking-[-0.015em]">
+            Trinh chinh sua thiep
+          </h2>
         </div>
 
-        {/* Center section — Mobile/Desktop toggle */}
-        <div className="flex-1 flex justify-center">
-          <div className="hidden lg:inline-flex rounded-lg border border-gray-200 p-0.5 bg-gray-50">
-            <button
-              type="button"
-              onClick={() => setPreviewMode('phone')}
-              className={cn(
-                'px-3 py-1 text-xs rounded-md transition-colors',
-                previewMode === 'phone'
-                  ? 'bg-red-500 text-white'
-                  : 'text-gray-600 hover:text-gray-900',
-              )}
-            >
-              <Smartphone className="size-3.5 inline mr-1" />
-              Mobile
-            </button>
-            <button
-              type="button"
-              onClick={() => setPreviewMode('desktop')}
-              className={cn(
-                'px-3 py-1 text-xs rounded-md transition-colors',
-                previewMode === 'desktop'
-                  ? 'bg-red-500 text-white'
-                  : 'text-gray-600 hover:text-gray-900',
-              )}
-            >
-              <Monitor className="size-3.5 inline mr-1" />
-              Desktop
-            </button>
+        {/* Center: Device Toggle */}
+        <div className="hidden md:flex bg-[#f4f0f1] p-1 rounded-lg">
+          <button
+            type="button"
+            onClick={() => setPreviewMode('phone')}
+            className={cn(
+              'cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-md transition-all',
+              previewMode === 'phone'
+                ? 'bg-white shadow-sm text-[#ec1349]'
+                : 'text-[#89616b] hover:text-[#181113]',
+            )}
+          >
+            <Smartphone className="size-[18px]" />
+            <span className={cn('text-sm', previewMode === 'phone' ? 'font-semibold' : 'font-medium')}>Mobile</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreviewMode('desktop')}
+            className={cn(
+              'cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-md transition-all',
+              previewMode === 'desktop'
+                ? 'bg-white shadow-sm text-[#ec1349]'
+                : 'text-[#89616b] hover:text-[#181113]',
+            )}
+          >
+            <Monitor className="size-[18px]" />
+            <span className={cn('text-sm', previewMode === 'desktop' ? 'font-semibold' : 'font-medium')}>Desktop</span>
+          </button>
+        </div>
+
+        {/* Right: Actions */}
+        <div className="flex items-center gap-4">
+          <SaveIndicator status={status} />
+          <div className="flex gap-3">
+            <UpgradeButton
+              invitationId={invitation.id}
+              plan={invitation.plan ?? 'free'}
+              paymentStatus={invitation.paymentStatus ?? 'none'}
+            />
+            <Link href={`/thep-cuoi/${invitation.id}/preview`}>
+              <button
+                type="button"
+                className="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-white border border-[#e6dbde] text-[#181113] hover:bg-gray-50 text-sm font-bold leading-normal tracking-[0.015em] transition-colors"
+              >
+                <span className="truncate">Xem truoc</span>
+              </button>
+            </Link>
+            <PublishButton
+              invitation={invitation}
+              onPublished={handlePublished}
+              onUnpublished={handleUnpublished}
+            />
           </div>
         </div>
+      </header>
 
-        {/* Right section — Di luu (ghost) + Xem truoc (outlined) + Xuat ban (red filled) */}
-        <div className="flex items-center gap-2">
-          <UpgradeButton
-            invitationId={invitation.id}
-            plan={invitation.plan ?? 'free'}
-            paymentStatus={invitation.paymentStatus ?? 'none'}
-          />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => save({})}
-            className="text-gray-600 hover:text-gray-800"
-          >
-            Di luu
-          </Button>
-          <Link href={`/thep-cuoi/${invitation.id}/preview`}>
-            <Button variant="outline" size="sm">
-              Xem truoc
-            </Button>
-          </Link>
-          <PublishButton
-            invitation={invitation}
-            onPublished={handlePublished}
-            onUnpublished={handleUnpublished}
-          />
-        </div>
-      </div>
+      {/* Main Content: Split View */}
+      <main className="flex flex-1 overflow-hidden">
+        {/* Left Column: Form Editor */}
+        <aside className="w-full md:w-[480px] lg:w-[520px] bg-white border-r border-[#e6dbde] flex flex-col shrink-0">
+          <div className="flex-1 overflow-y-auto p-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
+            <EditorForm
+              invitationId={invitation.id}
+              values={invitation}
+              onChange={handleChange}
+              onAvatarUploaded={handleAvatarUploaded}
+            />
+          </div>
+        </aside>
 
-      {/* Responsive layout: side-by-side on desktop, stacked on mobile */}
-      <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
-        {/* Form panel */}
-        <div className="flex-1 lg:max-w-md overflow-y-auto p-4 border-r border-gray-200">
-          <EditorForm
-            invitationId={invitation.id}
-            values={invitation}
-            onChange={handleChange}
-            onAvatarUploaded={handleAvatarUploaded}
-          />
-        </div>
-
-        {/* Preview panel */}
-        <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col items-center gap-4">
+        {/* Right Column: Live Preview */}
+        <section className="flex-1 bg-[#F0F2F5] relative flex flex-col items-center justify-center p-8 overflow-hidden">
           <EditorPreview invitation={invitation} mode={previewMode} />
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   )
 }
