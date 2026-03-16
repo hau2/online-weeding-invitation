@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 9 context gathered
-last_updated: "2026-03-16T07:05:51.095Z"
-last_activity: "2026-03-16 — Plan 08-05 complete: revenue stat card and live music usage counts (gap closure)"
+status: executing
+stopped_at: Completed 09-01-PLAN.md
+last_updated: "2026-03-16T07:35:31.017Z"
+last_activity: "2026-03-16 — Plan 09-02 complete: auto-expiry cron with daily midnight UTC+7 schedule"
 progress:
   total_phases: 13
   completed_phases: 9
-  total_plans: 39
-  completed_plans: 39
+  total_plans: 42
+  completed_plans: 41
   percent: 100
 ---
 
@@ -28,9 +28,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 Phase: 9 of 9 (Polish and Performance)
 Plan: 2 of 3 in phase 9 (09-02 complete)
 Status: In Progress
-Last activity: 2026-03-16 — Plan 09-02 complete: auto-expiry cron with daily midnight UTC+7 schedule
+Last activity: 2026-03-16 — Plan 09-01 complete: performance gate with CSS fallback and elderly-friendly UX
 
-Progress: [██████████] 100%
+Progress: [██████████] 98%
 
 ## Performance Metrics
 
@@ -92,6 +92,7 @@ Progress: [██████████] 100%
 | Phase 08 P04 | 4min | 3 tasks | 6 files |
 | Phase 08 P05 | 2min | 2 tasks | 3 files |
 | Phase 09 P02 | 4min | 2 tasks | 6 files |
+| Phase 09 P01 | 8min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -225,6 +226,7 @@ Recent decisions affecting current work:
 - [Phase 09]: markExpired queries all published invitations and computes expiry in application code (not DB date comparison) for consolidated logic
 - [Phase 09]: findBySlug trusts cron-set 'expired' status directly but retains runtime date check as safety net
 - [Phase 09]: Expired invitations excluded from free-tier limit (enforceFreeTierLimit unchanged)
+- [Phase 09]: Performance gate uses rAF timestamps for frame measurement; static envelope during gate; bank QR container widened to max-w-[280px]
 
 ### Roadmap Evolution
 
@@ -243,6 +245,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T07:30:40Z
-Stopped at: Completed 09-02-PLAN.md
-Resume file: .planning/phases/09-polish-and-performance/09-02-SUMMARY.md
+Last session: 2026-03-16T07:35:31.014Z
+Stopped at: Completed 09-01-PLAN.md
+Resume file: None
