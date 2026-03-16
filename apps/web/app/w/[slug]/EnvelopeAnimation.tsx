@@ -17,6 +17,12 @@ const ENVELOPE_COLORS: Record<TemplateId, { body: string; flap: string; seal: st
   traditional: { body: '#8B0000', flap: '#A52A2A', seal: '#DAA520', text: '#FFD700' },
   modern: { body: '#FFFFFF', flap: '#F5F5F5', seal: '#B76E79', text: '#333333' },
   minimalist: { body: '#FFFDD0', flap: '#F5F5DC', seal: '#888888', text: '#333333' },
+  'modern-red': { body: '#FFFFFF', flap: '#F5F5F5', seal: '#ec1349', text: '#333333' },
+  'soft-pink': { body: '#FFF0F0', flap: '#FFE4E4', seal: '#e8917a', text: '#333333' },
+  'brown-gold': { body: '#F5F0E8', flap: '#EDE5D8', seal: '#8B6914', text: '#5C4A1E' },
+  'olive-green': { body: '#F5F2ED', flap: '#EBE8E0', seal: '#5a6b50', text: '#3A4A30' },
+  'minimalist-bw': { body: '#FFFFFF', flap: '#F5F5F5', seal: '#171717', text: '#171717' },
+  'classic-red-gold': { body: '#8B0000', flap: '#A52A2A', seal: '#DAA520', text: '#FFD700' },
 }
 
 type AnimationStage = 'sealed' | 'opening' | 'revealed'
