@@ -10,11 +10,17 @@
  * - rotate(-30deg) + scale(1.5): diagonal coverage including corners
  * - select-none + !important styles: resists casual removal
  */
-export function Watermark() {
+interface WatermarkProps {
+  text?: string
+  opacity?: number
+}
+
+export function Watermark({ text: customText, opacity }: WatermarkProps = {}) {
   // Generate enough rows and columns to cover viewport after rotation
   const rows = 20
   const cols = 6
-  const text = 'ThiepCuoiOnline.vn'
+  const text = customText || 'ThiepCuoiOnline.vn'
+  const alpha = opacity ?? 0.13
 
   return (
     <div
@@ -48,7 +54,7 @@ export function Watermark() {
                 key={colIdx}
                 className="text-sm tracking-widest"
                 style={{
-                  color: 'rgba(150, 150, 150, 0.13)',
+                  color: `rgba(150, 150, 150, ${alpha})`,
                   fontSize: '14px',
                   letterSpacing: '0.15em',
                   fontWeight: 500,

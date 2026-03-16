@@ -54,6 +54,15 @@ export class InvitationsController {
   }
 
   /**
+   * Public: get payment config (bank name, QR URL, account holder, price).
+   * No admin guard — users need this to see payment instructions on the upgrade page.
+   */
+  @Get('payment-config')
+  getPaymentConfig() {
+    return this.invitationsService.getPaymentConfig()
+  }
+
+  /**
    * Admin: list all invitations with pending upgrade requests.
    * MUST be defined BEFORE the :id param route to avoid 'admin' being parsed as UUID.
    */

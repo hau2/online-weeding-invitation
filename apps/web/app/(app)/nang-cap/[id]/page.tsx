@@ -9,9 +9,12 @@ import { toast } from 'sonner'
 import { apiFetch } from '@/lib/api'
 import type { Invitation } from '@repo/types'
 
-const ADMIN_BANK_QR = process.env.NEXT_PUBLIC_ADMIN_BANK_QR ?? ''
-const ADMIN_BANK_NAME = process.env.NEXT_PUBLIC_ADMIN_BANK_NAME ?? 'Dang cap nhat'
-const ADMIN_BANK_HOLDER = process.env.NEXT_PUBLIC_ADMIN_BANK_HOLDER ?? 'Dang cap nhat'
+interface PaymentConfig {
+  bankName: string
+  bankQrUrl: string
+  bankAccountHolder: string
+  pricePerInvitation: number
+}
 
 const BENEFITS = [
   'Khong co watermark tren thiep cuoi',
@@ -23,23 +26,26 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
   const { id } = use(params)
   const router = useRouter()
   const [invitation, setInvitation] = useState<Invitation | null>(null)
+  const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    async function fetchInvitation() {
-      const { data, error } = await apiFetch<Invitation>(`/invitations/${id}`, {
-        credentials: 'include',
-      })
-      if (error || !data) {
-        toast.error(error ?? 'Khong the tai thong tin thiep')
+    async function fetchData() {
+      const [invRes, configRes] = await Promise.all([
+        apiFetch<Invitation>(`/invitations/${id}`, { credentials: 'include' }),
+        apiFetch<PaymentConfig>('/invitations/payment-config', { credentials: 'include' }),
+      ])
+      if (invRes.error || !invRes.data) {
+        toast.error(invRes.error ?? 'Khong the tai thong tin thiep')
         router.push('/dashboard')
         return
       }
-      setInvitation(data)
+      setInvitation(invRes.data)
+      if (configRes.data) setPaymentConfig(configRes.data)
       setLoading(false)
     }
-    fetchInvitation()
+    fetchData()
   }, [id, router])
 
   const handleRequestUpgrade = async () => {
@@ -106,7 +112,7 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
               <Sparkles className="size-5" />
               <h1 className="text-lg font-semibold">Nang cap len Premium</h1>
             </div>
-            <p className="text-3xl font-bold">99.000 VND <span className="text-base font-normal opacity-80">/ thiep</span></p>
+            <p className="text-3xl font-bold">{new Intl.NumberFormat('vi-VN').format(paymentConfig?.pricePerInvitation ?? 99000)} VND <span className="text-base font-normal opacity-80">/ thiep</span></p>
           </div>
 
           {/* Benefits */}
@@ -128,9 +134,9 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
 
             {/* Admin QR */}
             <div className="flex flex-col items-center mb-4">
-              {ADMIN_BANK_QR ? (
+              {paymentConfig?.bankQrUrl ? (
                 <img
-                  src={ADMIN_BANK_QR}
+                  src={paymentConfig.bankQrUrl}
                   alt="QR thanh toan"
                   className="w-48 h-48 object-contain rounded-lg border border-gray-200"
                 />
@@ -145,11 +151,11 @@ export default function UpgradePage({ params }: { params: Promise<{ id: string }
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Ngan hang:</span>
-                <span className="font-medium text-gray-800">{ADMIN_BANK_NAME}</span>
+                <span className="font-medium text-gray-800">{paymentConfig?.bankName || 'Dang cap nhat'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Chu tai khoan:</span>
-                <span className="font-medium text-gray-800">{ADMIN_BANK_HOLDER}</span>
+                <span className="font-medium text-gray-800">{paymentConfig?.bankAccountHolder || 'Dang cap nhat'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Noi dung CK:</span>

@@ -10,6 +10,8 @@ import { Watermark } from './Watermark'
 type PublicInvitation = Invitation & {
   expired: boolean
   musicUrl?: string
+  watermarkText?: string
+  watermarkOpacity?: number
 }
 
 interface InvitationShellProps {
@@ -103,7 +105,7 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
           guestName={guestName}
           onOpen={() => setEnvelopeOpened(true)}
         />
-        {(invitation.plan ?? 'free') === 'free' && <Watermark />}
+        {(invitation.plan ?? 'free') === 'free' && <Watermark text={invitation.watermarkText} opacity={invitation.watermarkOpacity} />}
       </div>
     )
   }
@@ -174,7 +176,7 @@ export function InvitationShell({ invitation }: InvitationShellProps) {
       </AnimatePresence>
 
       {/* Watermark overlay for free tier */}
-      {(invitation.plan ?? 'free') === 'free' && <Watermark />}
+      {(invitation.plan ?? 'free') === 'free' && <Watermark text={invitation.watermarkText} opacity={invitation.watermarkOpacity} />}
     </div>
   )
 }

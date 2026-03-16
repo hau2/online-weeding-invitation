@@ -453,7 +453,30 @@ export class InvitationsService {
       }
     }
 
-    return { ...mapped, expired, isSaveTheDate, ...(musicUrl ? { musicUrl } : {}) }
+    // Fetch watermark config for free-tier invitations
+    let watermarkText: string | undefined
+    let watermarkOpacity: number | undefined
+    if (row.plan !== 'premium') {
+      const { data: wmData } = await this.supabaseAdmin.client
+        .from('system_settings')
+        .select('value')
+        .eq('key', 'watermark_config')
+        .single()
+      if (wmData) {
+        const wmConfig = (wmData as { value: Record<string, unknown> }).value
+        watermarkText = (wmConfig.text as string) ?? undefined
+        watermarkOpacity = (wmConfig.opacity as number) ?? undefined
+      }
+    }
+
+    return {
+      ...mapped,
+      expired,
+      isSaveTheDate,
+      ...(musicUrl ? { musicUrl } : {}),
+      ...(watermarkText ? { watermarkText } : {}),
+      ...(watermarkOpacity !== undefined ? { watermarkOpacity } : {}),
+    }
   }
 
   /**
@@ -739,6 +762,34 @@ export class InvitationsService {
     if (error) throw new InternalServerErrorException(error.message)
 
     return ((data as unknown as MusicTrackRow[]) ?? []).map(mapMusicTrackRow)
+  }
+
+  /**
+   * Get payment config from system_settings for the upgrade page.
+   */
+  async getPaymentConfig() {
+    const { data, error } = await this.supabaseAdmin.client
+      .from('system_settings')
+      .select('value')
+      .eq('key', 'payment_config')
+      .single()
+
+    if (error || !data) {
+      return {
+        bankName: '',
+        bankQrUrl: '',
+        bankAccountHolder: '',
+        pricePerInvitation: 50000,
+      }
+    }
+
+    const config = data.value as Record<string, unknown>
+    return {
+      bankName: (config.bankName as string) ?? '',
+      bankQrUrl: (config.bankQrUrl as string) ?? '',
+      bankAccountHolder: (config.bankAccountHolder as string) ?? '',
+      pricePerInvitation: (config.pricePerInvitation as number) ?? 50000,
+    }
   }
 
   /**

@@ -12,6 +12,7 @@ import {
   Download,
   ChevronDown,
   ChevronUp,
+  Search,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { Invitation } from '@repo/types'
@@ -22,6 +23,8 @@ export default function AdminPaymentsPage() {
   const [history, setHistory] = useState<Invitation[]>([])
   const [loading, setLoading] = useState(true)
   const [processingId, setProcessingId] = useState<string | null>(null)
+
+  const [searchQuery, setSearchQuery] = useState('')
 
   // Notes state
   const [expandedNotes, setExpandedNotes] = useState<Set<string>>(new Set())
@@ -161,7 +164,7 @@ export default function AdminPaymentsPage() {
 
   function handleExportCsv() {
     const headers = ['ID', 'Chu re', 'Co dau', 'Slug', 'Goi', 'Trang thai thanh toan', 'Ngay cap nhat', 'Ghi chu']
-    const rows = history.map((inv) => [
+    const rows = filteredHistory.map((inv) => [
       inv.id,
       inv.groomName || '',
       inv.brideName || '',
@@ -209,6 +212,23 @@ export default function AdminPaymentsPage() {
     return id.length > 8 ? `${id.slice(0, 8)}...` : id
   }
 
+  // Filter by payment content (THIEP {slug}), couple names, or slug
+  function matchesSearch(inv: Invitation) {
+    if (!searchQuery.trim()) return true
+    const q = searchQuery.toLowerCase()
+    const transferContent = `thiep ${inv.slug ?? inv.id.slice(-8)}`.toLowerCase()
+    return (
+      transferContent.includes(q) ||
+      (inv.groomName ?? '').toLowerCase().includes(q) ||
+      (inv.brideName ?? '').toLowerCase().includes(q) ||
+      (inv.slug ?? '').toLowerCase().includes(q) ||
+      inv.id.toLowerCase().includes(q)
+    )
+  }
+
+  const filteredPending = pending.filter(matchesSearch)
+  const filteredHistory = history.filter(matchesSearch)
+
   if (loading) {
     return (
       <div className="p-6">
@@ -229,17 +249,29 @@ export default function AdminPaymentsPage() {
         <Receipt className="size-5 text-gray-700" />
         <h1 className="text-xl font-semibold text-gray-900">Thanh toan</h1>
       </div>
-      <p className="text-sm text-gray-500 mb-6">Yeu cau nang cap dang cho xu ly</p>
+      <p className="text-sm text-gray-500 mb-4">Yeu cau nang cap dang cho xu ly</p>
+
+      {/* Search */}
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Tim theo noi dung CK, ten, slug..."
+          className="w-full rounded-lg border border-gray-200 pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+        />
+      </div>
 
       {/* Pending upgrades */}
-      {pending.length === 0 ? (
+      {filteredPending.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-200 p-8 text-center mb-8">
           <Clock className="size-8 text-gray-300 mx-auto mb-3" />
           <p className="text-sm text-gray-500">Khong co yeu cau nao dang cho xu ly</p>
         </div>
       ) : (
         <div className="space-y-3 mb-8">
-          {pending.map((inv) => (
+          {filteredPending.map((inv) => (
             <div
               key={inv.id}
               className="bg-white rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition-colors"
@@ -294,7 +326,7 @@ export default function AdminPaymentsPage() {
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-gray-700">Lich su</h2>
-          {history.length > 0 && (
+          {filteredHistory.length > 0 && (
             <Button
               variant="outline"
               size="sm"
@@ -306,11 +338,11 @@ export default function AdminPaymentsPage() {
             </Button>
           )}
         </div>
-        {history.length === 0 ? (
-          <p className="text-sm text-gray-400">Chua co lich su duyet.</p>
+        {filteredHistory.length === 0 ? (
+          <p className="text-sm text-gray-400">{searchQuery ? 'Khong tim thay ket qua.' : 'Chua co lich su duyet.'}</p>
         ) : (
           <div className="space-y-2">
-            {history.map((inv) => (
+            {filteredHistory.map((inv) => (
               <div
                 key={inv.id}
                 className="bg-white rounded-lg border border-gray-100 px-4 py-3"
