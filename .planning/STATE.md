@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Couples can create and share a stunning online wedding invitation with a single QR code, and guests can view it and send gift money — all without any intermediary.
-**Current focus:** Phase 6 (Save-the-Date) in progress
+**Current focus:** Phase 7 (Monetization) in progress
 
 ## Current Position
 
-Phase: 6 of 9 (Save the Date)
-Plan: 2 of 2 in phase 6 (06-02 complete)
-Status: Phase 06 Complete
-Last activity: 2026-03-15 — Plan 06-02 complete: save-the-date frontend with teaser page, editor button, dashboard badge
+Phase: 7 of 9 (Monetization)
+Plan: 1 of 3 in phase 7 (07-01 complete)
+Status: In Progress
+Last activity: 2026-03-16 — Plan 07-01 complete: monetization data foundation with plan/paymentStatus types, free-tier limit, admin upgrade endpoints
 
 Progress: [██████████] 100%
 
@@ -83,6 +83,7 @@ Progress: [██████████] 100%
 | Phase 05 P06 | 5min | 2 tasks | 4 files |
 | Phase 06 P01 | 3min | 2 tasks | 5 files |
 | Phase 06 P02 | 3min | 2 tasks | 6 files |
+| Phase 07 P01 | 7min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -188,6 +189,9 @@ Recent decisions affecting current work:
 - [Phase 06 P02]: getLaterDate helper picks the later of groom/bride ceremony dates for countdown timer display
 - [Phase 06 P02]: Save the Date button shown as outlined teal variant next to rose Xuat ban button for visual distinction
 - [Phase 06 P02]: EditorForm sections renumbered from 9 to 10 with new Save the Date section at position 6
+- [Phase 07 P01]: enforceFreeTierLimit as private reusable method called by both publish() and publishSaveTheDate()
+- [Phase 07 P01]: Admin routes placed in existing InvitationsController with method-level AdminGuard (not separate controller)
+- [Phase 07 P01]: Admin route paths use 'admin/' prefix placed before ':id' routes to prevent NestJS UUID parse conflict
 
 ### Roadmap Evolution
 
@@ -205,6 +209,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T03:21:38.033Z
-Stopped at: Phase 7 context gathered
-Resume file: .planning/phases/07-monetization/07-CONTEXT.md
+Last session: 2026-03-16T04:01:19Z
+Stopped at: Completed 07-01-PLAN.md
+Resume file: .planning/phases/07-monetization/07-02-PLAN.md

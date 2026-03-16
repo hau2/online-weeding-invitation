@@ -55,10 +55,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Monetization
 
-- [ ] **PLAN-01**: Free tier available with platform watermark on public page
-- [ ] **PLAN-02**: Premium tier removes watermark, unlocks more templates and photo slots
+- [x] **PLAN-01**: Free tier available with platform watermark on public page
+- [x] **PLAN-02**: Premium tier removes watermark, unlocks more templates and photo slots
 - [ ] **PLAN-03**: Admin configures their own bank QR in admin panel for platform payment
-- [ ] **PLAN-04**: User scans admin QR to pay, admin manually grants Premium credit
+- [x] **PLAN-04**: User scans admin QR to pay, admin manually grants Premium credit
 
 ### Admin
 
@@ -153,10 +153,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PUBL-12 | Phase 5 | Complete |
 | SAVE-01 | Phase 6 | Complete |
 | SAVE-02 | Phase 6 | Complete |
-| PLAN-01 | Phase 7 | Pending |
-| PLAN-02 | Phase 7 | Pending |
+| PLAN-01 | Phase 7 | Complete |
+| PLAN-02 | Phase 7 | Complete |
 | PLAN-03 | Phase 7 | Pending |
-| PLAN-04 | Phase 7 | Pending |
+| PLAN-04 | Phase 7 | Complete |
 | ADMN-02 | Phase 8 | Pending |
 | ADMN-03 | Phase 8 | Pending |
 | ADMN-04 | Phase 8 | Pending |
