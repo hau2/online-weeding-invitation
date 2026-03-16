@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Users, FileText, CheckCircle, DollarSign, HardDrive, Loader2 } from 'lucide-react'
+import { Users, FileText, CheckCircle, DollarSign, HardDrive, Banknote, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { StatCard } from '@/components/admin/StatCard'
 import { AdminDashboardCharts } from '@/components/admin/AdminDashboardCharts'
@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Stat cards row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         <StatCard
           title="Tong nguoi dung"
           value={stats?.totalUsers ?? '\u2014'}
@@ -66,6 +66,11 @@ export default function AdminDashboardPage() {
           title="Premium"
           value={stats?.premiumInvitations ?? '\u2014'}
           icon={DollarSign}
+        />
+        <StatCard
+          title="Doanh thu"
+          value={stats ? `${new Intl.NumberFormat('vi-VN').format(stats.revenueTotal)} d` : '\u2014'}
+          icon={Banknote}
         />
         <StatCard
           title="Dung luong"
