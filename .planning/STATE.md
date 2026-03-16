@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 13 context gathered
-last_updated: "2026-03-16T11:17:28.427Z"
-last_activity: "2026-03-16 — Plan 09.1-05 complete: Deleted 3 old templates + DesktopFrame (1099 lines), updated tests, user-verified visual result"
+stopped_at: Completed 13-04-PLAN.md
+last_updated: "2026-03-16T14:59:26Z"
+last_activity: "2026-03-16 — Plan 13-04 complete: Preview page with phone/desktop/share tabs, ceremony program timeline, HeroSection avatars"
 progress:
   total_phases: 17
   completed_phases: 11
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 13 (Editor UI Redesign - Modern Stitch AI Design)
-Plan: 2 of 5 in phase 13
+Plan: 4 of 5 in phase 13
 Status: In Progress
-Last activity: 2026-03-16 — Plan 13-02 complete: CeremonyProgramEditor + AvatarUpload components, groom/bride avatar API endpoints with 400x400 WebP crop
+Last activity: 2026-03-16 — Plan 13-04 complete: Preview page with phone/desktop/share tabs, ceremony program timeline, HeroSection avatars
 
 Progress: [██████████] 100%
 
@@ -101,6 +101,7 @@ Progress: [██████████] 100%
 | Phase 09.1 P05 | 2min | 2 tasks | 5 files |
 | Phase 13 P01 | 4min | 2 tasks | 12 files |
 | Phase 13 P02 | 2min | 2 tasks | 4 files |
+| Phase 13 P04 | 4min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -254,6 +255,9 @@ Recent decisions affecting current work:
 - [Phase 13 P02]: processAvatarImage separate from processImage -- 400x400 cover crop vs 1200-wide resize
 - [Phase 13 P02]: Avatar storage reuses invitation-photos bucket at {id}/groom-avatar.webp -- no new bucket policy needed
 - [Phase 13 P02]: AvatarUpload uses regular img tag (not next/image) to avoid Supabase domain config issues
+- [Phase 13 P04]: EditorShell updated to link to preview page (FullPreviewDialog deleted) -- Rule 3 auto-fix to prevent broken import
+- [Phase 13 P04]: PreviewShell manages own invitation state for publish/unpublish callbacks from embedded PublishButton
+- [Phase 13 P04]: Avatar display in HeroSection (circular images above couple names, not separate section)
 
 ### Roadmap Evolution
 
@@ -277,6 +281,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T14:51:10Z
-Stopped at: Completed 13-02-PLAN.md
-Resume file: .planning/phases/13-editor-ui-redesign-modern-stitch-ai-design/13-03-PLAN.md
+Last session: 2026-03-16T14:59:26Z
+Stopped at: Completed 13-04-PLAN.md
+Resume file: .planning/phases/13-editor-ui-redesign-modern-stitch-ai-design/13-05-PLAN.md
