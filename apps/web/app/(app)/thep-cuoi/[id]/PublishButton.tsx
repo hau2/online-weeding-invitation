@@ -210,7 +210,7 @@ export function PublishButton({
       <div className="flex items-center gap-2">
         {isPublished ? (
           <button
-            className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-teal-600 hover:bg-teal-700 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-teal-600/30 gap-2"
+            className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-[#d1103f] transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-[#ec1349]/30 gap-2"
             onClick={handlePublishClick}
           >
             <Globe className="size-3.5" />
@@ -218,7 +218,7 @@ export function PublishButton({
           </button>
         ) : isSaveTheDate ? (
           <button
-            className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-teal-500 hover:bg-teal-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-teal-500/30 gap-2"
+            className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-[#d1103f] transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-[#ec1349]/30 gap-2"
             onClick={handlePublishClick}
           >
             <Globe className="size-3.5" />
@@ -227,14 +227,14 @@ export function PublishButton({
         ) : (
           <>
             <button
-              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-white border border-teal-200 text-teal-600 hover:bg-teal-50 transition-colors text-sm font-bold leading-normal tracking-[0.015em] gap-1.5"
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-white border border-[#e6dbde] text-[#181113] hover:bg-[#f4f0f1] transition-colors text-sm font-bold leading-normal tracking-[0.015em] gap-1.5"
               onClick={handleSaveTheDateClick}
             >
               <CalendarHeart className="size-3.5" />
               <span className="truncate">Save the Date</span>
             </button>
             <button
-              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-red-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-[#ec1349]/30"
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-[#d1103f] transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-lg shadow-[#ec1349]/30"
               onClick={handlePublishClick}
             >
               <span className="truncate">Xuat ban ngay</span>
@@ -330,7 +330,7 @@ export function PublishButton({
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <div className="flex flex-col items-center text-center">
-              <div className="size-14 rounded-full bg-teal-50 flex items-center justify-center mb-3 text-teal-600">
+              <div className="size-14 rounded-full bg-[#ec1349]/10 flex items-center justify-center mb-3 text-[#ec1349]">
                 <CalendarHeart className="size-7" />
               </div>
               <DialogTitle className="text-xl font-bold text-[#181113] tracking-tight">Gui Save the Date</DialogTitle>
@@ -338,7 +338,7 @@ export function PublishButton({
                 {isFirstPublish ? (
                   <>
                     He thong se tao duong link tu dong. Khach moi se thay trang Save the Date voi ten cap doi, ngay cuoi va dem nguoc.{' '}
-                    <strong className="text-teal-700 font-medium">
+                    <strong className="text-[#ec1349] font-medium">
                       Duong link se khong the thay doi.
                     </strong>
                   </>
@@ -364,7 +364,7 @@ export function PublishButton({
               Huy
             </Button>
             <button
-              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-teal-500 hover:bg-teal-600 transition-all text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none"
+              className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#ec1349] hover:bg-[#d1103f] transition-all text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none"
               onClick={handleConfirmSaveTheDate}
               disabled={publishing}
             >
