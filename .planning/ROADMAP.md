@@ -154,22 +154,20 @@ Plans:
 - [ ] 06-02-PLAN.md — SaveTheDatePage component, public page routing, editor Save-the-Date button, dashboard badge + InvitationCard update
 
 ### Phase 7: Monetization
-**Goal**: The platform enforces Free and Premium tiers, the watermark appears on Free invitations, admin can configure their payment QR, and upgrading to Premium is possible via manual workflow
+**Goal**: Per-invitation free/premium tiers with watermark enforcement, blurred bank QR on free tier, upgrade flow via admin bank QR payment, and admin approval workflow
 **Depends on**: Phase 6
 **Requirements**: PLAN-01, PLAN-02, PLAN-03, PLAN-04
 **Success Criteria** (what must be TRUE):
   1. Free tier invitation displays a platform watermark on the public page — the watermark cannot be removed by editing the invitation
-  2. Premium tier invitation has no watermark, can upload more photos, and can access additional templates
-  3. Admin panel shows the platform payment QR image that users scan to pay for Premium
+  2. Premium tier invitation has no watermark, bank QR is fully visible, and can publish unlimited invitations
+  3. Admin panel shows pending upgrade requests that admin can approve or reject
   4. After a user pays and admin grants Premium credit manually, the user's watermark disappears and Premium features unlock — no app restart required
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 07-01: Plans table and NestJS plan enforcement — quota checks per plan (photo count, templates), plan-aware invitation rendering
-- [ ] 07-02: Watermark component — rendered server-side on Free tier public pages, cannot be client-side removed
-- [ ] 07-03: Admin payment QR configuration — admin uploads their bank QR in system settings; displayed on upgrade page for users
-- [ ] 07-04: Manual Premium grant endpoint — admin assigns plan to user; NestJS invalidates ISR cache for affected invitations
-- [ ] 07-05: Upgrade page for users — shows admin payment QR, payment instructions, "Tôi đã thanh toán" notification trigger
+- [ ] 07-01-PLAN.md — DB schema (plan + payment_status columns), shared types (InvitationPlan, PaymentStatus), NestJS plan enforcement (free tier publish limit), upgrade request + admin approve/reject endpoints
+- [ ] 07-02-PLAN.md — Watermark diagonal overlay component + BankQrLock blur component, wired into InvitationShell and all 3 templates for free tier
+- [ ] 07-03-PLAN.md — Upgrade page (/nang-cap/[id]) with admin QR + payment instructions, UpgradeButton in editor/dashboard, admin payments page (/admin/thanh-toan)
 
 ### Phase 8: Admin Panel
 **Goal**: Admin has a fully functional panel to oversee users, invitations, music library, themes, service plans, payment transactions, and system configuration
@@ -229,6 +227,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 | 5. Public Invitation Page | 7/7 | Complete | 2026-03-16 |
 | 5.1 Dual-Family Ceremony | 4/4 | Complete | 2026-03-16 |
 | 6. Save-the-Date | 2/2 | Complete   | 2026-03-15 |
-| 7. Monetization | 0/5 | Not started | - |
+| 7. Monetization | 0/3 | Not started | - |
 | 8. Admin Panel | 0/8 | Not started | - |
 | 9. Polish and Performance | 0/7 | Not started | - |
