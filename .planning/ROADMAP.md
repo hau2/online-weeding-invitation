@@ -200,17 +200,12 @@ Plans:
   3. Invitations auto-expire on schedule — the public URL switches to the thank-you page within the configured grace period after the wedding date without manual admin action
   4. Elderly-friendly UX: all touch targets are at least 48px, text is legible at default zoom, the envelope has a visible "Bỏ qua" skip button, and music never starts without explicit user action
   5. Public invitation page has a polished desktop layout — wider content area, decorative framing or side elements, responsive envelope animation that uses available screen space on desktop while maintaining the mobile-first card view on phones
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 09-01: 3G performance audit — WebP serving via Supabase transforms, lazy music loading, code splitting, critical CSS inline, bundle analysis
-- [ ] 09-02: Envelope animation performance gate — frame-time measurement, fallback to CSS-only for low-end devices, real-device testing checklist (Xiaomi Redmi, Samsung Galaxy A-series)
-- [ ] 09-03: Auto-expiry cron job — Supabase pg_cron or NestJS @Cron, marks invitations expired, triggers ISR revalidation
-- [ ] 09-04: Elderly UX pass — 48px minimum touch targets, skip button on envelope, large tap area for music toggle, high-contrast text review
-- [ ] 09-05: iOS Safari / Zalo WKWebView audio unlock testing — real-device validation of envelope-tap audio unlock in Zalo in-app browser
-- [ ] 09-06: Zalo OG tag validation — share test invitation in Zalo, confirm preview image and title render correctly
-- [ ] 09-07: Security hardening — cross-user access automated tests, SUPABASE_SERVICE_ROLE_KEY env audit, RLS policy review
-- [ ] 09-08: Desktop view polish — responsive public page layout for desktop (wider invitation, decorative frame/background, larger envelope animation, side-by-side photo gallery option)
+- [ ] 09-01-PLAN.md — Performance gate + CSS-only fallback for envelope animation, elderly-friendly music player (56px), bank QR 240px+ with Vietnamese instructions
+- [ ] 09-02-PLAN.md — Auto-expiry cron job via @nestjs/schedule (midnight UTC+7), markExpired method, findBySlug expired status handling
+- [ ] 09-03-PLAN.md — Desktop decorative floral frame, InvitationShell wiring (petals stop, 16px text), bundle analyzer setup, visual checkpoint
 
 ## Progress
 
@@ -228,7 +223,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 5.1 → 6 → 7 �
 | 6. Save-the-Date | 2/2 | Complete   | 2026-03-15 |
 | 7. Monetization | 0/3 | Not started | - |
 | 8. Admin Panel | 4/5 | In Progress|  |
-| 9. Polish and Performance | 0/7 | Not started | - |
+| 9. Polish and Performance | 0/3 | Not started | - |
 | 10. Agent Tier and Storage | 0/0 | Not started | - |
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
