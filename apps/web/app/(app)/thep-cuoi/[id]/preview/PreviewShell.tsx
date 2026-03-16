@@ -173,14 +173,16 @@ export function PreviewShell({ invitation: initial }: PreviewShellProps) {
         <div className="flex-1 overflow-hidden flex justify-center items-start pb-8 px-4 w-full">
           {activeTab === 'phone' && (
             /* Phone Container Simulator — matches Stitch exactly */
-            <div className="relative w-full max-w-[400px] h-full bg-white rounded-[32px] shadow-2xl border-[8px] border-gray-800 overflow-hidden flex flex-col ring-1 ring-black/5">
+            <div className="relative w-full max-w-[390px] h-full bg-white rounded-[40px] shadow-2xl border-[6px] border-gray-900 overflow-hidden flex flex-col ring-1 ring-black/10">
+              {/* Notch */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-gray-900 rounded-b-2xl z-30" />
               {/* Status Bar Mockup */}
-              <div className="absolute top-0 left-0 right-0 h-7 bg-black/20 z-20 flex justify-between items-center px-6 text-[10px] text-white font-medium backdrop-blur-sm">
+              <div className="absolute top-0 left-0 right-0 h-12 z-20 flex justify-between items-end px-8 pb-1 text-[11px] text-white font-semibold">
                 <span>9:41</span>
                 <div className="flex gap-1 items-center">
-                  <svg className="size-3" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2V10H2v12zm4 0h2V7H6v15zm4 0h2V4h-2v18zm4 0h2V1h-2v21z"/></svg>
-                  <svg className="size-3" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
-                  <svg className="size-3" viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+                  <svg className="size-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2V10H2v12zm4 0h2V7H6v15zm4 0h2V4h-2v18zm4 0h2V1h-2v21z"/></svg>
+                  <svg className="size-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                  <svg className="size-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
                 </div>
               </div>
               {/* Scrollable Content Area */}
@@ -198,22 +200,24 @@ export function PreviewShell({ invitation: initial }: PreviewShellProps) {
                 <TemplateRenderer invitation={filtered} />
               </div>
               {/* Home Indicator Mockup */}
-              <div className="absolute bottom-1 left-0 right-0 flex justify-center pb-2 z-20 pointer-events-none">
-                <div className="w-32 h-1 bg-black/20 rounded-full backdrop-blur-md" />
+              <div className="absolute bottom-2 left-0 right-0 flex justify-center z-20 pointer-events-none">
+                <div className="w-32 h-1 bg-black/20 rounded-full" />
               </div>
             </div>
           )}
 
           {activeTab === 'desktop' && (
-            <div className="relative w-[680px] max-w-[90vw] h-full rounded-lg border-2 border-gray-300 bg-gray-100 shadow-lg overflow-hidden flex flex-col">
+            <div className="relative w-full max-w-[960px] h-full rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden flex flex-col">
               {/* Browser chrome bar */}
-              <div className="h-8 bg-gray-200 border-b border-gray-300 flex items-center px-3 gap-2 shrink-0">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+              <div className="h-10 bg-gray-100 border-b border-gray-200 flex items-center px-4 gap-3 shrink-0">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+                  <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
+                  <div className="w-3 h-3 rounded-full bg-[#28c840]" />
                 </div>
-                <div className="flex-1 mx-4 h-4 bg-white rounded-sm border border-gray-300" />
+                <div className="flex-1 mx-8 h-6 bg-white rounded-md border border-gray-200 flex items-center px-3">
+                  <span className="text-xs text-gray-400 truncate">cuoidi.vn/w/{invitation.slug || '...'}</span>
+                </div>
               </div>
               {/* Content area */}
               <div
