@@ -225,7 +225,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 8. Admin Panel | 4/5 | In Progress|  |
 | 9. Polish and Performance | 3/3 | Complete | 2013-03-16 |
 | 9.1 Public Page Redesign | 5/5 | Complete | 2026-03-16 |
-| 10. Agent Tier and Storage | 0/0 | Not started | - |
+| 10. Agent Tier and Storage | 0/4 | Not started | - |
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
 | 13. Editor UI Redesign | 5/5 | Complete    | 2026-03-16 |
@@ -255,13 +255,25 @@ Plans:
 
 ### Phase 10: Agent Tier and Storage Management — monthly subscription for printing vendors, 20 invitations/month quota, draft auto-delete, published link expiration, admin Clear Storage button
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Printing vendors (agents) can subscribe to a monthly plan that gives them 20 Premium-quality invitations per cycle, with admin grant/renew workflow. All users benefit from draft auto-delete (30 days) with warning badges, and admin gains a manual storage cleanup button for expired/deleted invitation media.
+**Requirements**: AGT-01, AGT-02, AGT-03, AGT-04, AGT-05, AGT-06, AGT-07, AGT-08
 **Depends on:** Phase 9
-**Plans:** 3/4 plans executed
+**Success Criteria** (what must be TRUE):
+  1. Agent tier exists on users table with subscription tracking (start date, end date), separate from admin role
+  2. Admin can grant, renew, and revoke agent tier from the user detail dialog
+  3. Agent can publish up to 20 Premium-quality invitations per 30-day cycle; attempt #21 returns a clear Vietnamese error
+  4. Agent dashboard shows quota progress bar (X/20) with days remaining and "Dai ly" indicator
+  5. Drafts older than 30 days (from createdAt, never published) are auto-deleted daily with their media
+  6. Dashboard shows warning badges on draft cards within 7 days of auto-deletion
+  7. Admin can clear storage for expired/soft-deleted invitations from system settings page
+  8. GET /auth/me endpoint returns user profile including tier, subscription, and quota info
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 10 to break down)
+- [ ] 10-01-PLAN.md — DB migration (agent tier columns on users), shared types (UserTier, UserProfile), GET /auth/me endpoint, agent-aware quota enforcement at publish time
+- [ ] 10-02-PLAN.md — Draft auto-delete cron service, admin agent grant/renew/revoke endpoints, admin storage cleanup endpoint
+- [ ] 10-03-PLAN.md — Admin UI: UserDetailDialog agent controls (grant/renew/revoke), settings page storage cleanup section
+- [ ] 10-04-PLAN.md — Dashboard: AgentQuotaBar component, agent greeting, draft warning badges on invitation cards
 
 ### Phase 11: Custom Theme Builder
 

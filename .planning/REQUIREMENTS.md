@@ -80,6 +80,17 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SYST-03**: User can only edit their own invitations
 - [x] **SYST-04**: Public pages are read-only for guests
 
+### Agent Tier & Storage Management
+
+- [ ] **AGT-01**: Agent tier columns exist on users table with subscription tracking (tier, subscription_start, subscription_end)
+- [ ] **AGT-02**: Admin can grant, renew, and revoke agent tier from the user detail dialog
+- [ ] **AGT-03**: Agent quota enforcement at publish time (20 published invitations per 30-day cycle)
+- [ ] **AGT-04**: Agent dashboard shows quota progress bar (X/20) with days remaining and "Dai ly" indicator
+- [ ] **AGT-05**: Drafts older than 30 days from createdAt (never published) are auto-deleted daily with their media
+- [ ] **AGT-06**: Dashboard shows warning badges on draft cards within 7 days of auto-deletion
+- [ ] **AGT-07**: Admin can clear storage for expired/soft-deleted invitations from system settings page
+- [ ] **AGT-08**: GET /auth/me endpoint returns user profile including tier, subscription, and quota info
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -166,14 +177,22 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADMN-08 | Phase 8 | Complete |
 | ADMN-09 | Phase 8 | Complete |
 | ADMN-10 | Phase 8 | Complete |
+| AGT-01 | Phase 10 | Planned |
+| AGT-02 | Phase 10 | Planned |
+| AGT-03 | Phase 10 | Planned |
+| AGT-04 | Phase 10 | Planned |
+| AGT-05 | Phase 10 | Planned |
+| AGT-06 | Phase 10 | Planned |
+| AGT-07 | Phase 10 | Planned |
+| AGT-08 | Phase 10 | Planned |
 
 **Coverage:**
-- v1 requirements: 49 total
-- Mapped to phases: 49
+- v1 requirements: 57 total
+- Mapped to phases: 57
 - Unmapped: 0
 
 Note: PUBL-10 (mobile-first, <1MB page weight) is assigned to Phase 9 (Polish and Performance) because the <1MB target requires the full production asset pipeline — lazy loading, code splitting, WebP serving, and bundle analysis — which can only be measured accurately against the complete application. The feature is delivered incrementally across all phases but the acceptance criterion is verified in Phase 9.
 
 ---
 *Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 — traceability populated after roadmap creation*
+*Last updated: 2026-03-17 — Phase 10 Agent Tier requirements added*
