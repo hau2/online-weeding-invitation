@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 10-01-PLAN.md
-last_updated: "2026-03-17T16:50:12.577Z"
+stopped_at: Completed 10-02-PLAN.md
+last_updated: "2026-03-17T16:55:05.148Z"
 last_activity: "2026-03-17 — Plan 10-01 complete: Agent tier schema, types, /me endpoint, quota enforcement"
 progress:
   total_phases: 17
   completed_phases: 14
   total_plans: 62
-  completed_plans: 59
+  completed_plans: 60
   percent: 100
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 10 (Agent Tier and Storage Management)
-Plan: 1 of 4 in phase 10
+Plan: 2 of 4 in phase 10
 Status: In Progress
-Last activity: 2026-03-17 — Plan 10-01 complete: Agent tier schema, types, /me endpoint, quota enforcement
+Last activity: 2026-03-17 — Plan 10-02 complete: Draft auto-delete cron, admin agent management, storage cleanup
 
-Progress: [██████████] 100%
+Progress: [██████████] 97%
 
 ## Performance Metrics
 
@@ -110,6 +110,7 @@ Progress: [██████████] 100%
 | Phase 15 P02 | 5min | 2 tasks | 5 files |
 | Phase 15 P04 | 3min | 2 tasks | 1 files |
 | Phase 10 P01 | 5min | 2 tasks | 7 files |
+| Phase 10 P02 | 2min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -280,6 +281,9 @@ Recent decisions affecting current work:
 - [Phase 10]: Agent quota uses 30-day rolling cycle from subscription_start with period advancement
 - [Phase 10]: Agent auto-premium sets plan='premium' at publish time only; drafts remain free until published
 - [Phase 10]: CookieJwtGuard (jose) aliased for /me endpoint coexisting with Passport-based JwtGuard for auth
+- [Phase 10]: DraftCleanupCronService at 1 AM Vietnam time to offset from ExpiryCronService at midnight
+- [Phase 10]: deleteInvitationMedia is public on InvitationsService for reuse by both cron and admin cleanup
+- [Phase 10]: clearExpiredStorage queries both expired status and soft-deleted (deleted_at IS NOT NULL) invitations
 
 ### Roadmap Evolution
 
@@ -303,6 +307,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T16:50:12.574Z
-Stopped at: Completed 10-01-PLAN.md
+Last session: 2026-03-17T16:55:05.145Z
+Stopped at: Completed 10-02-PLAN.md
 Resume file: None
