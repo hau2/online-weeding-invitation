@@ -230,7 +230,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 12. Security Hardening | 0/0 | Not started | - |
 | 13. Editor UI Redesign | 5/5 | Complete    | 2026-03-16 |
 | 14. Dashboard & Auth Redesign | 2/2 | Complete    | 2026-03-17 |
-| 15. Admin Panel Redesign | 0/0 | Not started | - |
+| 15. Admin Panel Redesign | 0/4 | Not started | - |
 
 ### Phase 09.1: Public Page Redesign - Modern Full-Width Templates (INSERTED)
 
@@ -340,10 +340,21 @@ Plans:
 
 ### Phase 15: Admin Panel Redesign - Modern Stitch AI Design
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Restyle all admin panel pages (dashboard, users, invitations, themes, music, service plans, payments, settings) and admin sidebar/layout to match the Stitch AI design system -- dark #181113 sidebar, warm #f8f6f6 content area, #ec1349 accents, Stitch cards/inputs/buttons/badges across all 12 admin files. Purely visual restyling with no new functionality.
+**Requirements**: ADMIN-LAYOUT, ADMIN-SIDEBAR, ADMIN-DASHBOARD, ADMIN-USERS, ADMIN-INVITATIONS, ADMIN-MUSIC, ADMIN-THEMES, ADMIN-PLANS, ADMIN-PAYMENTS, ADMIN-SETTINGS
 **Depends on:** Phase 14
-**Plans:** 0 plans
+**Success Criteria** (what must be TRUE):
+  1. Admin sidebar has dark #181113 background with #ec1349 active indicator, "Thiep Cuoi Online" branding with "Admin" badge
+  2. Content area background is warm #f8f6f6, header has #e6dbde border and Stitch sidebar toggle
+  3. Dashboard stat cards have colored icon circles, chart uses #ec1349 line color
+  4. All list pages (users, invitations, music) wrap rows in white Stitch card containers with #e6dbde borders
+  5. All inputs use #ec1349 focus states, all primary buttons use bg-[#ec1349]
+  6. Settings page has per-section Stitch cards with individual save buttons
+  7. No gray-* Tailwind classes remain in any admin file
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 15 to break down)
+- [ ] 15-01-PLAN.md — Admin layout + sidebar dark Stitch theme, dashboard page + StatCard + chart Stitch colors
+- [ ] 15-02-PLAN.md — Users page + UserDetailDialog + Invitations + Music + Themes pages Stitch restyling
+- [ ] 15-03-PLAN.md — Service Plans + Payments + Settings pages Stitch restyling
+- [ ] 15-04-PLAN.md — Build verification, gray-* audit, visual checkpoint
