@@ -226,7 +226,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 9. Polish and Performance | 3/3 | Complete | 2013-03-16 |
 | 9.1 Public Page Redesign | 5/5 | Complete | 2026-03-16 |
 | 10. Agent Tier and Storage | 4/4 | Complete    | 2026-03-17 |
-| 11. Custom Theme Builder | 0/0 | Not started | - |
+| 11. Custom Theme Builder | 0/3 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
 | 13. Editor UI Redesign | 5/5 | Complete    | 2026-03-16 |
 | 14. Dashboard & Auth Redesign | 2/2 | Complete    | 2026-03-17 |
@@ -277,19 +277,21 @@ Plans:
 
 ### Phase 11: Custom Theme Builder
 
-**Goal:** Admin can create, edit, and publish new invitation themes from the admin panel using a data-driven template system — configurable layouts, color palettes, fonts, and section ordering — without writing React code
-**Requirements**: TBD
-**Depends on:** Phase 9
+**Goal:** Admin can create, edit, and publish new invitation themes from the admin panel by cloning an existing theme and adjusting colors, petals, nav style, footer, and background image via a split-panel builder with live SharedTemplate preview -- no React code needed per theme
+**Requirements**: CT-01, CT-02, CT-03, CT-04, CT-05, CT-06, CT-07, CT-08, CT-09, CT-10
+**Depends on:** Phase 10
 **Success Criteria** (what must be TRUE):
-  1. Admin can create a new theme by selecting a base layout, choosing a color palette, picking fonts, and configuring section visibility/order
+  1. Admin can create a new theme by cloning an existing theme, adjusting color palette, petals, nav style, footer colors, and background image
   2. New themes appear in the user's template selector immediately after admin publishes them
-  3. Existing hardcoded templates (Traditional, Modern, Minimalist) continue to work alongside data-driven themes
+  3. Existing hardcoded templates (6 built-in themes) continue to work alongside custom themes
   4. Admin can preview a theme with sample data before publishing it to users
-  5. Admin can edit or unpublish a theme — unpublished themes remain visible on invitations that already use them but are hidden from the selector
-**Plans:** 0 plans
+  5. Admin can edit or disable a theme -- disabled themes remain visible on invitations that already use them but are hidden from the selector
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 11 to break down)
+- [ ] 11-01-PLAN.md — DB migration (custom_themes table, theme-assets bucket, drop template_id CHECK), shared types, NestJS CRUD endpoints, findBySlug custom theme resolution
+- [ ] 11-02-PLAN.md — Frontend theme resolution pipeline, SharedTemplate background image, FooterSection dual-format, TemplateSelector custom themes integration
+- [ ] 11-03-PLAN.md — Admin theme builder UI: themes list page rewrite + split-panel builder page with color pickers, live preview, save/publish
 
 ### Phase 12: Security Hardening
 
