@@ -229,7 +229,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
 | 13. Editor UI Redesign | 5/5 | Complete    | 2026-03-16 |
-| 14. Dashboard & Auth Redesign | 1/2 | In Progress|  |
+| 14. Dashboard & Auth Redesign | 2/2 | Complete    | 2026-03-17 |
 | 15. Admin Panel Redesign | 0/0 | Not started | - |
 
 ### Phase 09.1: Public Page Redesign - Modern Full-Width Templates (INSERTED)
@@ -332,7 +332,7 @@ Plans:
   3. UpgradePage uses Stitch card pattern with solid #ec1349 header (no amber-to-rose gradient)
   4. CreateWizard uses Stitch colors for buttons, inputs, and template selection
   5. All user-facing pages visually match one unified Stitch AI design system
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 14-01-PLAN.md — Restyle ThankYouPage, SaveTheDatePage, UpgradePage, UpgradeButton, and CreateWizard to Stitch design system
