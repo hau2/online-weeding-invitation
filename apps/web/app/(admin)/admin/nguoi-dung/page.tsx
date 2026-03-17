@@ -153,22 +153,18 @@ export default function AdminUsersPage() {
   return (
     <div className="p-6 max-w-5xl">
       {/* Header */}
-      <div className="flex items-center gap-2 mb-1">
-        <Users className="size-5 text-gray-700" />
-        <h1 className="text-xl font-semibold text-gray-900">Nguoi dung</h1>
-      </div>
-      <p className="text-sm text-gray-500 mb-6">Quan ly tai khoan nguoi dung</p>
+      <h1 className="text-2xl font-bold text-[#181113] mb-6">Nguoi dung</h1>
 
       {/* Search + Filter */}
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#89616b]" />
           <input
             type="text"
             placeholder="Tim kiem theo email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-300"
+            className="w-full pl-9 pr-4 py-2 text-sm border border-[#e6dbde] rounded-lg bg-white focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
           />
         </div>
         <div className="flex gap-1">
@@ -181,8 +177,8 @@ export default function AdminUsersPage() {
               }}
               className={`px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
                 statusFilter === opt.value
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                  ? 'bg-[#ec1349] text-white'
+                  : 'bg-white border border-[#e6dbde] text-[#89616b] hover:bg-[#f8f6f6]'
               }`}
             >
               {opt.label}
@@ -194,26 +190,26 @@ export default function AdminUsersPage() {
       {/* Content */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="size-6 animate-spin text-gray-400" />
+          <Loader2 className="size-6 animate-spin text-[#ec1349]" />
         </div>
       ) : users.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-          <Users className="size-10 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-gray-500">Khong tim thay nguoi dung nao</p>
+        <div className="bg-white rounded-xl border border-[#e6dbde] p-12 text-center">
+          <Users className="size-10 text-[#e6dbde] mx-auto mb-3" />
+          <p className="text-sm text-[#89616b]">Khong tim thay nguoi dung nao</p>
         </div>
       ) : (
         <>
           {/* User list */}
-          <div className="space-y-2">
+          <div className="bg-white rounded-xl border border-[#e6dbde] overflow-hidden divide-y divide-[#f4f0f1]">
             {users.map((user) => (
               <div
                 key={user.id}
-                className="bg-white rounded-xl border border-gray-200 px-4 py-3 hover:bg-gray-50 transition-colors"
+                className="px-6 py-4 hover:bg-[#f8f6f6] transition-colors"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   {/* User info */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                    <p className="text-sm font-medium text-[#181113] truncate">
                       {user.email}
                     </p>
                     <div className="flex flex-wrap items-center gap-2 mt-1">
@@ -221,24 +217,24 @@ export default function AdminUsersPage() {
                       <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                         user.role === 'admin'
                           ? 'bg-purple-100 text-purple-700'
-                          : 'bg-gray-100 text-gray-600'
+                          : 'bg-[#f4f0f1] text-[#89616b]'
                       }`}>
                         {user.role}
                       </span>
                       {/* Status badge */}
                       <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                         user.isLocked
-                          ? 'bg-red-100 text-red-600'
+                          ? 'bg-[#ec1349]/10 text-[#ec1349]'
                           : 'bg-green-100 text-green-700'
                       }`}>
                         {user.isLocked ? 'Da khoa' : 'Hoat dong'}
                       </span>
                       {/* Invitation count */}
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-[#89616b]">
                         {user.invitationCount} thiep
                       </span>
                       {/* Created date */}
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-[#89616b]">
                         {formatDate(user.createdAt)}
                       </span>
                     </div>
@@ -253,6 +249,7 @@ export default function AdminUsersPage() {
                       onClick={() => handleLockToggle(user)}
                       disabled={processingId === user.id}
                       title={user.isLocked ? 'Mo khoa' : 'Khoa'}
+                      className="hover:bg-[#f4f0f1]"
                     >
                       {processingId === user.id ? (
                         <Loader2 className="size-3.5 animate-spin" />
@@ -272,8 +269,9 @@ export default function AdminUsersPage() {
                         setDetailOpen(true)
                       }}
                       title="Xem chi tiet"
+                      className="hover:bg-[#f4f0f1]"
                     >
-                      <Eye className="size-3.5 text-gray-500" />
+                      <Eye className="size-3.5 text-[#89616b]" />
                     </Button>
 
                     {/* Role change */}
@@ -283,11 +281,11 @@ export default function AdminUsersPage() {
                       onClick={() => handleRoleChange(user, user.role === 'admin' ? 'user' : 'admin')}
                       disabled={processingId === user.id}
                       title={user.role === 'admin' ? 'Chuyen thanh user' : 'Chuyen thanh admin'}
-                      className="text-xs gap-1"
+                      className="text-xs gap-1 hover:bg-[#f4f0f1]"
                     >
                       {user.role === 'admin' ? (
                         <>
-                          <ShieldOff className="size-3.5 text-gray-500" />
+                          <ShieldOff className="size-3.5 text-[#89616b]" />
                           <span className="hidden sm:inline">User</span>
                         </>
                       ) : (
@@ -327,7 +325,7 @@ export default function AdminUsersPage() {
                 <ChevronLeft className="size-3.5" />
                 Trang truoc
               </Button>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-[#89616b]">
                 {page} / {totalPages}
               </span>
               <Button
@@ -354,7 +352,7 @@ export default function AdminUsersPage() {
               Ban co chac muon xoa vinh vien nguoi dung nay? Tat ca thiep cuoi va hinh anh se bi xoa.
             </DialogDescription>
           </DialogHeader>
-          <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-700">
+          <div className="bg-[#f8f6f6] rounded-lg p-3 text-sm text-[#181113]">
             {deleteTarget?.email}
           </div>
           <DialogFooter>

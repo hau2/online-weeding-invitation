@@ -47,7 +47,7 @@ function formatDate(dateStr: string) {
 
 function statusBadge(status: string) {
   const colors: Record<string, string> = {
-    draft: 'bg-gray-100 text-gray-600',
+    draft: 'bg-[#f4f0f1] text-[#89616b]',
     published: 'bg-green-100 text-green-700',
     save_the_date: 'bg-blue-100 text-blue-700',
   }
@@ -57,7 +57,7 @@ function statusBadge(status: string) {
     save_the_date: 'Save the Date',
   }
   return (
-    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${colors[status] ?? 'bg-gray-100 text-gray-600'}`}>
+    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${colors[status] ?? 'bg-[#f4f0f1] text-[#89616b]'}`}>
       {labels[status] ?? status}
     </span>
   )
@@ -72,7 +72,7 @@ function planBadge(plan: string) {
     )
   }
   return (
-    <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+    <span className="inline-flex items-center rounded-full bg-[#f4f0f1] px-2 py-0.5 text-xs font-medium text-[#89616b]">
       Free
     </span>
   )
@@ -105,59 +105,59 @@ export function UserDetailDialog({ userId, open, onOpenChange }: UserDetailDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg max-h-[80vh] overflow-y-auto border border-[#e6dbde]">
         <DialogHeader>
-          <DialogTitle>Chi tiet nguoi dung</DialogTitle>
+          <DialogTitle className="text-[#181113]">Chi tiet nguoi dung</DialogTitle>
           <DialogDescription>Thong tin tai khoan va danh sach thiep cuoi</DialogDescription>
         </DialogHeader>
 
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <Loader2 className="size-5 animate-spin text-gray-400" />
+            <Loader2 className="size-5 animate-spin text-[#ec1349]" />
           </div>
         ) : detail ? (
           <div className="space-y-4">
             {/* User info */}
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500">Email</span>
-                <span className="text-gray-900 font-medium">{detail.email}</span>
+                <span className="text-[#89616b]">Email</span>
+                <span className="text-[#181113] font-medium">{detail.email}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Vai tro</span>
-                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${detail.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'}`}>
+                <span className="text-[#89616b]">Vai tro</span>
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${detail.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-[#f4f0f1] text-[#89616b]'}`}>
                   {detail.role}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Trang thai</span>
-                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${detail.isLocked ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-700'}`}>
+                <span className="text-[#89616b]">Trang thai</span>
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${detail.isLocked ? 'bg-[#ec1349]/10 text-[#ec1349]' : 'bg-green-100 text-green-700'}`}>
                   {detail.isLocked ? 'Da khoa' : 'Hoat dong'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Ngay tao</span>
-                <span className="text-gray-700">{formatDate(detail.createdAt)}</span>
+                <span className="text-[#89616b]">Ngay tao</span>
+                <span className="text-[#181113]">{formatDate(detail.createdAt)}</span>
               </div>
             </div>
 
             {/* Invitations */}
             <div>
-              <h4 className="text-sm font-semibold text-gray-700 mb-2">
+              <h4 className="text-sm font-semibold text-[#89616b] mb-2">
                 Thiep cuoi ({detail.invitations.length})
               </h4>
               {detail.invitations.length === 0 ? (
-                <p className="text-xs text-gray-400">Chua co thiep cuoi nao.</p>
+                <p className="text-xs text-[#89616b]">Chua co thiep cuoi nao.</p>
               ) : (
                 <div className="space-y-2">
                   {detail.invitations.map((inv) => (
                     <div
                       key={inv.id}
-                      className="bg-gray-50 rounded-lg border border-gray-100 p-3"
+                      className="bg-[#f8f6f6] rounded-lg border border-[#f4f0f1] p-3"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                          <p className="text-sm font-medium text-[#181113] truncate">
                             {inv.groomName || 'Chu re'} &amp; {inv.brideName || 'Co dau'}
                           </p>
                           <div className="flex flex-wrap items-center gap-1.5 mt-1">
@@ -169,14 +169,14 @@ export function UserDetailDialog({ userId, open, onOpenChange }: UserDetailDialo
                               href={`/${inv.slug}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 mt-1"
+                              className="inline-flex items-center gap-1 text-xs text-[#ec1349] hover:text-red-600 mt-1"
                             >
                               <ExternalLink className="size-3" />
                               {inv.slug}
                             </a>
                           )}
                         </div>
-                        <span className="text-xs text-gray-400 whitespace-nowrap">
+                        <span className="text-xs text-[#89616b] whitespace-nowrap">
                           {formatDate(inv.createdAt)}
                         </span>
                       </div>
@@ -187,7 +187,7 @@ export function UserDetailDialog({ userId, open, onOpenChange }: UserDetailDialo
             </div>
           </div>
         ) : (
-          <p className="text-sm text-gray-400 text-center py-4">Khong the tai thong tin nguoi dung.</p>
+          <p className="text-sm text-[#89616b] text-center py-4">Khong the tai thong tin nguoi dung.</p>
         )}
       </DialogContent>
     </Dialog>
