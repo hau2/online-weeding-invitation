@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 11 context gathered
-last_updated: "2026-03-17T18:03:14.465Z"
-last_activity: "2026-03-17 — Plan 10-04 complete: Agent dashboard UI quota bar and draft warning badges"
+status: executing
+stopped_at: Completed 11-01-PLAN.md
+last_updated: "2026-03-17T18:42:01.453Z"
+last_activity: "2026-03-18 — Plan 11-01 complete: Custom themes data layer and API"
 progress:
   total_phases: 17
   completed_phases: 15
-  total_plans: 62
-  completed_plans: 62
-  percent: 100
+  total_plans: 65
+  completed_plans: 63
+  percent: 97
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 
 ## Current Position
 
-Phase: 10 (Agent Tier and Storage Management)
-Plan: 4 of 4 in phase 10
-Status: Complete
-Last activity: 2026-03-17 — Plan 10-04 complete: Agent dashboard UI quota bar and draft warning badges
+Phase: 11 (Custom Theme Builder)
+Plan: 1 of 3 in phase 11
+Status: In Progress
+Last activity: 2026-03-18 — Plan 11-01 complete: Custom themes data layer and API
 
-Progress: [██████████] 100%
+Progress: [██████████] 97%
 
 ## Performance Metrics
 
@@ -113,6 +113,7 @@ Progress: [██████████] 100%
 | Phase 10 P02 | 2min | 2 tasks | 5 files |
 | Phase 10 P03 | 3min | 2 tasks | 2 files |
 | Phase 10 P04 | 3min | 2 tasks | 4 files |
+| Phase 11 P01 | 4min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -290,6 +291,10 @@ Recent decisions affecting current work:
 - [Phase 10]: AgentQuotaBar replaces plan stat card for agents, maintaining 3-column grid layout
 - [Phase 10]: Draft warning badges apply to all users (not just agents) per CONTEXT.md design decision
 - [Phase 10]: Warning threshold 7 days before 30-day auto-delete; danger badge at 0 or fewer days
+- [Phase 11]: Built-in theme configs duplicated in API builtin-themes.ts to avoid cross-app imports
+- [Phase 11]: TemplateId widened from union of 9 literals to string for custom theme slugs
+- [Phase 11]: findBySlug returns themeConfig only for custom themes (not built-in) to keep payload small
+- [Phase 11]: Public ThemesController follows unguarded pattern for frontend consumption without auth
 
 ### Roadmap Evolution
 
@@ -313,6 +318,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T18:03:14.460Z
-Stopped at: Phase 11 context gathered
-Resume file: .planning/phases/11-custom-theme-builder/11-CONTEXT.md
+Last session: 2026-03-17T18:42:01.450Z
+Stopped at: Completed 11-01-PLAN.md
+Resume file: None

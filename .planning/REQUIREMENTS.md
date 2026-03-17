@@ -93,16 +93,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Custom Theme Builder
 
-- [ ] **CT-01**: custom_themes table exists with correct schema (id, slug, name, base_theme, config JSONB, background_image_url, thumbnail_url, status, timestamps)
-- [ ] **CT-02**: Admin can create a custom theme by cloning an existing base theme
-- [ ] **CT-03**: Admin can update custom theme config (colors, petals, nav style, footer) and upload background image
-- [ ] **CT-04**: Admin can publish and disable custom themes (lifecycle: draft -> published -> disabled)
-- [ ] **CT-05**: GET /themes/:slug returns ThemeConfig for custom themes (public resolution)
+- [x] **CT-01**: custom_themes table exists with correct schema (id, slug, name, base_theme, config JSONB, background_image_url, thumbnail_url, status, timestamps)
+- [x] **CT-02**: Admin can create a custom theme by cloning an existing base theme
+- [x] **CT-03**: Admin can update custom theme config (colors, petals, nav style, footer) and upload background image
+- [x] **CT-04**: Admin can publish and disable custom themes (lifecycle: draft -> published -> disabled)
+- [x] **CT-05**: GET /themes/:slug returns ThemeConfig for custom themes (public resolution)
 - [ ] **CT-06**: Public page resolves and renders custom themes from API themeConfig response
 - [ ] **CT-07**: TemplateSelector shows published custom themes after built-in themes
 - [ ] **CT-08**: SharedTemplate renders backgroundImageUrl as fixed full-page background
 - [ ] **CT-09**: Theme builder has split-panel form with live SharedTemplate preview, native color pickers, background image upload
-- [ ] **CT-10**: template_id CHECK constraint dropped so invitations accept custom theme slugs
+- [x] **CT-10**: template_id CHECK constraint dropped so invitations accept custom theme slugs
 
 ## v2 Requirements
 
