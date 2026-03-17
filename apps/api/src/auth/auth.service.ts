@@ -3,6 +3,8 @@ import {
   ConflictException,
   UnauthorizedException,
   BadRequestException,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
@@ -10,7 +12,7 @@ import { Resend } from 'resend'
 import * as bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { SupabaseAdminService } from '../supabase/supabase.service'
-import type { AuthResponse, MessageResponse } from '@repo/types'
+import type { AuthResponse, MessageResponse, UserProfile } from '@repo/types'
 
 @Injectable()
 export class AuthService {
@@ -167,6 +169,90 @@ export class AuthService {
       .eq('id', matchedToken.id)
 
     return { message: 'Mật khẩu đã được đặt lại thành công' }
+  }
+
+  async getProfile(userId: string): Promise<UserProfile> {
+    const { data: user, error } = await this.supabaseAdmin.client
+      .from('users')
+      .select('id, email, role, tier, subscription_start, subscription_end')
+      .eq('id', userId)
+      .is('deleted_at', null)
+      .single()
+
+    if (error || !user) {
+      throw new NotFoundException('Khong tim thay tai khoan')
+    }
+
+    const row = user as unknown as {
+      id: string
+      email: string
+      role: string
+      tier: string
+      subscription_start: string | null
+      subscription_end: string | null
+    }
+
+    // Non-agent users: return minimal profile
+    if (row.tier !== 'agent') {
+      return {
+        id: row.id,
+        email: row.email,
+        role: row.role as 'user' | 'admin',
+        tier: 'user',
+        subscriptionStart: null,
+        subscriptionEnd: null,
+        quotaUsed: 0,
+        quotaLimit: 0,
+        daysRemaining: null,
+      }
+    }
+
+    // Agent tier: compute cycle and quota
+    const now = new Date()
+    const subscriptionEnd = row.subscription_end ? new Date(row.subscription_end) : null
+    const subscriptionStart = row.subscription_start ? new Date(row.subscription_start) : null
+
+    // Days remaining until subscription ends
+    let daysRemaining: number | null = null
+    if (subscriptionEnd) {
+      daysRemaining = Math.max(
+        0,
+        Math.ceil((subscriptionEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)),
+      )
+    }
+
+    // Compute current cycle start: advance subscription_start by 30-day periods
+    let quotaUsed = 0
+    if (subscriptionStart && subscriptionEnd && subscriptionEnd > now) {
+      const cycleStart = new Date(subscriptionStart.getTime())
+      const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000
+      while (cycleStart.getTime() + thirtyDaysMs <= now.getTime()) {
+        cycleStart.setTime(cycleStart.getTime() + thirtyDaysMs)
+      }
+
+      const { count, error: countError } = await this.supabaseAdmin.client
+        .from('invitations')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .in('status', ['published', 'save_the_date'])
+        .is('deleted_at', null)
+        .gte('created_at', cycleStart.toISOString())
+
+      if (countError) throw new InternalServerErrorException(countError.message)
+      quotaUsed = count ?? 0
+    }
+
+    return {
+      id: row.id,
+      email: row.email,
+      role: row.role as 'user' | 'admin',
+      tier: 'agent',
+      subscriptionStart: row.subscription_start,
+      subscriptionEnd: row.subscription_end,
+      quotaUsed,
+      quotaLimit: 20,
+      daysRemaining,
+    }
   }
 
   private signToken(userId: string, email: string, appRole: string): string {

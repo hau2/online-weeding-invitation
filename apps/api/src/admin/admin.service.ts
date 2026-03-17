@@ -23,7 +23,10 @@ interface UserRow {
   id: string
   email: string
   role: string
+  tier: string
   is_locked: boolean
+  subscription_start: string | null
+  subscription_end: string | null
   created_at: string
   updated_at: string
   deleted_at: string | null
@@ -215,7 +218,7 @@ export class AdminService {
 
     let query = client
       .from('users')
-      .select('id, email, role, is_locked, created_at, updated_at', {
+      .select('id, email, role, tier, is_locked, subscription_start, subscription_end, created_at, updated_at', {
         count: 'exact',
       })
       .is('deleted_at', null)
@@ -263,8 +266,11 @@ export class AdminService {
         id: u.id,
         email: u.email,
         role: u.role,
+        tier: u.tier,
         isLocked: u.is_locked,
         invitationCount: invCounts.get(u.id) ?? 0,
+        subscriptionStart: u.subscription_start,
+        subscriptionEnd: u.subscription_end,
         createdAt: u.created_at,
         updatedAt: u.updated_at,
       })),
@@ -277,7 +283,7 @@ export class AdminService {
 
     const { data: user, error: userError } = await client
       .from('users')
-      .select('id, email, role, is_locked, created_at, updated_at')
+      .select('id, email, role, tier, is_locked, subscription_start, subscription_end, created_at, updated_at')
       .eq('id', userId)
       .is('deleted_at', null)
       .single()
@@ -302,7 +308,10 @@ export class AdminService {
       id: u.id,
       email: u.email,
       role: u.role,
+      tier: u.tier,
       isLocked: u.is_locked,
+      subscriptionStart: u.subscription_start,
+      subscriptionEnd: u.subscription_end,
       createdAt: u.created_at,
       updatedAt: u.updated_at,
       invitations: ((invitations as unknown as AdminInvitationRow[]) ?? []).map(

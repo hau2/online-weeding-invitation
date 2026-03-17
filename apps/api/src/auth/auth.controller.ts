@@ -1,11 +1,12 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { RegisterDto } from './dto/register.dto'
 import { LoginDto } from './dto/login.dto'
 import { ResetPasswordDto } from './dto/reset-password.dto'
 import { ConfirmResetDto } from './dto/confirm-reset.dto'
 import { JwtGuard } from './guards/jwt.guard'
-import { CurrentUser } from '../common/decorators/current-user.decorator'
+import { JwtGuard as CookieJwtGuard } from '../common/guards/jwt.guard'
+import { CurrentUser, JwtPayload } from '../common/decorators/current-user.decorator'
 
 @Controller('auth')
 export class AuthController {
@@ -25,6 +26,12 @@ export class AuthController {
   @UseGuards(JwtGuard)
   logout(@CurrentUser() _user: unknown) {
     return this.authService.logout()
+  }
+
+  @Get('me')
+  @UseGuards(CookieJwtGuard)
+  getProfile(@CurrentUser() user: JwtPayload) {
+    return this.authService.getProfile(user.sub)
   }
 
   @Post('request-reset')

@@ -12,8 +12,11 @@ export interface AdminUser {
   id: string
   email: string
   role: string
+  tier: string
   isLocked: boolean
   invitationCount: number
+  subscriptionStart: string | null
+  subscriptionEnd: string | null
   createdAt: string
   updatedAt: string
 }
