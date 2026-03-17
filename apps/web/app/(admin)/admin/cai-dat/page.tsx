@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { apiFetch, apiUpload } from '@/lib/api'
 import type { SystemSettings } from '@repo/types'
@@ -24,6 +24,11 @@ export default function AdminSettingsPage() {
 
   // Expiry config
   const [gracePeriodDays, setGracePeriodDays] = useState(30)
+
+  // Storage cleanup
+  const [cleaningStorage, setCleaningStorage] = useState(false)
+  const [showCleanConfirm, setShowCleanConfirm] = useState(false)
+  const [cleanResult, setCleanResult] = useState<{ cleanedInvitations: number; estimatedFreedMb: number } | null>(null)
 
   // Upload limits
   const [maxPhotoSizeMb, setMaxPhotoSizeMb] = useState(5)
@@ -114,6 +119,26 @@ export default function AdminSettingsPage() {
       toast.success('Da luu cai dat he thong')
     }
     setSaving(false)
+  }
+
+  async function handleClearStorage() {
+    setCleaningStorage(true)
+    try {
+      const { data, error } = await apiFetch<{ cleanedInvitations: number; estimatedFreedMb: number }>('/admin/clear-storage', {
+        method: 'POST',
+        credentials: 'include',
+      })
+      if (error) {
+        toast.error(error)
+      } else if (data) {
+        setCleanResult(data)
+        toast.success(`Da doc dep ${data.cleanedInvitations} thiep, giai phong ~${data.estimatedFreedMb}MB`)
+      }
+    } catch {
+      toast.error('Loi khi doc dep luu tru')
+    }
+    setCleaningStorage(false)
+    setShowCleanConfirm(false)
   }
 
   if (loading) {
@@ -341,6 +366,57 @@ export default function AdminSettingsPage() {
               Luu cai dat
             </Button>
           </div>
+        </div>
+
+        {/* Section 5: Doc dep luu tru */}
+        <div className="bg-white rounded-xl border border-[#e6dbde] p-5">
+          <h3 className="text-sm font-semibold text-[#89616b] mb-4">Doc dep luu tru</h3>
+          <p className="text-sm text-[#89616b] mb-4">
+            Xoa anh, nhac, avatar va QR cua cac thiep cuoi da het han hoac da xoa. Khong anh huong den thiep dang hoat dong.
+          </p>
+
+          {cleanResult && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4 text-sm text-green-700">
+              Da doc dep {cleanResult.cleanedInvitations} thiep, giai phong ~{cleanResult.estimatedFreedMb}MB
+            </div>
+          )}
+
+          {!showCleanConfirm ? (
+            <Button
+              className="bg-[#ec1349] text-white hover:bg-red-600 font-bold gap-1.5"
+              onClick={() => setShowCleanConfirm(true)}
+            >
+              <Trash2 className="size-3.5" />
+              Doc dep luu tru
+            </Button>
+          ) : (
+            <div className="bg-[#f8f6f6] border border-[#e6dbde] rounded-lg p-4">
+              <p className="text-sm font-medium text-[#181113] mb-3">
+                Ban co chac chan muon xoa media cua cac thiep da het han va da xoa?
+              </p>
+              <p className="text-xs text-[#89616b] mb-3">
+                Hanh dong nay khong the hoan tac. Chi xoa media cua thiep het han hoac da xoa.
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  className="bg-[#ec1349] text-white hover:bg-red-600 font-bold gap-1"
+                  onClick={handleClearStorage}
+                  disabled={cleaningStorage}
+                >
+                  {cleaningStorage && <Loader2 className="size-3.5 animate-spin" />}
+                  Xac nhan doc dep
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-[#e6dbde] text-[#181113] font-bold"
+                  onClick={() => setShowCleanConfirm(false)}
+                  disabled={cleaningStorage}
+                >
+                  Huy
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
