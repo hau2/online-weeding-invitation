@@ -40,14 +40,14 @@ const PLAN_OPTIONS = [
 ]
 
 const STATUS_BADGES: Record<string, { label: string; className: string }> = {
-  draft: { label: 'Nhap', className: 'bg-gray-100 text-gray-600' },
+  draft: { label: 'Nhap', className: 'bg-[#f4f0f1] text-[#89616b]' },
   published: { label: 'Da xuat ban', className: 'bg-green-100 text-green-700' },
   save_the_date: { label: 'Save the Date', className: 'bg-blue-100 text-blue-700' },
-  expired: { label: 'Het han', className: 'bg-red-100 text-red-600' },
+  expired: { label: 'Het han', className: 'bg-[#ec1349]/10 text-[#ec1349]' },
 }
 
 const PLAN_BADGES: Record<string, { label: string; className: string }> = {
-  free: { label: 'Free', className: 'bg-gray-100 text-gray-600' },
+  free: { label: 'Free', className: 'bg-[#f4f0f1] text-[#89616b]' },
   premium: { label: 'Premium', className: 'bg-amber-100 text-amber-700' },
 }
 
@@ -149,12 +149,9 @@ export default function AdminInvitationsPage() {
   if (loading && invitations.length === 0) {
     return (
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <FileText className="size-5 text-gray-700" />
-          <h1 className="text-xl font-semibold text-gray-900">Thiep cuoi</h1>
-        </div>
+        <h1 className="text-2xl font-bold text-[#181113] mb-6">Thiep cuoi</h1>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="size-6 animate-spin text-gray-400" />
+          <Loader2 className="size-6 animate-spin text-[#ec1349]" />
         </div>
       </div>
     )
@@ -162,11 +159,7 @@ export default function AdminInvitationsPage() {
 
   return (
     <div className="p-6 max-w-5xl">
-      <div className="flex items-center gap-2 mb-1">
-        <FileText className="size-5 text-gray-700" />
-        <h1 className="text-xl font-semibold text-gray-900">Thiep cuoi</h1>
-      </div>
-      <p className="text-sm text-gray-500 mb-6">Quan ly va giam sat tat ca thiep cuoi</p>
+      <h1 className="text-2xl font-bold text-[#181113] mb-6">Thiep cuoi</h1>
 
       {/* Search and Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -174,12 +167,12 @@ export default function AdminInvitationsPage() {
           placeholder="Tim theo ten hoac slug..."
           value={search}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="sm:max-w-xs"
+          className="sm:max-w-xs border-[#e6dbde] focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
         />
         <select
           value={statusFilter}
           onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }}
-          className="h-8 rounded-lg border border-gray-200 bg-white px-2.5 text-sm text-gray-700 outline-none focus:border-gray-400"
+          className="h-8 rounded-lg border border-[#e6dbde] bg-white px-2.5 text-sm text-[#181113] outline-none focus:border-[#ec1349]"
         >
           {STATUS_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -188,7 +181,7 @@ export default function AdminInvitationsPage() {
         <select
           value={planFilter}
           onChange={(e) => { setPlanFilter(e.target.value); setPage(1) }}
-          className="h-8 rounded-lg border border-gray-200 bg-white px-2.5 text-sm text-gray-700 outline-none focus:border-gray-400"
+          className="h-8 rounded-lg border border-[#e6dbde] bg-white px-2.5 text-sm text-[#181113] outline-none focus:border-[#ec1349]"
         >
           {PLAN_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -198,24 +191,24 @@ export default function AdminInvitationsPage() {
 
       {/* Invitation List */}
       {invitations.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
-          <FileText className="size-8 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-gray-500">Khong tim thay thiep cuoi nao</p>
+        <div className="bg-white rounded-xl border border-[#e6dbde] p-8 text-center">
+          <FileText className="size-8 text-[#e6dbde] mx-auto mb-3" />
+          <p className="text-sm text-[#89616b]">Khong tim thay thiep cuoi nao</p>
         </div>
       ) : (
         <>
-          <div className="space-y-3">
+          <div className="bg-white rounded-xl border border-[#e6dbde] overflow-hidden divide-y divide-[#f4f0f1]">
             {invitations.map((inv) => (
               <div
                 key={inv.id}
-                className="bg-white rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                className="px-6 py-4 hover:bg-[#f8f6f6] transition-colors cursor-pointer"
                 onClick={() => handleRowClick(inv)}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-[#181113]">
                         {inv.groomName || 'Chu re'} &amp; {inv.brideName || 'Co dau'}
                       </p>
                       {STATUS_BADGES[inv.status] && (
@@ -229,12 +222,12 @@ export default function AdminInvitationsPage() {
                         </span>
                       )}
                       {inv.isDisabled && (
-                        <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600">
+                        <span className="inline-flex items-center rounded-full bg-[#ec1349]/10 px-2 py-0.5 text-xs font-medium text-[#ec1349]">
                           Da vo hieu hoa
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400 mt-1">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#89616b] mt-1">
                       <span className="truncate max-w-[180px]" title={inv.userEmail}>{inv.userEmail}</span>
                       {inv.slug && <span className="font-mono">{inv.slug}</span>}
                       <span>{formatDate(inv.createdAt)}</span>
@@ -248,7 +241,7 @@ export default function AdminInvitationsPage() {
                         href={`/w/${inv.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#89616b] hover:bg-[#f4f0f1] transition-colors"
                       >
                         <ExternalLink className="size-3.5" />
                         Xem
@@ -289,7 +282,7 @@ export default function AdminInvitationsPage() {
                 <ChevronLeft className="size-3.5" />
                 Trang truoc
               </Button>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-[#89616b]">
                 Trang {page} / {totalPages}
               </span>
               <Button
@@ -309,14 +302,14 @@ export default function AdminInvitationsPage() {
 
       {/* Read-only Detail Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-lg max-h-[80vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-lg max-h-[80vh] overflow-y-auto border border-[#e6dbde]">
           <DialogHeader>
-            <DialogTitle>Chi tiet thiep cuoi</DialogTitle>
+            <DialogTitle className="text-[#181113]">Chi tiet thiep cuoi</DialogTitle>
           </DialogHeader>
 
           {detailLoading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="size-6 animate-spin text-gray-400" />
+              <Loader2 className="size-6 animate-spin text-[#ec1349]" />
             </div>
           ) : selectedInvitation ? (
             <div className="space-y-3 text-sm">
@@ -358,10 +351,10 @@ export default function AdminInvitationsPage() {
 function DetailRow({ label, value, secondary, mono }: { label: string; value: string; secondary?: string; mono?: boolean }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-1">
-      <span className="text-gray-500 w-36 shrink-0">{label}:</span>
+      <span className="text-[#89616b] w-36 shrink-0">{label}:</span>
       <div>
-        <span className={`text-gray-900 ${mono ? 'font-mono text-xs' : ''}`}>{value}</span>
-        {secondary && <span className="text-gray-500 ml-1">/ {secondary}</span>}
+        <span className={`text-[#181113] ${mono ? 'font-mono text-xs' : ''}`}>{value}</span>
+        {secondary && <span className="text-[#89616b] ml-1">/ {secondary}</span>}
       </div>
     </div>
   )

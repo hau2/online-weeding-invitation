@@ -129,12 +129,9 @@ export default function AdminMusicPage() {
   if (loading && tracks.length === 0) {
     return (
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <Music className="size-5 text-gray-700" />
-          <h1 className="text-xl font-semibold text-gray-900">Thu vien nhac</h1>
-        </div>
+        <h1 className="text-2xl font-bold text-[#181113] mb-6">Thu vien nhac</h1>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="size-6 animate-spin text-gray-400" />
+          <Loader2 className="size-6 animate-spin text-[#ec1349]" />
         </div>
       </div>
     )
@@ -142,15 +139,11 @@ export default function AdminMusicPage() {
 
   return (
     <div className="p-6 max-w-4xl">
-      <div className="flex items-center gap-2 mb-1">
-        <Music className="size-5 text-gray-700" />
-        <h1 className="text-xl font-semibold text-gray-900">Thu vien nhac</h1>
-      </div>
-      <p className="text-sm text-gray-500 mb-6">Quan ly nhac nen cho thiep cuoi</p>
+      <h1 className="text-2xl font-bold text-[#181113] mb-6">Thu vien nhac</h1>
 
       {/* Upload Section */}
-      <div className="bg-white rounded-xl border-2 border-dashed border-gray-200 p-6 mb-6">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+      <div className="bg-white rounded-xl border-2 border-dashed border-[#e6dbde] p-6 mb-6">
+        <h2 className="text-sm font-semibold text-[#89616b] mb-4 flex items-center gap-2">
           <Upload className="size-4" />
           Tai len bai hat moi
         </h2>
@@ -159,25 +152,25 @@ export default function AdminMusicPage() {
             placeholder="Ten bai hat *"
             value={uploadTitle}
             onChange={(e) => setUploadTitle(e.target.value)}
-            className="sm:max-w-[200px]"
+            className="sm:max-w-[200px] border-[#e6dbde] focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
           />
           <Input
             placeholder="Nghe si (tuy chon)"
             value={uploadArtist}
             onChange={(e) => setUploadArtist(e.target.value)}
-            className="sm:max-w-[200px]"
+            className="sm:max-w-[200px] border-[#e6dbde] focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
           />
           <input
             ref={fileInputRef}
             type="file"
             accept=".mp3,audio/mpeg"
             onChange={(e) => setUploadFile(e.target.files?.[0] ?? null)}
-            className="text-sm text-gray-500 file:mr-2 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-gray-700 hover:file:bg-gray-200"
+            className="text-sm text-[#89616b] file:mr-2 file:rounded-lg file:border-0 file:bg-[#f4f0f1] file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-[#181113] hover:file:bg-[#e6dbde]"
           />
           <Button
             onClick={handleUpload}
             disabled={uploading || !uploadFile || !uploadTitle.trim()}
-            className="gap-1 shrink-0"
+            className="gap-1 shrink-0 bg-[#ec1349] hover:bg-red-600 text-white"
           >
             {uploading ? (
               <Loader2 className="size-3.5 animate-spin" />
@@ -188,7 +181,7 @@ export default function AdminMusicPage() {
           </Button>
         </div>
         {uploadFile && (
-          <p className="text-xs text-gray-400 mt-2">
+          <p className="text-xs text-[#89616b] mt-2">
             File: {uploadFile.name} ({(uploadFile.size / 1024 / 1024).toFixed(1)} MB)
           </p>
         )}
@@ -196,16 +189,16 @@ export default function AdminMusicPage() {
 
       {/* Track List */}
       {tracks.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
-          <Music className="size-8 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-gray-500">Chua co bai hat nao trong thu vien</p>
+        <div className="bg-white rounded-xl border border-[#e6dbde] p-8 text-center">
+          <Music className="size-8 text-[#e6dbde] mx-auto mb-3" />
+          <p className="text-sm text-[#89616b]">Chua co bai hat nao trong thu vien</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="bg-white rounded-xl border border-[#e6dbde] overflow-hidden divide-y divide-[#f4f0f1]">
           {tracks.map((track) => (
             <div
               key={track.id}
-              className="bg-white rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition-colors"
+              className="px-6 py-4 hover:bg-[#f8f6f6] transition-colors"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 {/* Track info */}
@@ -215,12 +208,12 @@ export default function AdminMusicPage() {
                       className={`inline-block size-2.5 rounded-full ${track.isActive ? 'bg-green-500' : 'bg-red-400'}`}
                       title={track.isActive ? 'Dang hoat dong' : 'Da vo hieu hoa'}
                     />
-                    <p className="text-sm font-medium text-gray-900 truncate">{track.title}</p>
+                    <p className="text-sm font-medium text-[#181113] truncate">{track.title}</p>
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400">
-                    {track.artist && <span className="text-gray-500">{track.artist}</span>}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#89616b]">
+                    {track.artist && <span className="text-[#89616b]">{track.artist}</span>}
                     <span>{formatDuration(track.duration)}</span>
-                    <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                    <span className="inline-flex items-center rounded-full bg-[#f4f0f1] px-2 py-0.5 text-xs text-[#89616b]">
                       {track.usageCount} thiep dang su dung
                     </span>
                   </div>
@@ -272,11 +265,11 @@ export default function AdminMusicPage() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteConfirmId !== null} onOpenChange={(open) => { if (!open) setDeleteConfirmId(null) }}>
-        <DialogContent className="sm:max-w-sm">
+        <DialogContent className="sm:max-w-sm border border-[#e6dbde]">
           <DialogHeader>
-            <DialogTitle>Xac nhan xoa</DialogTitle>
+            <DialogTitle className="text-[#181113]">Xac nhan xoa</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[#89616b]">
             Ban co chac muon xoa bai hat nay? Hanh dong nay khong the hoan tac.
           </p>
           <DialogFooter>

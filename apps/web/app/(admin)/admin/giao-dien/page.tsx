@@ -11,7 +11,7 @@ import type { ThemeInfo } from '@repo/types'
 const THEME_COLORS: Record<string, string> = {
   traditional: 'bg-rose-100 text-rose-700',
   modern: 'bg-sky-100 text-sky-700',
-  minimalist: 'bg-gray-100 text-gray-600',
+  minimalist: 'bg-[#f4f0f1] text-[#89616b]',
 }
 
 export default function AdminThemesPage() {
@@ -122,12 +122,9 @@ export default function AdminThemesPage() {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <Palette className="size-5 text-gray-700" />
-          <h1 className="text-xl font-semibold text-gray-900">Giao dien</h1>
-        </div>
+        <h1 className="text-2xl font-bold text-[#181113] mb-6">Giao dien</h1>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="size-6 animate-spin text-gray-400" />
+          <Loader2 className="size-6 animate-spin text-[#ec1349]" />
         </div>
       </div>
     )
@@ -135,19 +132,13 @@ export default function AdminThemesPage() {
 
   return (
     <div className="p-6 max-w-5xl">
-      <div className="flex items-center gap-2 mb-1">
-        <Palette className="size-5 text-gray-700" />
-        <h1 className="text-xl font-semibold text-gray-900">Giao dien</h1>
-      </div>
-      <p className="text-sm text-gray-500 mb-6">
-        Giao dien da vo hieu hoa se khong hien thi trong trinh chon mau cho nguoi dung.
-      </p>
+      <h1 className="text-2xl font-bold text-[#181113] mb-6">Giao dien</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {themes.map((theme) => (
           <div
             key={theme.id}
-            className="bg-white rounded-xl border border-gray-200 overflow-hidden"
+            className="bg-white rounded-xl border border-[#e6dbde] overflow-hidden"
           >
             {/* Thumbnail or placeholder */}
             {theme.thumbnail ? (
@@ -158,7 +149,7 @@ export default function AdminThemesPage() {
               />
             ) : (
               <div
-                className={`w-full h-40 flex items-center justify-center text-lg font-medium ${THEME_COLORS[theme.id] ?? 'bg-gray-100 text-gray-500'}`}
+                className={`w-full h-40 flex items-center justify-center text-lg font-medium ${THEME_COLORS[theme.id] ?? 'bg-[#f4f0f1] text-[#89616b]'}`}
               >
                 {theme.name}
               </div>
@@ -169,25 +160,25 @@ export default function AdminThemesPage() {
                 /* ---------- Edit mode ---------- */
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs text-gray-500 block mb-1">Ten</label>
+                    <label className="text-xs text-[#89616b] block mb-1">Ten</label>
                     <input
                       type="text"
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      className="w-full rounded-lg border border-[#e6dbde] px-3 py-1.5 text-sm focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 block mb-1">Tag</label>
+                    <label className="text-xs text-[#89616b] block mb-1">Tag</label>
                     <input
                       type="text"
                       value={editTag}
                       onChange={(e) => setEditTag(e.target.value)}
-                      className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      className="w-full rounded-lg border border-[#e6dbde] px-3 py-1.5 text-sm focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 block mb-1">Hinh thu nho</label>
+                    <label className="text-xs text-[#89616b] block mb-1">Hinh thu nho</label>
                     {theme.thumbnail && (
                       <img
                         src={theme.thumbnail}
@@ -199,13 +190,13 @@ export default function AdminThemesPage() {
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
                       onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
-                      className="block w-full text-xs text-gray-500 file:mr-2 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-gray-700 hover:file:bg-gray-200"
+                      className="block w-full text-xs text-[#89616b] file:mr-2 file:rounded-lg file:border-0 file:bg-[#f4f0f1] file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-[#181113] hover:file:bg-[#e6dbde]"
                     />
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
                       size="sm"
-                      className="bg-gray-900 text-white hover:bg-gray-800 gap-1"
+                      className="bg-[#ec1349] text-white hover:bg-red-600 gap-1"
                       onClick={() => handleSave(theme.id)}
                       disabled={saving}
                     >
@@ -227,8 +218,8 @@ export default function AdminThemesPage() {
                 <>
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h3 className="font-medium text-gray-900">{theme.name}</h3>
-                      <span className="text-xs text-gray-500">{theme.tag}</span>
+                      <h3 className="font-medium text-[#181113]">{theme.name}</h3>
+                      <span className="text-xs text-[#89616b]">{theme.tag}</span>
                     </div>
                     <span
                       className={`inline-block size-2.5 rounded-full mt-1.5 ${theme.isActive ? 'bg-green-500' : 'bg-red-400'}`}
