@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 11-01-PLAN.md
-last_updated: "2026-03-17T18:42:01.453Z"
-last_activity: "2026-03-18 — Plan 11-01 complete: Custom themes data layer and API"
+stopped_at: Completed 11-02-PLAN.md
+last_updated: "2026-03-17T18:49:32.464Z"
+last_activity: "2026-03-18 — Plan 11-02 complete: Frontend custom theme rendering pipeline"
 progress:
   total_phases: 17
   completed_phases: 15
   total_plans: 65
-  completed_plans: 63
+  completed_plans: 64
   percent: 97
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 11 (Custom Theme Builder)
-Plan: 1 of 3 in phase 11
+Plan: 2 of 3 in phase 11
 Status: In Progress
-Last activity: 2026-03-18 — Plan 11-01 complete: Custom themes data layer and API
+Last activity: 2026-03-18 — Plan 11-02 complete: Frontend custom theme rendering pipeline
 
 Progress: [██████████] 97%
 
@@ -114,6 +114,7 @@ Progress: [██████████] 97%
 | Phase 10 P03 | 3min | 2 tasks | 2 files |
 | Phase 10 P04 | 3min | 2 tasks | 4 files |
 | Phase 11 P01 | 4min | 2 tasks | 13 files |
+| Phase 11 P02 | 4min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -295,6 +296,11 @@ Recent decisions affecting current work:
 - [Phase 11]: TemplateId widened from union of 9 literals to string for custom theme slugs
 - [Phase 11]: findBySlug returns themeConfig only for custom themes (not built-in) to keep payload small
 - [Phase 11]: Public ThemesController follows unguarded pattern for frontend consumption without auth
+- [Phase 11]: buildThemeConfig uses modern-red defaults for missing fields in raw JSONB config
+- [Phase 11]: Background image uses position:fixed div (not background-attachment:fixed) for iOS Safari compatibility
+- [Phase 11]: FooterSection detects hex vs Tailwind class via startsWith('#') for dual-format footerBg
+- [Phase 11]: EditorPreview uses SharedTemplate directly (not TemplateRenderer) to pass resolved custom theme
+- [Phase 11]: TemplateSelector fetches custom themes from unauthenticated public GET /themes endpoint
 
 ### Roadmap Evolution
 
@@ -318,6 +324,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T18:42:01.450Z
-Stopped at: Completed 11-01-PLAN.md
+Last session: 2026-03-17T18:49:32.461Z
+Stopped at: Completed 11-02-PLAN.md
 Resume file: None
