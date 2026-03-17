@@ -943,6 +943,164 @@ export class AdminService {
   }
 
   // ================================================================
+  // Agent Tier Management
+  // ================================================================
+
+  /**
+   * Grant agent tier to a user.
+   * Admin sets subscription start date (defaults to NOW if not provided).
+   * Subscription end is always start + 30 days.
+   */
+  async grantAgentTier(userId: string, subscriptionStart?: string) {
+    const client = this.supabaseAdmin.client
+
+    const startDate = subscriptionStart
+      ? new Date(subscriptionStart)
+      : new Date()
+    const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000)
+
+    const { error } = await client
+      .from('users')
+      .update({
+        tier: 'agent',
+        subscription_start: startDate.toISOString(),
+        subscription_end: endDate.toISOString(),
+      })
+      .eq('id', userId)
+      .is('deleted_at', null)
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return {
+      tier: 'agent',
+      subscriptionStart: startDate.toISOString(),
+      subscriptionEnd: endDate.toISOString(),
+    }
+  }
+
+  /**
+   * Renew an agent's subscription.
+   * Resets subscription_start to NOW, subscription_end to NOW + 30 days.
+   * Throws if user is not an agent.
+   */
+  async renewAgentSubscription(userId: string) {
+    const client = this.supabaseAdmin.client
+
+    // Verify user is an agent
+    const { data: user, error: fetchError } = await client
+      .from('users')
+      .select('tier')
+      .eq('id', userId)
+      .is('deleted_at', null)
+      .single()
+
+    if (fetchError || !user) {
+      throw new NotFoundException('Khong tim thay nguoi dung')
+    }
+
+    if ((user as unknown as { tier: string }).tier !== 'agent') {
+      throw new BadRequestException('Nguoi dung khong phai dai ly')
+    }
+
+    const now = new Date()
+    const endDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
+
+    const { error } = await client
+      .from('users')
+      .update({
+        subscription_start: now.toISOString(),
+        subscription_end: endDate.toISOString(),
+      })
+      .eq('id', userId)
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return {
+      renewed: true,
+      subscriptionStart: now.toISOString(),
+      subscriptionEnd: endDate.toISOString(),
+    }
+  }
+
+  /**
+   * Revoke agent tier from a user.
+   * Sets tier back to 'user' and clears subscription dates.
+   * NOTE: Published invitations keep their premium plan.
+   */
+  async revokeAgentTier(userId: string) {
+    const client = this.supabaseAdmin.client
+
+    const { error } = await client
+      .from('users')
+      .update({
+        tier: 'user',
+        subscription_start: null,
+        subscription_end: null,
+      })
+      .eq('id', userId)
+      .is('deleted_at', null)
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return { tier: 'user' }
+  }
+
+  /**
+   * Clear storage for expired or soft-deleted invitations.
+   * Removes media from invitation-photos, bank-qr, qr-codes buckets.
+   * Does NOT touch active/published invitation media.
+   */
+  async clearExpiredStorage() {
+    const client = this.supabaseAdmin.client
+
+    // Query invitations that are expired or soft-deleted
+    const { data, error } = await client
+      .from('invitations')
+      .select('id')
+      .or('status.eq.expired,deleted_at.not.is.null')
+
+    if (error) throw new InternalServerErrorException(error.message)
+    if (!data || data.length === 0) {
+      return { cleanedInvitations: 0, estimatedFreedMb: 0 }
+    }
+
+    const invIds = (data as unknown as { id: string }[]).map((r) => r.id)
+    let cleanedCount = 0
+
+    const buckets = ['invitation-photos', 'bank-qr', 'qr-codes']
+
+    for (const invId of invIds) {
+      let hadFiles = false
+
+      for (const bucket of buckets) {
+        try {
+          const { data: files } = await client.storage
+            .from(bucket)
+            .list(invId)
+
+          if (files && files.length > 0) {
+            hadFiles = true
+            await client.storage
+              .from(bucket)
+              .remove(files.map((f) => `${invId}/${f.name}`))
+          }
+        } catch (err) {
+          this.logger.warn(
+            `clearExpiredStorage: failed to clean bucket "${bucket}" for invitation ${invId}: ${err instanceof Error ? err.message : err}`,
+          )
+        }
+      }
+
+      if (hadFiles) cleanedCount++
+    }
+
+    // Heuristic: ~1.5 MB per invitation (matching getStats pattern)
+    const estimatedFreedMb = Math.round(cleanedCount * 1.5 * 10) / 10
+
+    return { cleanedInvitations: cleanedCount, estimatedFreedMb }
+  }
+
+  // ================================================================
   // System Settings
   // ================================================================
 

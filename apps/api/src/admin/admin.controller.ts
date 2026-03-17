@@ -92,6 +92,37 @@ export class AdminController {
     return this.adminService.changeUserRole(id, body.role, user.sub)
   }
 
+  @Post('users/:id/grant-agent')
+  @HttpCode(HttpStatus.OK)
+  grantAgentTier(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() body: { subscriptionStart?: string },
+  ) {
+    return this.adminService.grantAgentTier(id, body.subscriptionStart)
+  }
+
+  @Post('users/:id/renew-agent')
+  @HttpCode(HttpStatus.OK)
+  renewAgentSubscription(@Param('id', ParseUUIDPipe) id: string) {
+    return this.adminService.renewAgentSubscription(id)
+  }
+
+  @Post('users/:id/revoke-agent')
+  @HttpCode(HttpStatus.OK)
+  revokeAgentTier(@Param('id', ParseUUIDPipe) id: string) {
+    return this.adminService.revokeAgentTier(id)
+  }
+
+  // ================================================================
+  // Storage Cleanup
+  // ================================================================
+
+  @Post('clear-storage')
+  @HttpCode(HttpStatus.OK)
+  clearExpiredStorage() {
+    return this.adminService.clearExpiredStorage()
+  }
+
   // ================================================================
   // Invitation Management
   // ================================================================
