@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
-import { CreditCard, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { apiFetch } from '@/lib/api'
 import type { SystemSettings } from '@repo/types'
@@ -61,12 +61,9 @@ export default function AdminServicePlansPage() {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <CreditCard className="size-5 text-gray-700" />
-          <h1 className="text-xl font-semibold text-gray-900">Goi dich vu</h1>
-        </div>
+        <h1 className="text-2xl font-bold text-[#181113] mb-6">Goi dich vu</h1>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="size-6 animate-spin text-gray-400" />
+          <Loader2 className="size-6 animate-spin text-[#ec1349]" />
         </div>
       </div>
     )
@@ -76,18 +73,14 @@ export default function AdminServicePlansPage() {
 
   return (
     <div className="p-6 max-w-4xl">
-      <div className="flex items-center gap-2 mb-1">
-        <CreditCard className="size-5 text-gray-700" />
-        <h1 className="text-xl font-semibold text-gray-900">Goi dich vu</h1>
-      </div>
-      <p className="text-sm text-gray-500 mb-6">So sanh goi va cau hinh gioi han</p>
+      <h1 className="text-2xl font-bold text-[#181113] mb-6">Goi dich vu</h1>
 
       {/* Tier comparison cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         {/* Free tier */}
-        <div className="bg-white rounded-xl border-2 border-gray-200 p-5">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Mien phi</h3>
-          <ul className="space-y-3 text-sm text-gray-700">
+        <div className="bg-white rounded-xl border-2 border-[#e6dbde] p-5">
+          <h3 className="text-lg font-semibold text-[#181113] mb-4">Mien phi</h3>
+          <ul className="space-y-3 text-sm text-[#181113]">
             <li className="flex justify-between">
               <span>So anh toi da</span>
               <span className="font-medium">{limits?.maxPhotosPerInvitation ?? '---'} anh</span>
@@ -110,7 +103,7 @@ export default function AdminServicePlansPage() {
         {/* Premium tier */}
         <div className="bg-white rounded-xl border-2 border-amber-300 p-5">
           <h3 className="text-lg font-semibold text-amber-700 mb-4">Premium</h3>
-          <ul className="space-y-3 text-sm text-gray-700">
+          <ul className="space-y-3 text-sm text-[#181113]">
             <li className="flex justify-between">
               <span>So anh toi da</span>
               <span className="font-medium">{limits?.maxPhotosPremium ?? '---'} anh</span>
@@ -132,43 +125,43 @@ export default function AdminServicePlansPage() {
       </div>
 
       {/* Edit limits form */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-semibold text-gray-700 mb-4">Chinh sua gioi han</h3>
+      <div className="bg-white rounded-xl border border-[#e6dbde] p-5">
+        <h3 className="text-sm font-semibold text-[#89616b] mb-4">Chinh sua gioi han</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="text-xs text-gray-500 block mb-1">So anh toi da (Mien phi)</label>
+            <label className="text-xs font-semibold text-[#89616b] block mb-1">So anh toi da (Mien phi)</label>
             <input
               type="number"
               min={1}
               value={maxPhotos}
               onChange={(e) => setMaxPhotos(Number(e.target.value))}
-              className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="w-full rounded-lg border border-[#e6dbde] px-3 py-1.5 text-sm focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 block mb-1">So anh toi da (Premium)</label>
+            <label className="text-xs font-semibold text-[#89616b] block mb-1">So anh toi da (Premium)</label>
             <input
               type="number"
               min={1}
               value={maxPhotosPremium}
               onChange={(e) => setMaxPhotosPremium(Number(e.target.value))}
-              className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="w-full rounded-lg border border-[#e6dbde] px-3 py-1.5 text-sm focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 block mb-1">Kich thuoc anh toi da (MB)</label>
+            <label className="text-xs font-semibold text-[#89616b] block mb-1">Kich thuoc anh toi da (MB)</label>
             <input
               type="number"
               min={1}
               value={maxPhotoSizeMb}
               onChange={(e) => setMaxPhotoSizeMb(Number(e.target.value))}
-              className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="w-full rounded-lg border border-[#e6dbde] px-3 py-1.5 text-sm focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
             />
           </div>
         </div>
         <div className="mt-4">
           <Button
-            className="bg-gray-900 text-white hover:bg-gray-800 gap-1"
+            className="bg-[#ec1349] text-white hover:bg-red-600 font-bold gap-1"
             onClick={handleSave}
             disabled={saving}
           >
