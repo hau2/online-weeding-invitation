@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 10-03-PLAN.md
-last_updated: "2026-03-17T17:00:58.806Z"
-last_activity: "2026-03-17 — Plan 10-03 complete: Admin agent tier controls and storage cleanup UI"
+stopped_at: Completed 10-04-PLAN.md
+last_updated: "2026-03-17T16:59:36Z"
+last_activity: "2026-03-17 — Plan 10-04 complete: Agent dashboard UI quota bar and draft warning badges"
 progress:
   total_phases: 17
   completed_phases: 15
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 10 (Agent Tier and Storage Management)
-Plan: 3 of 4 in phase 10
-Status: In Progress
-Last activity: 2026-03-17 — Plan 10-03 complete: Admin agent tier controls and storage cleanup UI
+Plan: 4 of 4 in phase 10
+Status: Complete
+Last activity: 2026-03-17 — Plan 10-04 complete: Agent dashboard UI quota bar and draft warning badges
 
-Progress: [██████████] 98%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -112,6 +112,7 @@ Progress: [██████████] 98%
 | Phase 10 P01 | 5min | 2 tasks | 7 files |
 | Phase 10 P02 | 2min | 2 tasks | 5 files |
 | Phase 10 P03 | 3min | 2 tasks | 2 files |
+| Phase 10 P04 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -286,6 +287,9 @@ Recent decisions affecting current work:
 - [Phase 10]: deleteInvitationMedia is public on InvitationsService for reuse by both cron and admin cleanup
 - [Phase 10]: clearExpiredStorage queries both expired status and soft-deleted (deleted_at IS NOT NULL) invitations
 - [Phase 10]: Agent tier defaults to 'user' via nullish coalescing when tier field absent from API response
+- [Phase 10]: AgentQuotaBar replaces plan stat card for agents, maintaining 3-column grid layout
+- [Phase 10]: Draft warning badges apply to all users (not just agents) per CONTEXT.md design decision
+- [Phase 10]: Warning threshold 7 days before 30-day auto-delete; danger badge at 0 or fewer days
 
 ### Roadmap Evolution
 
@@ -309,6 +313,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T17:00:58.803Z
-Stopped at: Completed 10-03-PLAN.md
+Last session: 2026-03-17T16:59:36Z
+Stopped at: Completed 10-04-PLAN.md
 Resume file: None

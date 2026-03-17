@@ -87,7 +87,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **AGT-03**: Agent quota enforcement at publish time (20 published invitations per 30-day cycle)
 - [x] **AGT-04**: Agent dashboard shows quota progress bar (X/20) with days remaining and "Dai ly" indicator
 - [x] **AGT-05**: Drafts older than 30 days from createdAt (never published) are auto-deleted daily with their media
-- [ ] **AGT-06**: Dashboard shows warning badges on draft cards within 7 days of auto-deletion
+- [x] **AGT-06**: Dashboard shows warning badges on draft cards within 7 days of auto-deletion
 - [x] **AGT-07**: Admin can clear storage for expired/soft-deleted invitations from system settings page
 - [x] **AGT-08**: GET /auth/me endpoint returns user profile including tier, subscription, and quota info
 
