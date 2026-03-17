@@ -2,7 +2,7 @@
 import { type Invitation } from '@repo/types'
 import { StatusBadge } from './StatusBadge'
 import { toast } from 'sonner'
-import { Edit2, Copy, Eye, Sparkles, MoreVertical } from 'lucide-react'
+import { Edit2, Copy, Eye, Sparkles, MoreVertical, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
@@ -50,6 +50,13 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
   const canViewPublic = (invitation.status === 'published' || invitation.status === 'save_the_date') && invitation.slug
   const isDraft = invitation.status === 'draft'
 
+  // Draft auto-delete warning: 30 days from createdAt
+  const draftDaysLeft = isDraft
+    ? 30 - Math.floor((Date.now() - new Date(invitation.createdAt).getTime()) / (1000 * 60 * 60 * 24))
+    : null
+  const showDraftWarning = draftDaysLeft !== null && draftDaysLeft <= 7
+  const showDraftDanger = draftDaysLeft !== null && draftDaysLeft <= 0
+
   const copyUrl = async (side: 'groom' | 'bride') => {
     const url = `${window.location.origin}/w/${invitation.slug}?side=${side}`
     try {
@@ -65,8 +72,20 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
       {/* Card thumbnail with status overlay — Stitch style */}
       <div className="h-40 w-full bg-[#f4f0f1] relative overflow-hidden">
         {TEMPLATE_THUMBNAILS[invitation.templateId] ?? TEMPLATE_THUMBNAILS.traditional}
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
           <StatusBadge status={invitation.status} />
+          {showDraftDanger && (
+            <span className="inline-flex items-center gap-1 bg-[#ec1349]/10 text-[#ec1349] rounded-md px-2 py-0.5 text-xs font-medium">
+              <AlertTriangle className="size-3" />
+              Sắp bị xóa
+            </span>
+          )}
+          {showDraftWarning && !showDraftDanger && (
+            <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-md px-2 py-0.5 text-xs font-medium">
+              <AlertTriangle className="size-3" />
+              Sẽ bị xóa sau {draftDaysLeft} ngày
+            </span>
+          )}
         </div>
         {invitation.plan === 'premium' && (
           <div className="absolute top-3 left-3">

@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { type Invitation, type UserProfile } from '@repo/types'
 import { InvitationGrid } from './InvitationGrid'
+import { AgentQuotaBar } from './AgentQuotaBar'
 import { Plus, Award, Globe, Timer } from 'lucide-react'
 
 interface DashboardClientProps {
@@ -11,6 +12,7 @@ interface DashboardClientProps {
 
 export function DashboardClient({ invitations, userProfile }: DashboardClientProps) {
   const router = useRouter()
+  const isAgent = userProfile?.tier === 'agent'
 
   const publishedCount = invitations.filter(
     (i) => i.status === 'published' || i.status === 'save_the_date'
@@ -25,9 +27,16 @@ export function DashboardClient({ invitations, userProfile }: DashboardClientPro
         <div>
           <h1 className="text-2xl font-bold text-[#181113]">
             Thiệp cưới của bạn
+            {isAgent && (
+              <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 px-2 py-0.5 text-xs font-medium ml-2 align-middle">
+                Đại lý
+              </span>
+            )}
           </h1>
           <p className="text-[#89616b] mt-1">
-            Dưới đây là tổng quan về các thiệp cưới của bạn.
+            {isAgent
+              ? 'Xin chào, (Đại lý) - Dưới đây là tổng quan về các thiệp cưới của bạn.'
+              : 'Dưới đây là tổng quan về các thiệp cưới của bạn.'}
           </p>
         </div>
         <button
@@ -41,16 +50,25 @@ export function DashboardClient({ invitations, userProfile }: DashboardClientPro
 
       {/* Stats Cards — Stitch style: 3-column grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Card 1: Current plan */}
-        <div className="bg-white p-5 rounded-xl border border-[#e6dbde] shadow-sm flex flex-col justify-between h-32 hover:border-[#ec1349]/30 transition-colors">
-          <div className="flex justify-between items-start">
-            <p className="text-[#5e4d52] text-sm font-medium">Gói hiện tại</p>
-            <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
-              <Award className="size-5" />
+        {/* Card 1: Current plan or Agent Quota */}
+        {isAgent && userProfile ? (
+          <AgentQuotaBar
+            published={userProfile.quotaUsed}
+            limit={userProfile.quotaLimit}
+            daysRemaining={userProfile.daysRemaining}
+            subscriptionEnd={userProfile.subscriptionEnd}
+          />
+        ) : (
+          <div className="bg-white p-5 rounded-xl border border-[#e6dbde] shadow-sm flex flex-col justify-between h-32 hover:border-[#ec1349]/30 transition-colors">
+            <div className="flex justify-between items-start">
+              <p className="text-[#5e4d52] text-sm font-medium">Gói hiện tại</p>
+              <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                <Award className="size-5" />
+              </div>
             </div>
+            <p className="text-[#181113] text-2xl font-bold">Thanh toán theo lượt</p>
           </div>
-          <p className="text-[#181113] text-2xl font-bold">Thanh toán theo lượt</p>
-        </div>
+        )}
         {/* Card 2: Published invitations */}
         <div className="bg-white p-5 rounded-xl border border-[#e6dbde] shadow-sm flex flex-col justify-between h-32 hover:border-[#ec1349]/30 transition-colors">
           <div className="flex justify-between items-start">
