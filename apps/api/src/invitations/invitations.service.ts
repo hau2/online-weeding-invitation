@@ -1514,6 +1514,74 @@ export class InvitationsService {
   }
 
   /**
+   * Delete draft invitations older than 30 days (from createdAt) that have
+   * never been published (slug IS NULL). Also removes associated media from
+   * Supabase Storage buckets.
+   *
+   * Returns the number of drafts deleted.
+   */
+  async deleteExpiredDrafts(): Promise<number> {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+
+    // Only delete drafts that have NEVER been published (slug IS NULL)
+    // Per CONTEXT.md: 30 days from createdAt (NOT updatedAt)
+    const { data, error } = await this.supabaseAdmin.client
+      .from('invitations')
+      .select('id')
+      .eq('status', 'draft')
+      .is('slug', null)
+      .is('deleted_at', null)
+      .lt('created_at', thirtyDaysAgo)
+
+    if (error || !data || data.length === 0) return 0
+
+    let deletedCount = 0
+    for (const row of data as unknown as { id: string }[]) {
+      // Delete media from all storage buckets
+      await this.deleteInvitationMedia(row.id)
+
+      // Hard delete the draft record
+      const { error: delError } = await this.supabaseAdmin.client
+        .from('invitations')
+        .delete()
+        .eq('id', row.id)
+
+      if (!delError) deletedCount++
+    }
+
+    return deletedCount
+  }
+
+  /**
+   * Delete all media associated with an invitation from Supabase Storage.
+   * Cleans up invitation-photos, bank-qr, and qr-codes buckets.
+   * Non-blocking: each bucket operation wrapped in try/catch.
+   */
+  async deleteInvitationMedia(invitationId: string): Promise<void> {
+    const client = this.supabaseAdmin.client
+
+    const buckets = ['invitation-photos', 'bank-qr', 'qr-codes']
+
+    for (const bucket of buckets) {
+      try {
+        const { data: files } = await client.storage
+          .from(bucket)
+          .list(invitationId)
+
+        if (files && files.length > 0) {
+          await client.storage
+            .from(bucket)
+            .remove(files.map((f) => `${invitationId}/${f.name}`))
+        }
+      } catch (err) {
+        this.logger.warn(
+          `deleteInvitationMedia: failed to clean bucket "${bucket}" for invitation ${invitationId}: ${err instanceof Error ? err.message : err}`,
+        )
+      }
+    }
+  }
+
+  /**
    * Admin updates notes for an invitation.
    */
   async adminUpdateNotes(invitationId: string, notes: string) {

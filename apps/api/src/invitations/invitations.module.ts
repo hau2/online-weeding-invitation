@@ -4,11 +4,12 @@ import { InvitationsController } from './invitations.controller'
 import { PublicInvitationsController } from './public-invitations.controller'
 import { InvitationsService } from './invitations.service'
 import { ExpiryCronService } from './expiry/expiry-cron.service'
+import { DraftCleanupCronService } from './expiry/draft-cleanup-cron.service'
 import { SupabaseModule } from '../supabase/supabase.module'
 
 @Module({
   imports: [SupabaseModule, ScheduleModule.forRoot()],
   controllers: [InvitationsController, PublicInvitationsController],
-  providers: [InvitationsService, ExpiryCronService],
+  providers: [InvitationsService, ExpiryCronService, DraftCleanupCronService],
 })
 export class InvitationsModule {}
