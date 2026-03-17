@@ -6,10 +6,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <SidebarProvider>
       <AdminSidebar />
       <SidebarInset>
-        <header className="flex items-center gap-2 px-4 h-14 border-b border-gray-200 bg-white">
-          <SidebarTrigger className="text-gray-500 hover:text-gray-700" />
+        <header className="flex items-center gap-3 px-6 h-14 border-b border-[#e6dbde] bg-white">
+          <SidebarTrigger className="text-[#89616b] hover:text-[#ec1349]" />
         </header>
-        <main className="flex-1 bg-gray-50 min-h-[calc(100vh-3.5rem)] p-6">
+        <main className="flex-1 bg-[#f8f6f6] font-[family-name:var(--font-display)] min-h-[calc(100vh-3.5rem)] p-6">
           {children}
         </main>
       </SidebarInset>

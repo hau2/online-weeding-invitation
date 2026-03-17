@@ -24,13 +24,16 @@ const adminNavItems = [
 export function AdminSidebar() {
   const pathname = usePathname()
   return (
-    <Sidebar collapsible="icon" className="border-r border-gray-200 bg-white">
-      <SidebarHeader className="border-b border-gray-200 p-4">
-        <span className="text-gray-700 font-semibold text-sm">Admin Panel</span>
+    <Sidebar collapsible="icon" className="border-r border-[#2a1f22] bg-[#181113]">
+      <SidebarHeader className="border-b border-[#2a1f22] p-4">
+        <div>
+          <span className="text-white font-bold text-base font-[family-name:var(--font-display)]">Thiep Cuoi Online</span>
+          <p className="text-[#89616b] text-xs font-semibold uppercase tracking-wide mt-0.5">Admin</p>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-gray-400 text-xs uppercase tracking-wide">
+          <SidebarGroupLabel className="text-[#89616b] text-xs uppercase tracking-wide">
             Quản lý
           </SidebarGroupLabel>
           <SidebarMenu>
@@ -39,7 +42,7 @@ export function AdminSidebar() {
                 <SidebarMenuButton
                   render={<Link href={item.href} />}
                   isActive={pathname === item.href}
-                  className="text-gray-700 hover:bg-gray-100 data-[active=true]:bg-gray-100"
+                  className="text-[#b8a0a5] hover:bg-[#2a1f22] hover:text-white rounded-lg transition-colors data-[active=true]:bg-[#ec1349]/15 data-[active=true]:text-[#ec1349] data-[active=true]:font-bold"
                 >
                   <item.icon className="size-4" />
                   <span>{item.label}</span>
