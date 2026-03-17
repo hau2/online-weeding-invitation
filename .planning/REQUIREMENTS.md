@@ -101,7 +101,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **CT-06**: Public page resolves and renders custom themes from API themeConfig response
 - [x] **CT-07**: TemplateSelector shows published custom themes after built-in themes
 - [x] **CT-08**: SharedTemplate renders backgroundImageUrl as fixed full-page background
-- [ ] **CT-09**: Theme builder has split-panel form with live SharedTemplate preview, native color pickers, background image upload
+- [x] **CT-09**: Theme builder has split-panel form with live SharedTemplate preview, native color pickers, background image upload
 - [x] **CT-10**: template_id CHECK constraint dropped so invitations accept custom theme slugs
 
 ## v2 Requirements

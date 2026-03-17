@@ -19,7 +19,7 @@ This roadmap builds a self-service SaaS platform for Vietnamese couples to creat
 - [ ] **Phase 7: Monetization** - Free/Premium tiers, watermark enforcement, admin payment QR, and manual Premium grant workflow
 - [ ] **Phase 8: Admin Panel** - All 8 admin sections: users, invitations, themes, music library, plans, payments, system settings
 - [ ] **Phase 9: Polish and Performance** - 3G optimization, auto-expiry cron, elderly UX, animation fallbacks, and production hardening
-- [ ] **Phase 11: Custom Theme Builder** - Data-driven template system allowing admin to create new themes from the admin panel without code changes
+- [x] **Phase 11: Custom Theme Builder** - Data-driven template system allowing admin to create new themes from the admin panel without code changes (completed 2026-03-17)
 - [ ] **Phase 12: Security Hardening** - Rate limiting, anti-spam, storage abuse prevention, content protection, input sanitization, and API security
 
 ## Phase Details
@@ -226,7 +226,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 9. Polish and Performance | 3/3 | Complete | 2013-03-16 |
 | 9.1 Public Page Redesign | 5/5 | Complete | 2026-03-16 |
 | 10. Agent Tier and Storage | 4/4 | Complete    | 2026-03-17 |
-| 11. Custom Theme Builder | 2/3 | In Progress|  |
+| 11. Custom Theme Builder | 3/3 | Complete   | 2026-03-17 |
 | 12. Security Hardening | 0/0 | Not started | - |
 | 13. Editor UI Redesign | 5/5 | Complete    | 2026-03-16 |
 | 14. Dashboard & Auth Redesign | 2/2 | Complete    | 2026-03-17 |
@@ -286,7 +286,7 @@ Plans:
   3. Existing hardcoded templates (6 built-in themes) continue to work alongside custom themes
   4. Admin can preview a theme with sample data before publishing it to users
   5. Admin can edit or disable a theme -- disabled themes remain visible on invitations that already use them but are hidden from the selector
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 11-01-PLAN.md — DB migration (custom_themes table, theme-assets bucket, drop template_id CHECK), shared types, NestJS CRUD endpoints, findBySlug custom theme resolution
