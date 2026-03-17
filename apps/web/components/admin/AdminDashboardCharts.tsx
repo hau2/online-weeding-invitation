@@ -22,28 +22,29 @@ export function AdminDashboardCharts({ chartData }: AdminDashboardChartsProps) {
 
   return (
     <div className="mt-6">
-      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h3 className="text-sm font-semibold text-gray-700 mb-4">
+      <div className="bg-white rounded-xl border border-[#e6dbde] p-6 shadow-sm">
+        <h3 className="text-sm font-semibold text-[#89616b] mb-4">
           Thiep cuoi tao trong 30 ngay qua
         </h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={formattedData} margin={{ top: 5, right: 10, bottom: 5, left: -20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e6dbde" />
               <XAxis
                 dataKey="label"
-                tick={{ fontSize: 11, fill: '#9ca3af' }}
+                tick={{ fontSize: 11, fill: '#89616b' }}
                 interval="preserveStartEnd"
               />
               <YAxis
-                tick={{ fontSize: 11, fill: '#9ca3af' }}
+                tick={{ fontSize: 11, fill: '#89616b' }}
                 allowDecimals={false}
               />
               <Tooltip
                 contentStyle={{
                   fontSize: 12,
-                  borderRadius: 8,
-                  border: '1px solid #e5e7eb',
+                  borderRadius: 12,
+                  border: '1px solid #e6dbde',
+                  boxShadow: '0 4px 12px rgba(24, 17, 19, 0.08)',
                 }}
                 labelFormatter={(label) => `Ngay: ${label}`}
                 formatter={(value) => [String(value), 'Thiep cuoi']}
@@ -51,10 +52,10 @@ export function AdminDashboardCharts({ chartData }: AdminDashboardChartsProps) {
               <Line
                 type="monotone"
                 dataKey="count"
-                stroke="#6b7280"
+                stroke="#ec1349"
                 strokeWidth={2}
-                dot={{ r: 2, fill: '#6b7280' }}
-                activeDot={{ r: 4, fill: '#6b7280' }}
+                dot={{ r: 2, fill: '#ec1349' }}
+                activeDot={{ r: 4, fill: '#ec1349' }}
               />
             </LineChart>
           </ResponsiveContainer>

@@ -30,10 +30,10 @@ export default function AdminDashboardPage() {
     return (
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900">Tong quan he thong</h1>
+          <h1 className="text-2xl font-bold text-[#181113]">Tong quan he thong</h1>
         </div>
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="size-6 animate-spin text-gray-400" />
+          <Loader2 className="size-6 animate-spin text-[#ec1349]" />
         </div>
       </div>
     )
@@ -42,7 +42,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900">Tong quan he thong</h1>
+        <h1 className="text-2xl font-bold text-[#181113]">Tong quan he thong</h1>
       </div>
 
       {/* Stat cards row */}
@@ -51,31 +51,37 @@ export default function AdminDashboardPage() {
           title="Tong nguoi dung"
           value={stats?.totalUsers ?? '\u2014'}
           icon={Users}
+          iconColorClass="bg-blue-500"
         />
         <StatCard
           title="Tong thiep cuoi"
           value={stats?.totalInvitations ?? '\u2014'}
           icon={FileText}
+          iconColorClass="bg-[#ec1349]"
         />
         <StatCard
           title="Da xuat ban"
           value={stats?.publishedInvitations ?? '\u2014'}
           icon={CheckCircle}
+          iconColorClass="bg-green-500"
         />
         <StatCard
           title="Premium"
           value={stats?.premiumInvitations ?? '\u2014'}
           icon={DollarSign}
+          iconColorClass="bg-amber-500"
         />
         <StatCard
           title="Doanh thu"
           value={stats ? `${new Intl.NumberFormat('vi-VN').format(stats.revenueTotal)} d` : '\u2014'}
           icon={Banknote}
+          iconColorClass="bg-purple-500"
         />
         <StatCard
           title="Dung luong"
           value={stats ? `${stats.storageEstimateMb} MB` : '\u2014'}
           icon={HardDrive}
+          iconColorClass="bg-cyan-500"
         />
       </div>
 

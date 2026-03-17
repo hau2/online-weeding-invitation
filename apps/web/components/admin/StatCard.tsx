@@ -6,28 +6,32 @@ interface StatCardProps {
   value: string | number
   description?: string
   icon: LucideIcon
+  iconColorClass?: string
   trend?: { value: number; label: string }
   className?: string
 }
 
-export function StatCard({ title, value, description, icon: Icon, trend, className }: StatCardProps) {
+export function StatCard({ title, value, description, icon: Icon, iconColorClass, trend, className }: StatCardProps) {
   return (
     <div className={cn(
-      'bg-white rounded-xl border border-gray-200 p-6 flex flex-col gap-4 shadow-sm',
+      'bg-white rounded-xl border border-[#e6dbde] p-6 flex flex-col gap-4 shadow-sm',
       className
     )}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-gray-500 font-medium">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
-          {description && <p className="text-xs text-gray-400 mt-1">{description}</p>}
+          <p className="text-sm text-[#89616b] font-medium">{title}</p>
+          <p className="text-3xl font-bold text-[#181113] mt-1">{value}</p>
+          {description && <p className="text-xs text-[#89616b] mt-1">{description}</p>}
         </div>
-        <div className="size-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
-          <Icon className="size-5 text-gray-600" />
+        <div className={cn(
+          'size-10 rounded-lg flex items-center justify-center flex-shrink-0',
+          iconColorClass || 'bg-[#f4f0f1]'
+        )}>
+          <Icon className={cn('size-5', iconColorClass ? 'text-white' : 'text-[#89616b]')} />
         </div>
       </div>
       {trend && (
-        <div className="flex items-center gap-1 text-xs text-gray-500">
+        <div className="flex items-center gap-1 text-xs text-[#89616b]">
           <TrendingUp className="size-3 text-green-500" />
           <span className="text-green-600 font-medium">{trend.value > 0 ? '+' : ''}{trend.value}%</span>
           <span>{trend.label}</span>
