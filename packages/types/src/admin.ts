@@ -78,3 +78,28 @@ export interface ThemeInfo {
   thumbnail: string | null
   isActive: boolean
 }
+
+export interface CustomTheme {
+  id: string
+  slug: string
+  name: string
+  baseTheme: string
+  config: Record<string, unknown>  // ThemeConfig stored as JSONB
+  backgroundImageUrl: string | null
+  thumbnailUrl: string | null
+  status: 'draft' | 'published' | 'disabled'
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CustomThemeListItem {
+  id: string
+  slug: string
+  name: string
+  baseTheme: string
+  status: 'draft' | 'published' | 'disabled'
+  backgroundImageUrl: string | null
+  thumbnailUrl: string | null
+  createdAt: string
+  updatedAt: string
+}

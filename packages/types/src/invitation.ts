@@ -1,16 +1,8 @@
 export type InvitationStatus = 'draft' | 'published' | 'save_the_date' | 'expired'
-export type TemplateId =
-  // Legacy IDs (backward compatibility -- auto-mapped to new themes)
-  | 'traditional'
-  | 'modern'
-  | 'minimalist'
-  // New theme IDs
-  | 'modern-red'
-  | 'soft-pink'
-  | 'brown-gold'
-  | 'olive-green'
-  | 'minimalist-bw'
-  | 'classic-red-gold'
+// Widened to string to support custom theme slugs (e.g. "hoa-hong-do-a3f1").
+// Built-in theme IDs: 'traditional', 'modern', 'minimalist',
+// 'modern-red', 'soft-pink', 'brown-gold', 'olive-green', 'minimalist-bw', 'classic-red-gold'
+export type TemplateId = string
 export type InvitationPlan = 'free' | 'premium'
 export type PaymentStatus = 'none' | 'pending' | 'rejected' | 'refunded'
 
