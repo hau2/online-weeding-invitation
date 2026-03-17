@@ -439,7 +439,7 @@ export class InvitationsService {
    * Returns 404 for draft/deleted/nonexistent slugs.
    * Includes expiry flag, isSaveTheDate flag, and resolved musicUrl when applicable.
    */
-  async findBySlug(slug: string): Promise<Invitation & { expired: boolean; isSaveTheDate: boolean; musicUrl?: string }> {
+  async findBySlug(slug: string): Promise<Invitation & { expired: boolean; isSaveTheDate: boolean; musicUrl?: string; themeConfig?: Record<string, unknown> }> {
     const { data, error } = await this.supabaseAdmin.client
       .from('invitations')
       .select(SELECT_ALL)
@@ -515,6 +515,24 @@ export class InvitationsService {
       }
     }
 
+    // Resolve custom theme config if not a built-in theme
+    const BUILTIN_IDS = [
+      'modern-red', 'soft-pink', 'brown-gold', 'olive-green',
+      'minimalist-bw', 'classic-red-gold',
+      'traditional', 'modern', 'minimalist',
+    ]
+    let themeConfig: Record<string, unknown> | undefined
+    if (!BUILTIN_IDS.includes(row.template_id)) {
+      const { data: customTheme } = await this.supabaseAdmin.client
+        .from('custom_themes')
+        .select('config')
+        .eq('slug', row.template_id)
+        .single()
+      if (customTheme) {
+        themeConfig = (customTheme as unknown as { config: Record<string, unknown> }).config
+      }
+    }
+
     return {
       ...mapped,
       expired,
@@ -522,6 +540,7 @@ export class InvitationsService {
       ...(musicUrl ? { musicUrl } : {}),
       ...(watermarkText ? { watermarkText } : {}),
       ...(watermarkOpacity !== undefined ? { watermarkOpacity } : {}),
+      ...(themeConfig ? { themeConfig } : {}),
     }
   }
 

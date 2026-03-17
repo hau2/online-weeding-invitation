@@ -6,17 +6,24 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { randomBytes } from 'crypto'
+import * as sharp from 'sharp'
 import { filetypemime } from 'magic-bytes.js'
 import type {
   AdminStats,
   AdminUser,
   AdminInvitation,
   AdminMusicTrack,
+  CustomTheme,
+  CustomThemeListItem,
   SystemSettings,
   ThemeInfo,
 } from '@repo/types'
 import { SupabaseAdminService } from '../supabase/supabase.service'
 import { UpdateSystemSettingsDto } from './dto/update-system-settings.dto'
+import { CreateCustomThemeDto } from './dto/create-custom-theme.dto'
+import { UpdateCustomThemeDto } from './dto/update-custom-theme.dto'
+import { BUILTIN_IDS, resolveBuiltinTheme } from './builtin-themes'
 
 /** DB row shape for users table */
 interface UserRow {
@@ -70,6 +77,71 @@ interface SettingsRow {
   key: string
   value: Record<string, unknown>
   updated_at: string
+}
+
+/** DB row shape for custom_themes table */
+interface CustomThemeRow {
+  id: string
+  slug: string
+  name: string
+  base_theme: string
+  config: Record<string, unknown>
+  background_image_url: string | null
+  thumbnail_url: string | null
+  status: 'draft' | 'published' | 'disabled'
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * Vietnamese diacritics normalization map for slug generation.
+ * Strips combining marks and maps precomposed chars to ASCII.
+ */
+const VIETNAMESE_MAP: Record<string, string> = {
+  'a': 'a', 'A': 'A',
+  '\u00e0': 'a', '\u00e1': 'a', '\u1ea3': 'a', '\u00e3': 'a', '\u1ea1': 'a',
+  '\u00c0': 'A', '\u00c1': 'A', '\u1ea2': 'A', '\u00c3': 'A', '\u1ea0': 'A',
+  '\u0103': 'a', '\u1eb1': 'a', '\u1eaf': 'a', '\u1eb3': 'a', '\u1eb5': 'a', '\u1eb7': 'a',
+  '\u0102': 'A', '\u1eb0': 'A', '\u1eae': 'A', '\u1eb2': 'A', '\u1eb4': 'A', '\u1eb6': 'A',
+  '\u00e2': 'a', '\u1ea7': 'a', '\u1ea5': 'a', '\u1ea9': 'a', '\u1eab': 'a', '\u1ead': 'a',
+  '\u00c2': 'A', '\u1ea6': 'A', '\u1ea4': 'A', '\u1ea8': 'A', '\u1eaa': 'A', '\u1eac': 'A',
+  '\u0111': 'd', '\u0110': 'D',
+  '\u00e8': 'e', '\u00e9': 'e', '\u1ebb': 'e', '\u1ebd': 'e', '\u1eb9': 'e',
+  '\u00c8': 'E', '\u00c9': 'E', '\u1eba': 'E', '\u1ebc': 'E', '\u1eb8': 'E',
+  '\u00ea': 'e', '\u1ec1': 'e', '\u1ebf': 'e', '\u1ec3': 'e', '\u1ec5': 'e', '\u1ec7': 'e',
+  '\u00ca': 'E', '\u1ec0': 'E', '\u1ebe': 'E', '\u1ec2': 'E', '\u1ec4': 'E', '\u1ec6': 'E',
+  '\u00ec': 'i', '\u00ed': 'i', '\u1ec9': 'i', '\u0129': 'i', '\u1ecb': 'i',
+  '\u00cc': 'I', '\u00cd': 'I', '\u1ec8': 'I', '\u0128': 'I', '\u1eca': 'I',
+  '\u00f2': 'o', '\u00f3': 'o', '\u1ecf': 'o', '\u00f5': 'o', '\u1ecd': 'o',
+  '\u00d2': 'O', '\u00d3': 'O', '\u1ece': 'O', '\u00d5': 'O', '\u1ecc': 'O',
+  '\u00f4': 'o', '\u1ed3': 'o', '\u1ed1': 'o', '\u1ed5': 'o', '\u1ed7': 'o', '\u1ed9': 'o',
+  '\u00d4': 'O', '\u1ed2': 'O', '\u1ed0': 'O', '\u1ed4': 'O', '\u1ed6': 'O', '\u1ed8': 'O',
+  '\u01a1': 'o', '\u1edd': 'o', '\u1edb': 'o', '\u1edf': 'o', '\u1ee1': 'o', '\u1ee3': 'o',
+  '\u01a0': 'O', '\u1edc': 'O', '\u1eda': 'O', '\u1ede': 'O', '\u1ee0': 'O', '\u1ee2': 'O',
+  '\u00f9': 'u', '\u00fa': 'u', '\u1ee7': 'u', '\u0169': 'u', '\u1ee5': 'u',
+  '\u00d9': 'U', '\u00da': 'U', '\u1ee6': 'U', '\u0168': 'U', '\u1ee4': 'U',
+  '\u01b0': 'u', '\u1eeb': 'u', '\u1ee9': 'u', '\u1eed': 'u', '\u1eef': 'u', '\u1ef1': 'u',
+  '\u01af': 'U', '\u1eea': 'U', '\u1ee8': 'U', '\u1eec': 'U', '\u1eee': 'U', '\u1ef0': 'U',
+  '\u1ef3': 'y', '\u00fd': 'y', '\u1ef7': 'y', '\u1ef9': 'y', '\u1ef5': 'y',
+  '\u1ef2': 'Y', '\u00dd': 'Y', '\u1ef6': 'Y', '\u1ef8': 'Y', '\u1ef4': 'Y',
+}
+
+function normalizeVietnamese(str: string): string {
+  return str
+    .split('')
+    .map((ch) => VIETNAMESE_MAP[ch] ?? ch)
+    .join('')
+}
+
+function generateSlug(name: string): string {
+  const normalized = normalizeVietnamese(name)
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+  const suffix = randomBytes(2).toString('hex') // 4-char hex
+  return `${normalized}-${suffix}`
 }
 
 /** Map key name to camelCase property name for SystemSettings */
@@ -940,6 +1012,361 @@ export class AdminService {
       thumbnail: themeConfig[themeId].thumbnail,
       isActive: themeConfig[themeId].isActive,
     }
+  }
+
+  // ================================================================
+  // Custom Theme Management
+  // ================================================================
+
+  private mapCustomThemeRow(row: CustomThemeRow): CustomTheme {
+    return {
+      id: row.id,
+      slug: row.slug,
+      name: row.name,
+      baseTheme: row.base_theme,
+      config: row.config,
+      backgroundImageUrl: row.background_image_url,
+      thumbnailUrl: row.thumbnail_url,
+      status: row.status,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    }
+  }
+
+  async listCustomThemes(): Promise<CustomThemeListItem[]> {
+    const client = this.supabaseAdmin.client
+
+    const { data, error } = await client
+      .from('custom_themes')
+      .select('id, slug, name, base_theme, status, background_image_url, thumbnail_url, created_at, updated_at')
+      .order('created_at', { ascending: false })
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return ((data as unknown as CustomThemeRow[]) ?? []).map((row) => ({
+      id: row.id,
+      slug: row.slug,
+      name: row.name,
+      baseTheme: row.base_theme,
+      status: row.status,
+      backgroundImageUrl: row.background_image_url,
+      thumbnailUrl: row.thumbnail_url,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    }))
+  }
+
+  async getCustomTheme(slug: string): Promise<CustomTheme> {
+    const client = this.supabaseAdmin.client
+
+    const { data, error } = await client
+      .from('custom_themes')
+      .select('*')
+      .eq('slug', slug)
+      .single()
+
+    if (error || !data) {
+      throw new NotFoundException('Khong tim thay giao dien tuy chinh')
+    }
+
+    return this.mapCustomThemeRow(data as unknown as CustomThemeRow)
+  }
+
+  async createCustomTheme(dto: CreateCustomThemeDto): Promise<CustomTheme> {
+    const client = this.supabaseAdmin.client
+
+    // Resolve base theme config
+    const baseConfig = resolveBuiltinTheme(dto.baseTheme)
+    if (!baseConfig) {
+      // Try to find a custom theme as base
+      const { data: customBase } = await client
+        .from('custom_themes')
+        .select('config')
+        .eq('slug', dto.baseTheme)
+        .single()
+
+      if (!customBase) {
+        throw new BadRequestException(
+          'Khong tim thay giao dien goc. Vui long chon giao dien hop le.',
+        )
+      }
+    }
+
+    const sourceConfig = baseConfig
+      ? { ...baseConfig }
+      : (await client
+          .from('custom_themes')
+          .select('config')
+          .eq('slug', dto.baseTheme)
+          .single()
+          .then((res) => ({ ...(res.data as unknown as { config: Record<string, unknown> }).config })))
+
+    // Generate slug from name
+    const slug = generateSlug(dto.name)
+
+    // Deep clone and customize
+    const clonedConfig = JSON.parse(JSON.stringify(sourceConfig)) as Record<string, unknown>
+    clonedConfig.id = slug
+    clonedConfig.name = dto.name
+
+    // Insert into DB
+    const { data, error } = await client
+      .from('custom_themes')
+      .insert({
+        slug,
+        name: dto.name,
+        base_theme: dto.baseTheme,
+        config: clonedConfig,
+        status: 'draft',
+      })
+      .select('*')
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return this.mapCustomThemeRow(data as unknown as CustomThemeRow)
+  }
+
+  async updateCustomTheme(
+    id: string,
+    dto: UpdateCustomThemeDto,
+    backgroundImageFile?: Express.Multer.File,
+  ): Promise<CustomTheme> {
+    const client = this.supabaseAdmin.client
+
+    // Fetch existing row
+    const { data: existing, error: fetchError } = await client
+      .from('custom_themes')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (fetchError || !existing) {
+      throw new NotFoundException('Khong tim thay giao dien tuy chinh')
+    }
+
+    const row = existing as unknown as CustomThemeRow
+    const updateObj: Record<string, unknown> = {}
+
+    // Merge config if provided (JSON string from FormData)
+    if (dto.config) {
+      let parsedConfig: Record<string, unknown>
+      try {
+        parsedConfig = JSON.parse(dto.config)
+      } catch {
+        throw new BadRequestException('Config JSON khong hop le')
+      }
+
+      // Validate hex colors for known color fields
+      const colorFields = [
+        'primaryColor', 'backgroundColor', 'surfaceColor',
+        'textColor', 'mutedTextColor', 'footerBg', 'footerTextColor',
+      ]
+      const hexRegex = /^#[0-9a-fA-F]{6}$/
+      for (const field of colorFields) {
+        if (parsedConfig[field] !== undefined && typeof parsedConfig[field] === 'string') {
+          // footerBg may be a hex color for custom themes
+          if (!hexRegex.test(parsedConfig[field] as string) && field !== 'footerBg') {
+            throw new BadRequestException(`${field} phai la ma mau hex hop le (vi du: #ec1349)`)
+          }
+          // For footerBg, allow both hex and Tailwind classes
+          if (field === 'footerBg' && !hexRegex.test(parsedConfig[field] as string) && !(parsedConfig[field] as string).startsWith('bg-')) {
+            throw new BadRequestException(`footerBg phai la ma mau hex hoac Tailwind class`)
+          }
+        }
+      }
+
+      // Validate petal colors if present
+      if (Array.isArray(parsedConfig.petalColors)) {
+        for (const color of parsedConfig.petalColors as string[]) {
+          if (!hexRegex.test(color)) {
+            throw new BadRequestException(`Mau canh hoa phai la ma mau hex hop le`)
+          }
+        }
+      }
+
+      const mergedConfig = { ...row.config, ...parsedConfig }
+      updateObj.config = mergedConfig
+    }
+
+    if (dto.name) {
+      updateObj.name = dto.name
+      // Also update name in config
+      if (updateObj.config) {
+        (updateObj.config as Record<string, unknown>).name = dto.name
+      } else {
+        updateObj.config = { ...row.config, name: dto.name }
+      }
+    }
+
+    if (dto.status) {
+      updateObj.status = dto.status
+    }
+
+    // Handle background image upload
+    if (backgroundImageFile) {
+      const detectedMimes = filetypemime(backgroundImageFile.buffer)
+      const isAllowed = detectedMimes.some(
+        (mime: string) => ['image/jpeg', 'image/png', 'image/webp'].includes(mime),
+      )
+      if (!isAllowed) {
+        throw new BadRequestException(
+          'Dinh dang hinh khong hop le. Chi chap nhan JPEG, PNG, WebP.',
+        )
+      }
+
+      // Process with sharp: resize to max 1920px width, convert to WebP quality 80
+      const processedBuffer = await sharp(backgroundImageFile.buffer)
+        .resize({ width: 1920, withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toBuffer()
+
+      const storagePath = `${id}/background.webp`
+      const { error: uploadError } = await client.storage
+        .from('theme-assets')
+        .upload(storagePath, processedBuffer, {
+          contentType: 'image/webp',
+          upsert: true,
+        })
+
+      if (uploadError) {
+        throw new InternalServerErrorException(
+          `Khong the tai hinh len: ${uploadError.message}`,
+        )
+      }
+
+      const { data: urlData } = client.storage
+        .from('theme-assets')
+        .getPublicUrl(storagePath)
+
+      updateObj.background_image_url = urlData.publicUrl
+
+      // Also store in config.backgroundImageUrl
+      if (updateObj.config) {
+        (updateObj.config as Record<string, unknown>).backgroundImageUrl = urlData.publicUrl
+      } else {
+        updateObj.config = { ...row.config, backgroundImageUrl: urlData.publicUrl }
+      }
+    }
+
+    if (Object.keys(updateObj).length === 0) {
+      return this.mapCustomThemeRow(row)
+    }
+
+    const { data, error } = await client
+      .from('custom_themes')
+      .update(updateObj)
+      .eq('id', id)
+      .select('*')
+      .single()
+
+    if (error) throw new InternalServerErrorException(error.message)
+
+    return this.mapCustomThemeRow(data as unknown as CustomThemeRow)
+  }
+
+  async publishCustomTheme(id: string): Promise<CustomTheme> {
+    const client = this.supabaseAdmin.client
+
+    const { data, error } = await client
+      .from('custom_themes')
+      .update({ status: 'published' })
+      .eq('id', id)
+      .select('*')
+      .single()
+
+    if (error || !data) {
+      throw new NotFoundException('Khong tim thay giao dien tuy chinh')
+    }
+
+    const row = data as unknown as CustomThemeRow
+
+    // Trigger ISR revalidation for all invitations using this theme
+    const { data: invitations } = await client
+      .from('invitations')
+      .select('slug')
+      .eq('template_id', row.slug)
+      .in('status', ['published', 'save_the_date'])
+      .is('deleted_at', null)
+
+    if (invitations) {
+      for (const inv of invitations as unknown as { slug: string | null }[]) {
+        if (inv.slug) {
+          await this.triggerRevalidation(inv.slug)
+        }
+      }
+    }
+
+    return this.mapCustomThemeRow(row)
+  }
+
+  async disableCustomTheme(id: string): Promise<CustomTheme> {
+    const client = this.supabaseAdmin.client
+
+    const { data, error } = await client
+      .from('custom_themes')
+      .update({ status: 'disabled' })
+      .eq('id', id)
+      .select('*')
+      .single()
+
+    if (error || !data) {
+      throw new NotFoundException('Khong tim thay giao dien tuy chinh')
+    }
+
+    return this.mapCustomThemeRow(data as unknown as CustomThemeRow)
+  }
+
+  async deleteCustomTheme(id: string) {
+    const client = this.supabaseAdmin.client
+
+    // Fetch the theme to get its slug
+    const { data: theme, error: fetchError } = await client
+      .from('custom_themes')
+      .select('slug, background_image_url')
+      .eq('id', id)
+      .single()
+
+    if (fetchError || !theme) {
+      throw new NotFoundException('Khong tim thay giao dien tuy chinh')
+    }
+
+    const row = theme as unknown as { slug: string; background_image_url: string | null }
+
+    // Check if any non-deleted invitation uses this theme
+    const { count, error: countError } = await client
+      .from('invitations')
+      .select('id', { count: 'exact', head: true })
+      .eq('template_id', row.slug)
+      .is('deleted_at', null)
+
+    if (countError) throw new InternalServerErrorException(countError.message)
+
+    if ((count ?? 0) > 0) {
+      throw new BadRequestException(
+        'Khong the xoa giao dien dang duoc su dung',
+      )
+    }
+
+    // Delete background image from storage if exists
+    if (row.background_image_url) {
+      const marker = '/storage/v1/object/public/theme-assets/'
+      const idx = row.background_image_url.indexOf(marker)
+      if (idx !== -1) {
+        const storagePath = row.background_image_url.slice(idx + marker.length)
+        await client.storage.from('theme-assets').remove([storagePath])
+      }
+    }
+
+    // Delete from DB
+    const { error: delError } = await client
+      .from('custom_themes')
+      .delete()
+      .eq('id', id)
+
+    if (delError) throw new InternalServerErrorException(delError.message)
+
+    return { deleted: true }
   }
 
   // ================================================================

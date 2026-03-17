@@ -20,6 +20,8 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { AdminService } from './admin.service'
 import { UpdateSystemSettingsDto } from './dto/update-system-settings.dto'
 import { UpdateThemeDto } from './dto/update-theme.dto'
+import { CreateCustomThemeDto } from './dto/create-custom-theme.dto'
+import { UpdateCustomThemeDto } from './dto/update-custom-theme.dto'
 import { JwtGuard } from '../common/guards/jwt.guard'
 import { AdminGuard } from '../auth/guards/admin.guard'
 import {
@@ -198,7 +200,53 @@ export class AdminController {
   }
 
   // ================================================================
-  // Theme Management
+  // Custom Theme Management
+  // ================================================================
+
+  @Get('custom-themes')
+  listCustomThemes() {
+    return this.adminService.listCustomThemes()
+  }
+
+  @Get('custom-themes/:slug')
+  getCustomTheme(@Param('slug') slug: string) {
+    return this.adminService.getCustomTheme(slug)
+  }
+
+  @Post('custom-themes')
+  createCustomTheme(@Body() dto: CreateCustomThemeDto) {
+    return this.adminService.createCustomTheme(dto)
+  }
+
+  @Put('custom-themes/:id')
+  @UseInterceptors(FileInterceptor('backgroundImage'))
+  updateCustomTheme(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateCustomThemeDto,
+    @UploadedFile() backgroundImageFile?: Express.Multer.File,
+  ) {
+    return this.adminService.updateCustomTheme(id, dto, backgroundImageFile)
+  }
+
+  @Post('custom-themes/:id/publish')
+  @HttpCode(HttpStatus.OK)
+  publishCustomTheme(@Param('id', ParseUUIDPipe) id: string) {
+    return this.adminService.publishCustomTheme(id)
+  }
+
+  @Post('custom-themes/:id/disable')
+  @HttpCode(HttpStatus.OK)
+  disableCustomTheme(@Param('id', ParseUUIDPipe) id: string) {
+    return this.adminService.disableCustomTheme(id)
+  }
+
+  @Delete('custom-themes/:id')
+  deleteCustomTheme(@Param('id', ParseUUIDPipe) id: string) {
+    return this.adminService.deleteCustomTheme(id)
+  }
+
+  // ================================================================
+  // Theme Management (built-in)
   // ================================================================
 
   @Get('themes')

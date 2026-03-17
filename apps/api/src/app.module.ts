@@ -7,6 +7,7 @@ import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { InvitationsModule } from './invitations/invitations.module'
 import { AdminModule } from './admin/admin.module'
+import { ThemesModule } from './themes/themes.module'
 import { HttpExceptionFilter } from './common/filters/http-exception.filter'
 
 @Module({
@@ -15,6 +16,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter'
     AuthModule,
     InvitationsModule,
     AdminModule,
+    ThemesModule,
   ],
   controllers: [AppController],
   providers: [
