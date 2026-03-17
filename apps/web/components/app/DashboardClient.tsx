@@ -1,14 +1,15 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { type Invitation } from '@repo/types'
+import { type Invitation, type UserProfile } from '@repo/types'
 import { InvitationGrid } from './InvitationGrid'
 import { Plus, Award, Globe, Timer } from 'lucide-react'
 
 interface DashboardClientProps {
   invitations: Invitation[]
+  userProfile: UserProfile | null
 }
 
-export function DashboardClient({ invitations }: DashboardClientProps) {
+export function DashboardClient({ invitations, userProfile }: DashboardClientProps) {
   const router = useRouter()
 
   const publishedCount = invitations.filter(

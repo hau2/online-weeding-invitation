@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import type { Invitation } from '@repo/types'
+import type { Invitation, UserProfile } from '@repo/types'
 import { DashboardClient } from '@/components/app/DashboardClient'
 
 async function getInvitations(): Promise<Invitation[]> {
@@ -20,7 +20,28 @@ async function getInvitations(): Promise<Invitation[]> {
   }
 }
 
+async function getUserProfile(): Promise<UserProfile | null> {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('auth-token')?.value
+  if (!token) return null
+
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
+    const res = await fetch(`${apiUrl}/auth/me`, {
+      headers: { Cookie: `auth-token=${token}` },
+      cache: 'no-store',
+    })
+    if (!res.ok) return null
+    return res.json()
+  } catch {
+    return null
+  }
+}
+
 export default async function DashboardPage() {
-  const invitations = await getInvitations()
-  return <DashboardClient invitations={invitations} />
+  const [invitations, profile] = await Promise.all([
+    getInvitations(),
+    getUserProfile(),
+  ])
+  return <DashboardClient invitations={invitations} userProfile={profile} />
 }
