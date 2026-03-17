@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import type { Invitation } from '@repo/types'
-import { getTheme } from '@/components/templates/themes'
+import { getTheme, buildThemeConfig } from '@/components/templates/themes'
 import { plusJakartaSans } from '@/lib/fonts'
 
 type PublicInvitation = Invitation & {
@@ -12,13 +12,14 @@ type PublicInvitation = Invitation & {
 
 interface ThankYouPageProps {
   invitation: PublicInvitation
+  themeConfig?: Record<string, unknown>
 }
 
 const DEFAULT_THANK_YOU =
   'Xin chan thanh cam on quy khach da den chung vui cung chung toi.'
 
-export function ThankYouPage({ invitation }: ThankYouPageProps) {
-  const theme = getTheme(invitation.templateId)
+export function ThankYouPage({ invitation, themeConfig }: ThankYouPageProps) {
+  const theme = themeConfig ? buildThemeConfig(themeConfig) : getTheme(invitation.templateId)
   const firstPhoto = invitation.photoUrls?.[0]
 
   return (

@@ -41,6 +41,8 @@ export interface ThemeConfig {
   // Footer
   footerBg: string
   footerTextColor: string
+  // Background image (custom themes only)
+  backgroundImageUrl?: string
 }
 
 /**
@@ -83,4 +85,37 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
 export function getTheme(templateId: string): ThemeConfig {
   const themeId = LEGACY_MAP[templateId] ?? templateId
   return THEMES[themeId as ThemeId] ?? THEMES['modern-red']
+}
+
+/**
+ * buildThemeConfig — takes a raw JSONB config from the API and casts/validates
+ * it into a proper ThemeConfig, using modern-red as defaults for any missing fields.
+ */
+export function buildThemeConfig(raw: Record<string, unknown>): ThemeConfig {
+  const defaults = THEMES['modern-red']
+  return {
+    id: (raw.id as string) ?? defaults.id,
+    name: (raw.name as string) ?? defaults.name,
+    primaryColor: (raw.primaryColor as string) ?? defaults.primaryColor,
+    backgroundColor: (raw.backgroundColor as string) ?? defaults.backgroundColor,
+    surfaceColor: (raw.surfaceColor as string) ?? defaults.surfaceColor,
+    textColor: (raw.textColor as string) ?? defaults.textColor,
+    mutedTextColor: (raw.mutedTextColor as string) ?? defaults.mutedTextColor,
+    headingWeight: (raw.headingWeight as string) ?? defaults.headingWeight,
+    bodyWeight: (raw.bodyWeight as string) ?? defaults.bodyWeight,
+    letterSpacing: (raw.letterSpacing as string) ?? defaults.letterSpacing,
+    textTransform: (raw.textTransform as string) ?? defaults.textTransform,
+    borderRadius: (raw.borderRadius as string) ?? defaults.borderRadius,
+    cardBorderRadius: (raw.cardBorderRadius as string) ?? defaults.cardBorderRadius,
+    heroOverlay: (raw.heroOverlay as string) ?? defaults.heroOverlay,
+    heroMinHeight: (raw.heroMinHeight as string) ?? defaults.heroMinHeight,
+    galleryEffect: (raw.galleryEffect as string) ?? defaults.galleryEffect,
+    galleryGap: (raw.galleryGap as string) ?? defaults.galleryGap,
+    petalColors: (Array.isArray(raw.petalColors) ? raw.petalColors as string[] : defaults.petalColors),
+    petalEnabled: typeof raw.petalEnabled === 'boolean' ? raw.petalEnabled : defaults.petalEnabled,
+    navStyle: (raw.navStyle === 'colored' || raw.navStyle === 'mono') ? raw.navStyle : defaults.navStyle,
+    footerBg: (raw.footerBg as string) ?? defaults.footerBg,
+    footerTextColor: (raw.footerTextColor as string) ?? defaults.footerTextColor,
+    backgroundImageUrl: (raw.backgroundImageUrl as string) ?? undefined,
+  }
 }

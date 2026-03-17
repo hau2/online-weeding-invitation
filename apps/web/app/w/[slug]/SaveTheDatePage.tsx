@@ -6,7 +6,7 @@ import type { Invitation } from '@repo/types'
 import { CountdownTimer } from './CountdownTimer'
 import { parseGuestName } from './utils'
 import { motion } from 'framer-motion'
-import { getTheme } from '@/components/templates/themes'
+import { getTheme, buildThemeConfig } from '@/components/templates/themes'
 import { plusJakartaSans } from '@/lib/fonts'
 
 type PublicInvitation = Invitation & {
@@ -17,11 +17,12 @@ type PublicInvitation = Invitation & {
 
 interface SaveTheDatePageProps {
   invitation: PublicInvitation
+  themeConfig?: Record<string, unknown>
 }
 
-export function SaveTheDatePage({ invitation }: SaveTheDatePageProps) {
+export function SaveTheDatePage({ invitation, themeConfig }: SaveTheDatePageProps) {
   const [guestName, setGuestName] = useState<string | null>(null)
-  const theme = getTheme(invitation.templateId)
+  const theme = themeConfig ? buildThemeConfig(themeConfig) : getTheme(invitation.templateId)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)

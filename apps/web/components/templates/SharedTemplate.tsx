@@ -45,6 +45,17 @@ export function SharedTemplate({
         '--theme-muted': theme.mutedTextColor,
       } as React.CSSProperties}
     >
+      {/* Background image for custom themes — fixed layer (works on iOS Safari) */}
+      {theme.backgroundImageUrl && (
+        <div
+          className="fixed inset-0 -z-10"
+          style={{
+            backgroundImage: `url(${theme.backgroundImageUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+      )}
       <HeroSection invitation={invitation} theme={theme} />
       <CountdownSection
         invitation={invitation}

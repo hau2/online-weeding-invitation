@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import type { Invitation } from '@repo/types'
 import { SharedTemplate } from '@/components/templates/SharedTemplate'
 import { StickyNav } from '@/components/templates/sections/StickyNav'
-import { getTheme } from '@/components/templates/themes'
+import { getTheme, buildThemeConfig } from '@/components/templates/themes'
 import { plusJakartaSans } from '@/lib/fonts'
 import { Watermark } from './Watermark'
 
@@ -20,6 +20,7 @@ type PublicInvitation = Invitation & {
 
 interface InvitationShellProps {
   invitation: PublicInvitation
+  themeConfig?: Record<string, unknown>
 }
 
 // Dynamic imports for heavy client components (avoid SSR issues)
@@ -42,12 +43,13 @@ function sanitizeGuestName(raw: string): string {
   return stripped.slice(0, 50)
 }
 
-export function InvitationShell({ invitation }: InvitationShellProps) {
+export function InvitationShell({ invitation, themeConfig }: InvitationShellProps) {
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [guestName, setGuestName] = useState<string | undefined>(undefined)
   const [side, setSide] = useState<'groom' | 'bride'>('groom')
 
-  const theme = getTheme(invitation.templateId)
+  // Resolve theme: use custom themeConfig from API if present, otherwise fall back to built-in
+  const theme = themeConfig ? buildThemeConfig(themeConfig) : getTheme(invitation.templateId)
 
   useEffect(() => {
     // Parse ?to= and ?side= client-side only (never sent to server)

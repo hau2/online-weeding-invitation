@@ -15,6 +15,7 @@ type PublicInvitation = Invitation & {
   expired: boolean
   musicUrl?: string
   isSaveTheDate?: boolean
+  themeConfig?: Record<string, unknown>
 }
 
 async function getInvitation(slug: string): Promise<PublicInvitation | null> {
@@ -76,16 +77,16 @@ export default async function PublicInvitationPage({
   if (!invitation) notFound()
 
   if (invitation.isSaveTheDate) {
-    return <SaveTheDatePage invitation={invitation} />
+    return <SaveTheDatePage invitation={invitation} themeConfig={invitation.themeConfig} />
   }
 
   if (invitation.expired) {
-    return <ThankYouPage invitation={invitation} />
+    return <ThankYouPage invitation={invitation} themeConfig={invitation.themeConfig} />
   }
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <InvitationShell invitation={invitation} />
+      <InvitationShell invitation={invitation} themeConfig={invitation.themeConfig} />
     </Suspense>
   )
 }

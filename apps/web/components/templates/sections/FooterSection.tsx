@@ -13,9 +13,13 @@ export function FooterSection({ invitation, theme }: SectionProps) {
   const coupleName = `${invitation.groomName || 'Chu re'} & ${invitation.brideName || 'Co dau'}`
   const thankYou = invitation.thankYouText || 'Rat han hanh duoc don tiep quy khach.'
 
+  // Handle dual-format footerBg: hex color (custom themes) vs Tailwind class (built-in themes)
+  const isHex = theme.footerBg.startsWith('#')
+
   return (
     <footer
-      className={cn('w-full py-12 px-4 text-center', theme.footerBg)}
+      className={cn('w-full py-12 px-4 text-center', !isHex && theme.footerBg)}
+      style={isHex ? { backgroundColor: theme.footerBg } : undefined}
     >
       <div className="flex flex-col items-center gap-4">
         <h2
