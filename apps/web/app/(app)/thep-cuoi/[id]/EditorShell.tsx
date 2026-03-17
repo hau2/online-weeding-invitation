@@ -25,7 +25,7 @@ function SaveIndicator({ status }: { status: SaveStatus }) {
   }
 }
 
-export function EditorShell({ invitation: initial }: { invitation: Invitation }) {
+export function EditorShell({ invitation: initial, isAgent }: { invitation: Invitation; isAgent?: boolean }) {
   const [invitation, setInvitation] = useState<Invitation>(initial)
   const [previewMode, setPreviewMode] = useState<'phone' | 'desktop'>('phone')
   const { save, status } = useAutoSave(initial.id)
@@ -106,6 +106,7 @@ export function EditorShell({ invitation: initial }: { invitation: Invitation })
               invitationId={invitation.id}
               plan={invitation.plan ?? 'free'}
               paymentStatus={invitation.paymentStatus ?? 'none'}
+              isAgent={isAgent}
             />
             <Link href={`/thep-cuoi/${invitation.id}/preview`}>
               <button

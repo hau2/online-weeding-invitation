@@ -103,6 +103,7 @@ export function DashboardClient({ invitations, userProfile }: DashboardClientPro
         <InvitationGrid
           invitations={invitations}
           onCreateClick={handleCreateClick}
+          isAgent={isAgent}
         />
       </div>
 

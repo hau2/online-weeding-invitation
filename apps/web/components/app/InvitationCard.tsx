@@ -34,9 +34,10 @@ const TEMPLATE_THUMBNAILS: Record<string, React.ReactNode> = {
 
 interface InvitationCardProps {
   invitation: Invitation
+  isAgent?: boolean
 }
 
-export function InvitationCard({ invitation }: InvitationCardProps) {
+export function InvitationCard({ invitation, isAgent }: InvitationCardProps) {
   const formattedDate = invitation.groomCeremonyDate
     ? new Date(invitation.groomCeremonyDate).toLocaleDateString('vi-VN', {
         day: '2-digit', month: '2-digit', year: 'numeric',
@@ -171,7 +172,7 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
                 Nhà gái
               </Button>
             </div>
-          ) : isDraft && invitation.plan !== 'premium' && invitation.paymentStatus !== 'pending' ? (
+          ) : isDraft && !isAgent && invitation.plan !== 'premium' && invitation.paymentStatus !== 'pending' ? (
             <Button
               render={<Link href={`/nang-cap/${invitation.id}`} />}
               nativeButton={false}

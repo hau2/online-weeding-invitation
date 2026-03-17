@@ -9,10 +9,11 @@ interface UpgradeButtonProps {
   invitationId: string
   plan: InvitationPlan
   paymentStatus: PaymentStatus
+  isAgent?: boolean
 }
 
-export function UpgradeButton({ invitationId, plan, paymentStatus }: UpgradeButtonProps) {
-  if (plan === 'premium') return null
+export function UpgradeButton({ invitationId, plan, paymentStatus, isAgent }: UpgradeButtonProps) {
+  if (plan === 'premium' || isAgent) return null
 
   if (paymentStatus === 'pending') {
     return (

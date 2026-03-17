@@ -17,9 +17,10 @@ const item: Variants = {
 interface InvitationGridProps {
   invitations: Invitation[]
   onCreateClick?: () => void
+  isAgent?: boolean
 }
 
-export function InvitationGrid({ invitations, onCreateClick }: InvitationGridProps) {
+export function InvitationGrid({ invitations, onCreateClick, isAgent }: InvitationGridProps) {
   if (invitations.length === 0) {
     return <EmptyState onCreateClick={onCreateClick} />
   }
@@ -33,7 +34,7 @@ export function InvitationGrid({ invitations, onCreateClick }: InvitationGridPro
     >
       {invitations.map((inv) => (
         <motion.div key={inv.id} variants={item}>
-          <InvitationCard invitation={inv} />
+          <InvitationCard invitation={inv} isAgent={isAgent} />
         </motion.div>
       ))}
     </motion.div>

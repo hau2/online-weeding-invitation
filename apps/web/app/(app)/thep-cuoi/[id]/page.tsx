@@ -1,29 +1,33 @@
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
-import type { Invitation } from '@repo/types'
+import type { Invitation, UserProfile } from '@repo/types'
 import { EditorShell } from './EditorShell'
 
-async function getInvitation(id: string): Promise<Invitation | null> {
-  const cookieStore = await cookies()
-  const token = cookieStore.get('auth-token')?.value
-  if (!token) return null
-
+async function getInvitation(id: string, token: string): Promise<Invitation | null> {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
     const url = `${apiUrl}/invitations/${id}`
-    console.log('[EditorPage] fetching:', url)
     const res = await fetch(url, {
       headers: { Cookie: `auth-token=${token}` },
       cache: 'no-store',
     })
-    if (!res.ok) {
-      const body = await res.text()
-      console.error('[EditorPage] API error:', res.status, body)
-      return null
-    }
+    if (!res.ok) return null
     return res.json()
-  } catch (err) {
-    console.error('[EditorPage] fetch error:', err)
+  } catch {
+    return null
+  }
+}
+
+async function getUserProfile(token: string): Promise<UserProfile | null> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
+    const res = await fetch(`${apiUrl}/auth/me`, {
+      headers: { Cookie: `auth-token=${token}` },
+      cache: 'no-store',
+    })
+    if (!res.ok) return null
+    return res.json()
+  } catch {
     return null
   }
 }
@@ -34,8 +38,15 @@ export default async function EditorPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const invitation = await getInvitation(id)
+  const cookieStore = await cookies()
+  const token = cookieStore.get('auth-token')?.value
+  if (!token) notFound()
+
+  const [invitation, profile] = await Promise.all([
+    getInvitation(id, token),
+    getUserProfile(token),
+  ])
   if (!invitation) notFound()
 
-  return <EditorShell invitation={invitation} />
+  return <EditorShell invitation={invitation} isAgent={profile?.tier === 'agent'} />
 }
