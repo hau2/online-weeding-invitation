@@ -952,10 +952,65 @@ export class InvitationsService {
   }
 
   /**
-   * Check if a free-tier user already has a live invitation.
-   * Throws BadRequestException if the limit is reached.
+   * Enforce publish limits based on user tier.
+   * - Agent tier: 20 published invitations per 30-day cycle, active subscription required.
+   * - Free tier: max 1 live invitation.
+   * - Premium (non-agent): no limit.
    */
-  private async enforceFreeTierLimit(userId: string, currentInvitationId: string, plan: string): Promise<void> {
+  private async enforcePublishLimit(userId: string, currentInvitationId: string, plan: string): Promise<void> {
+    // Fetch user tier info
+    const { data: userRow, error: userError } = await this.supabaseAdmin.client
+      .from('users')
+      .select('tier, subscription_start, subscription_end')
+      .eq('id', userId)
+      .single()
+
+    if (userError) throw new InternalServerErrorException(userError.message)
+
+    const user = userRow as unknown as {
+      tier: string
+      subscription_start: string | null
+      subscription_end: string | null
+    }
+
+    // Agent tier check
+    if (user.tier === 'agent') {
+      // Check subscription is active
+      if (!user.subscription_end || new Date(user.subscription_end) < new Date()) {
+        throw new BadRequestException(
+          'Goi dai ly da het han. Vui long gia han de tiep tuc xuat ban.',
+        )
+      }
+
+      // Compute current cycle start
+      const cycleStart = new Date(user.subscription_start!)
+      const now = new Date()
+      const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000
+      while (cycleStart.getTime() + thirtyDaysMs <= now.getTime()) {
+        cycleStart.setTime(cycleStart.getTime() + thirtyDaysMs)
+      }
+
+      const { count, error } = await this.supabaseAdmin.client
+        .from('invitations')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .in('status', ['published', 'save_the_date'])
+        .is('deleted_at', null)
+        .gte('created_at', cycleStart.toISOString())
+        .neq('id', currentInvitationId)
+
+      if (error) throw new InternalServerErrorException(error.message)
+
+      if ((count ?? 0) >= 20) {
+        throw new BadRequestException(
+          'Da dat gioi han 20 thiep/thang. Vui long cho chu ky moi.',
+        )
+      }
+
+      return // Agent can publish (auto-premium handled at publish site)
+    }
+
+    // Regular user: existing free tier check
     if (plan !== 'free') return
 
     const { count, error } = await this.supabaseAdmin.client
@@ -1010,14 +1065,24 @@ export class InvitationsService {
       )
     }
 
-    // Free tier: max 1 live invitation
-    await this.enforceFreeTierLimit(userId, id, invitation.plan)
+    // Enforce publish limits (agent quota or free tier limit)
+    await this.enforcePublishLimit(userId, id, invitation.plan)
+
+    // Auto-premium for agent tier: agents always publish as premium
+    const { data: stdUser } = await this.supabaseAdmin.client
+      .from('users')
+      .select('tier')
+      .eq('id', userId)
+      .single()
+    const effectivePlan = (stdUser as unknown as { tier: string })?.tier === 'agent'
+      ? 'premium'
+      : invitation.plan
 
     // If slug already exists (previously published), just update status
     if (invitation.slug) {
       const { data, error } = await this.supabaseAdmin.client
         .from('invitations')
-        .update({ status: 'save_the_date' })
+        .update({ status: 'save_the_date', plan: effectivePlan })
         .eq('id', id)
         .select(SELECT_ALL)
         .single()
@@ -1035,7 +1100,7 @@ export class InvitationsService {
 
       const { data, error } = await this.supabaseAdmin.client
         .from('invitations')
-        .update({ slug, status: 'save_the_date' })
+        .update({ slug, status: 'save_the_date', plan: effectivePlan })
         .eq('id', id)
         .select(SELECT_ALL)
         .single()
@@ -1071,14 +1136,24 @@ export class InvitationsService {
   async publish(userId: string, id: string) {
     const invitation = await this.findOne(userId, id)
 
-    // Free tier: max 1 live invitation
-    await this.enforceFreeTierLimit(userId, id, invitation.plan)
+    // Enforce publish limits (agent quota or free tier limit)
+    await this.enforcePublishLimit(userId, id, invitation.plan)
+
+    // Auto-premium for agent tier: agents always publish as premium
+    const { data: publishingUser } = await this.supabaseAdmin.client
+      .from('users')
+      .select('tier')
+      .eq('id', userId)
+      .single()
+    const effectivePlan = (publishingUser as unknown as { tier: string })?.tier === 'agent'
+      ? 'premium'
+      : invitation.plan
 
     // If slug already exists, just update status (use user client, no slug change)
     if (invitation.slug) {
       const { data, error } = await this.supabaseAdmin.client
         .from('invitations')
-        .update({ status: 'published' })
+        .update({ status: 'published', plan: effectivePlan })
         .eq('id', id)
         .select(SELECT_ALL)
         .single()
@@ -1096,7 +1171,7 @@ export class InvitationsService {
 
       const { data, error } = await this.supabaseAdmin.client
         .from('invitations')
-        .update({ slug, status: 'published' })
+        .update({ slug, status: 'published', plan: effectivePlan })
         .eq('id', id)
         .select(SELECT_ALL)
         .single()
