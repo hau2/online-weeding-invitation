@@ -225,7 +225,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 5.1 -> 6 -> 7 -> 8 -> 
 | 8. Admin Panel | 4/5 | In Progress|  |
 | 9. Polish and Performance | 3/3 | Complete | 2013-03-16 |
 | 9.1 Public Page Redesign | 5/5 | Complete | 2026-03-16 |
-| 10. Agent Tier and Storage | 2/4 | In Progress|  |
+| 10. Agent Tier and Storage | 4/4 | Complete   | 2026-03-17 |
 | 11. Custom Theme Builder | 0/0 | Not started | - |
 | 12. Security Hardening | 0/0 | Not started | - |
 | 13. Editor UI Redesign | 5/5 | Complete    | 2026-03-16 |
@@ -267,7 +267,7 @@ Plans:
   6. Dashboard shows warning badges on draft cards within 7 days of auto-deletion
   7. Admin can clear storage for expired/soft-deleted invitations from system settings page
   8. GET /auth/me endpoint returns user profile including tier, subscription, and quota info
-**Plans:** 2/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 - [ ] 10-01-PLAN.md — DB migration (agent tier columns on users), shared types (UserTier, UserProfile), GET /auth/me endpoint, agent-aware quota enforcement at publish time
