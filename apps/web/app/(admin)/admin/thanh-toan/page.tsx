@@ -6,7 +6,6 @@ import {
   Check,
   X,
   Clock,
-  Receipt,
   Loader2,
   DollarSign,
   Download,
@@ -232,12 +231,9 @@ export default function AdminPaymentsPage() {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <Receipt className="size-5 text-gray-700" />
-          <h1 className="text-xl font-semibold text-gray-900">Thanh toan</h1>
-        </div>
+        <h1 className="text-2xl font-bold text-[#181113] mb-6">Thanh toan</h1>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="size-6 animate-spin text-gray-400" />
+          <Loader2 className="size-6 animate-spin text-[#ec1349]" />
         </div>
       </div>
     )
@@ -245,44 +241,40 @@ export default function AdminPaymentsPage() {
 
   return (
     <div className="p-6 max-w-4xl">
-      <div className="flex items-center gap-2 mb-1">
-        <Receipt className="size-5 text-gray-700" />
-        <h1 className="text-xl font-semibold text-gray-900">Thanh toan</h1>
-      </div>
-      <p className="text-sm text-gray-500 mb-4">Yeu cau nang cap dang cho xu ly</p>
+      <h1 className="text-2xl font-bold text-[#181113] mb-6">Thanh toan</h1>
 
       {/* Search */}
       <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#89616b]" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Tim theo noi dung CK, ten, slug..."
-          className="w-full rounded-lg border border-gray-200 pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+          className="w-full rounded-lg border border-[#e6dbde] pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
         />
       </div>
 
       {/* Pending upgrades */}
       {filteredPending.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 text-center mb-8">
-          <Clock className="size-8 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-gray-500">Khong co yeu cau nao dang cho xu ly</p>
+        <div className="bg-white rounded-xl border border-[#e6dbde] p-8 text-center mb-8">
+          <Clock className="size-8 text-[#e6dbde] mx-auto mb-3" />
+          <p className="text-sm text-[#89616b]">Khong co yeu cau nao dang cho xu ly</p>
         </div>
       ) : (
         <div className="space-y-3 mb-8">
           {filteredPending.map((inv) => (
             <div
               key={inv.id}
-              className="bg-white rounded-xl border border-gray-200 p-4 hover:bg-gray-50 transition-colors"
+              className="bg-white rounded-xl border border-[#e6dbde] p-4 hover:bg-[#f8f6f6] transition-colors"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-[#181113]">
                     {inv.groomName || 'Chu re'} &amp; {inv.brideName || 'Co dau'}
                   </p>
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 mt-1">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#89616b] mt-1">
                     {inv.slug && <span className="font-mono">{inv.slug}</span>}
                     <span title={inv.id}>ID: {truncateId(inv.id)}</span>
                     <span>User: {truncateId(inv.userId)}</span>
@@ -325,7 +317,7 @@ export default function AdminPaymentsPage() {
       {/* History section */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-gray-700">Lich su</h2>
+          <h2 className="text-sm font-semibold text-[#89616b]">Lich su</h2>
           {filteredHistory.length > 0 && (
             <Button
               variant="outline"
@@ -339,20 +331,20 @@ export default function AdminPaymentsPage() {
           )}
         </div>
         {filteredHistory.length === 0 ? (
-          <p className="text-sm text-gray-400">{searchQuery ? 'Khong tim thay ket qua.' : 'Chua co lich su duyet.'}</p>
+          <p className="text-sm text-[#89616b]">{searchQuery ? 'Khong tim thay ket qua.' : 'Chua co lich su duyet.'}</p>
         ) : (
           <div className="space-y-2">
             {filteredHistory.map((inv) => (
               <div
                 key={inv.id}
-                className="bg-white rounded-lg border border-gray-100 px-4 py-3"
+                className="bg-white rounded-lg border border-[#e6dbde] px-4 py-3"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-[#181113]">
                       {inv.groomName || 'Chu re'} &amp; {inv.brideName || 'Co dau'}
                     </p>
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400 mt-0.5">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#89616b] mt-0.5">
                       {inv.slug && <span className="font-mono">{inv.slug}</span>}
                       <span>{formatDate(inv.updatedAt)}</span>
                     </div>
@@ -412,7 +404,7 @@ export default function AdminPaymentsPage() {
                         </Button>
                       </>
                     ) : (
-                      <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+                      <span className="inline-flex items-center rounded-full bg-[#f4f0f1] px-2.5 py-0.5 text-xs font-medium text-[#89616b]">
                         {inv.plan}
                       </span>
                     )}
@@ -421,7 +413,7 @@ export default function AdminPaymentsPage() {
                     <Button
                       variant="ghost"
                       size="icon-xs"
-                      className="text-gray-400 hover:text-gray-600"
+                      className="text-[#89616b] hover:text-[#181113]"
                       onClick={() => toggleNotes(inv.id)}
                       title="Ghi chu"
                     >
@@ -436,10 +428,10 @@ export default function AdminPaymentsPage() {
 
                 {/* Expandable notes section */}
                 {expandedNotes.has(inv.id) && (
-                  <div className="mt-3 pt-3 border-t border-gray-100">
-                    <label className="text-xs text-gray-500 block mb-1">Ghi chu noi bo</label>
+                  <div className="mt-3 pt-3 border-t border-[#f4f0f1]">
+                    <label className="text-xs font-semibold text-[#89616b] block mb-1">Ghi chu noi bo</label>
                     {inv.adminNotes && (
-                      <p className="text-xs text-gray-600 bg-gray-50 rounded px-2 py-1 mb-2">
+                      <p className="text-xs text-[#89616b] bg-[#f8f6f6] rounded px-2 py-1 mb-2">
                         {inv.adminNotes}
                       </p>
                     )}
@@ -451,7 +443,7 @@ export default function AdminPaymentsPage() {
                           setNotesInput((prev) => ({ ...prev, [inv.id]: e.target.value }))
                         }
                         placeholder="Nhap ghi chu..."
-                        className="flex-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        className="flex-1 rounded-lg border border-[#e6dbde] px-3 py-1.5 text-xs focus:outline-none focus:border-[#ec1349] focus:ring-1 focus:ring-[#ec1349]"
                       />
                       <Button
                         variant="outline"
