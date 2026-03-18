@@ -36,7 +36,7 @@ export function EnvelopeAnimation({
 }: EnvelopeAnimationProps) {
   const [useFallback, setUseFallback] = useState<boolean | null>(null)
   const [stage, setStage] = useState<AnimationStage>('sealed')
-  const colors = ENVELOPE_COLORS[templateId]
+  const colors = ENVELOPE_COLORS[templateId] ?? ENVELOPE_COLORS['modern-red']
   const envelopeControls = useAnimation()
   const flapControls = useAnimation()
   const sealControls = useAnimation()
