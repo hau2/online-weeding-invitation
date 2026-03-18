@@ -4,7 +4,6 @@ import {
   IsDateString,
   IsUUID,
   Matches,
-  IsIn,
   IsArray,
   ValidateNested,
   ArrayMaxSize,
@@ -109,9 +108,6 @@ class InvitationFieldsDto {
   thankYouText: string
 
   @IsString({ message: 'Giao dien phai la chuoi ky tu' })
-  @IsIn(['traditional', 'modern', 'minimalist', 'modern-red', 'soft-pink', 'brown-gold', 'olive-green', 'minimalist-bw', 'classic-red-gold'], {
-    message: 'Giao dien khong hop le',
-  })
   templateId: string
 
   @IsOptional()

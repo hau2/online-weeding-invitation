@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsIn } from 'class-validator'
+import { IsString, IsNotEmpty } from 'class-validator'
 
 export class CreateInvitationDto {
   @IsString()
@@ -10,9 +10,7 @@ export class CreateInvitationDto {
   groomName: string
 
   @IsString()
-  @IsIn(['traditional', 'modern', 'minimalist', 'modern-red', 'soft-pink', 'brown-gold', 'olive-green', 'minimalist-bw', 'classic-red-gold'], {
-    message: 'Giao dien khong hop le',
-  })
+  @IsNotEmpty({ message: 'Giao dien khong duoc de trong' })
   templateId: string
 
   // NOTE: No userId field -- NEVER accept userId from the client body.
