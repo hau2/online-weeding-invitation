@@ -1,12 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
-import { type ThemeId } from '@/components/templates/themes'
 
-const THEME_OPTIONS: Array<{ id: ThemeId; label: string; style: string; color: string }> = [
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
+
+interface ThemeOption {
+  id: string
+  label: string
+  style: string
+  color: string
+  isCustom?: boolean
+}
+
+const BUILTIN_THEMES: ThemeOption[] = [
   { id: 'modern-red', label: 'Hien Dai Do', style: 'Hien dai, Tuoi sang', color: '#ec1349' },
   { id: 'soft-pink', label: 'Hong Dao', style: 'Nhe nhang, Lang man', color: '#E88D8D' },
   { id: 'brown-gold', label: 'Nau Vang', style: 'Am ap, Co dien', color: '#8B6F47' },
@@ -18,7 +27,27 @@ const THEME_OPTIONS: Array<{ id: ThemeId; label: string; style: string; color: s
 export default function CreateWizardPage() {
   const router = useRouter()
   const [step, setStep] = useState<1 | 2>(1)
-  const [selectedTemplate, setSelectedTemplate] = useState<ThemeId | null>(null)
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
+  const [customThemes, setCustomThemes] = useState<ThemeOption[]>([])
+
+  useEffect(() => {
+    fetch(`${API_URL}/themes`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: Array<{ slug: string; name: string; config: Record<string, unknown> }>) =>
+        setCustomThemes(
+          data.map((t) => ({
+            id: t.slug,
+            label: t.name,
+            style: 'Tuy chinh',
+            color: (t.config.primaryColor as string) ?? '#ec1349',
+            isCustom: true,
+          }))
+        )
+      )
+      .catch(() => {})
+  }, [])
+
+  const allThemes = [...BUILTIN_THEMES, ...customThemes]
   const [brideName, setBrideName] = useState('')
   const [groomName, setGroomName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -229,7 +258,7 @@ export default function CreateWizardPage() {
 
             {/* Theme grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {THEME_OPTIONS.map((tpl) => {
+              {allThemes.map((tpl) => {
                 const isSelected = selectedTemplate === tpl.id
                 return (
                   <div
